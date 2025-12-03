@@ -1,0 +1,267 @@
+/* src/styles/VibesPage.module.css */
+
+.vibesPage {
+  min-height: 100vh;
+  background: #f0f9ff; /* Light blue background */
+  padding-bottom: 80px;
+}
+
+/* Header Section */
+.headerSection {
+  padding: 80px 20px 40px 20px; /* Reduced padding */
+  text-align: center;
+  background: #f0f9ff; /* Matches page background instead of white */
+  margin-bottom: 20px;
+  border-bottom: none;
+}
+
+.headerEyebrow {
+  display: block;
+  font-size: 12px; /* Smaller */
+  font-weight: 700;
+  color: #0ea5e9;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.mainTitle {
+  font-size: 36px; /* Smaller from 48px */
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 15px;
+}
+
+.headerDivider {
+  width: 40px; /* Smaller */
+  height: 3px;
+  background: #0ea5e9;
+  margin: 0 auto 20px auto;
+  border-radius: 2px;
+}
+
+.mainSubtitle {
+  font-size: 16px; /* Smaller */
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Vibes Grid */
+.vibesGrid {
+  margin-bottom: 60px;
+  padding: 0 20px;
+}
+
+/* Vibe Card Styling - Adjusted Proportions */
+.vibeCard {
+  transition: all 0.3s ease;
+  border-radius: 16px; /* Slightly smaller radius */
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  height: 340px; /* Reduced height from 420px */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid transparent;
+  position: relative; /* Needed for checkmark positioning */
+}
+
+.vibeCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.vibeCardSelected {
+  border: 2px solid #0ea5e9;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+}
+
+.checkMark {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  background-color: #0ea5e9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+  z-index: 10;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.cardImage {
+  height: 180px; /* Reduced from 220px */
+  overflow: hidden;
+  position: relative;
+}
+
+.vibeImage {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+  height: 100%;
+  width: 100%;
+}
+
+.vibeCard:hover .vibeImage {
+  transform: scale(1.1);
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px; /* Reduced padding */
+}
+
+.vibeTitle {
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 1.1rem; /* Smaller */
+  margin-bottom: 8px !important;
+}
+
+.vibeShort {
+  color: #64748b;
+  font-size: 0.9rem; /* Smaller */
+  line-height: 1.4;
+  margin-bottom: 0 !important;
+}
+
+/* Details Section - Adjusted Proportions */
+.detailsSection {
+  padding: 60px 20px 80px 20px; /* Increased top padding for separation */
+  display: flex;
+  justify-content: center;
+}
+
+.detailsCard {
+  background: white;
+  border-radius: 16px; /* Slightly smaller radius */
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+  display: flex;
+  max-width: 800px; /* Reduced from 900px */
+  width: 100%;
+  min-height: 300px; /* Reduced from 350px */
+  align-items: stretch; /* Ensures image stretches */
+}
+
+.detailsImageWrapper {
+  width: 40%; /* Reduced from 45% */
+  position: relative;
+  overflow: hidden;
+  display: flex; /* Keeps image full height */
+}
+
+.detailsImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block; /* Removes bottom gap */
+}
+
+.detailsOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.1);
+}
+
+.detailsContent {
+  width: 60%; /* Increased from 55% */
+  padding: 30px; /* Reduced from 40px */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.detailsEyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.detailsTitle {
+  font-size: 28px; /* Smaller from 36px */
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 15px;
+}
+
+.detailsText {
+  font-size: 16px; /* Smaller from 18px */
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.detailsButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #0ea5e9;
+  color: white;
+  padding: 12px 24px; /* Smaller padding */
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: fit-content;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+  font-size: 14px;
+}
+
+.detailsButton:hover {
+  background: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5);
+  color: white;
+}
+
+.detailsButton i {
+  margin-left: 8px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .mainTitle {
+    font-size: 28px;
+  }
+
+  .detailsCard {
+    flex-direction: column;
+  }
+
+  .detailsImageWrapper, .detailsContent {
+    width: 100%;
+  }
+
+  .detailsImageWrapper {
+    height: 200px;
+  }
+
+  .detailsContent {
+    padding: 25px;
+  }
+}

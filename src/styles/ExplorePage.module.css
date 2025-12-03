@@ -1,0 +1,45 @@
+/* src/styles/ExplorePage.module.css */
+
+.exploreContainer {
+  padding: 40px 20px 80px; /* Added bottom padding for footer spacing */
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchBox {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.searchButton {
+  height: 50px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+  background-color: #0ea5e9; /* Primary blue */
+  border-color: transparent;
+}
+
+.searchButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+  background-color: #0284c7;
+}
+
+.searchButton:disabled {
+  transform: none;
+  box-shadow: none;
+  background-color: #cbd5e1;
+}
+
+/* Customizing Bulma elements within the module scope if possible, 
+   but since Bulma classes are global, we rely on specificity or wrapping */
