@@ -30,9 +30,9 @@ function CreateTripPage() {
   const [errors, setErrors] = useState({});
 
   const steps = [
-    { id: 1, title: "Trip Details" },
-    { id: 2, title: "Travel Info" },
-    { id: 3, title: "Preferences" }
+    { id: 1, title: "Trip Details", icon: "fas fa-suitcase" },
+    { id: 2, title: "Travel Info", icon: "fas fa-calendar-alt" },
+    { id: 3, title: "Preferences", icon: "fas fa-heart" }
   ];
 
   const vibes = [
@@ -44,13 +44,12 @@ function CreateTripPage() {
     { value: "nightlife", label: "🎉 Nightlife", desc: "Parties & shows" }
   ];
 
-  // Get current image based on selected vibe or default
   const getCurrentImage = () => {
     const vibe = formData.vibe || selectedVibe;
     if (vibe && vibeImages[vibe]) {
       return vibeImages[vibe];
     }
-    return "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=80"; // Default travel image
+    return "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=80";
   };
 
   const handleInputChange = (e) => {
@@ -98,141 +97,160 @@ function CreateTripPage() {
   };
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.createTripCard}>
-        {/* Left Side - Image */}
-        <div className={styles.imageSide}>
-          <img 
-            src={getCurrentImage()} 
-            alt="Travel Vibe" 
-            className={styles.vibeImage} 
-          />
-          <div className={styles.imageOverlay}>
-            <div className={styles.overlayContent}>
-              <h2 className={styles.vibeQuote}>
-                {formData.vibe 
-                  ? `Experience the ${formData.vibe} lifestyle.`
-                  : "Plan your next great adventure."}
-              </h2>
-              <span className={styles.vibeTag}>
-                {formData.vibe ? vibes.find(v => v.value === formData.vibe)?.label : "TRAVEL VIBES"}
-              </span>
+    <div className={styles.pageWrapper}>
+      {/* Header Section */}
+      <div className={styles.headerSection}>
+        <span className={styles.headerEyebrow}>PLAN YOUR JOURNEY</span>
+        <h1 className={styles.pageTitle}>Create Your Trip</h1>
+        <div className={styles.headerDivider}></div>
+        <p className={styles.pageSubtitle}>Build your perfect travel experience step by step</p>
+      </div>
+
+      {/* Form Container */}
+      <div className={styles.pageContainer}>
+        <div className={styles.createTripCard}>
+          {/* Left Side - Image */}
+          <div className={styles.imageSide}>
+            <img 
+              src={getCurrentImage()} 
+              alt="Travel Vibe" 
+              className={styles.vibeImage} 
+            />
+            <div className={styles.imageOverlay}>
+              <div className={styles.overlayContent}>
+                <h2 className={styles.tripNameDisplay}>
+                  {formData.tripName || "Your Trip Name"}
+                </h2>
+                <span className={styles.vibeTag}>
+                  {formData.vibe ? vibes.find(v => v.value === formData.vibe)?.label : "Select your vibe"}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Right Side - Form */}
-        <div className={styles.formSide}>
-          <div className={styles.header}>
-            <h1 className={styles.title}>Create Your Dream Trip</h1>
-            <p className={styles.subtitle}>Step {currentStep} of {steps.length}: {steps[currentStep-1].title}</p>
-          </div>
+          {/* Right Side - Form */}
+          <div className={styles.formSide}>
+            {/* Progress Bar */}
+            <div className={styles.progressBar}>
+              {steps.map((step, index) => (
+                <div key={step.id} className={styles.progressStep}>
+                  <div 
+                    className={`${styles.stepCircle} ${currentStep >= step.id ? styles.stepActive : ''} ${currentStep > step.id ? styles.stepCompleted : ''}`}
+                  >
+                    {currentStep > step.id ? (
+                      <i className="fas fa-check"></i>
+                    ) : (
+                      <i className={step.icon}></i>
+                    )}
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className={`${styles.stepLine} ${currentStep > step.id ? styles.lineCompleted : ''}`}></div>
+                  )}
+                </div>
+              ))}
+            </div>
 
-          <div className={styles.progressDots}>
-            {steps.map(step => (
-              <div 
-                key={step.id} 
-                className={`${styles.dot} ${currentStep === step.id ? styles.dotActive : ''} ${currentStep > step.id ? styles.dotCompleted : ''}`}
-              />
-            ))}
-          </div>
+            <div className={styles.stepInfo}>
+              <h2 className={styles.stepTitle}>{steps[currentStep-1].title}</h2>
+              <p className={styles.stepDescription}>Step {currentStep} of {steps.length}</p>
+            </div>
 
-          <div className={styles.formContent}>
-            {currentStep === 1 && (
-              <div className={styles.inputGroup}>
-                <label className={styles.label}>Give your trip a name</label>
-                <div className="control has-icons-left">
+            <div className={styles.formContent}>
+              {currentStep === 1 && (
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Trip Name</label>
                   <input
                     type="text"
                     name="tripName"
                     value={formData.tripName}
                     onChange={handleInputChange}
-                    className={styles.input}
+                    className={`input ${errors.tripName ? 'is-danger' : ''}`}
                     placeholder="e.g., Summer in Italy 2025"
                   />
-                  <span className="icon is-small is-left" style={{position: 'absolute', left: '12px', top: '12px', color: '#dbdbdb'}}>
-                    <i className="fas fa-map-marked-alt"></i>
-                  </span>
+                  {errors.tripName && <p className="help is-danger">{errors.tripName}</p>}
                 </div>
-                {errors.tripName && <p className={styles.errorText}>{errors.tripName}</p>}
-              </div>
-            )}
+              )}
 
-            {currentStep === 2 && (
-              <>
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>Start Date</label>
-                  <DatePicker
-                    selected={formData.startDate}
-                    onChange={(date) => handleDateChange(date, "startDate")}
-                    className={styles.input}
-                    placeholderText="Select start date"
-                    minDate={new Date()}
-                    wrapperClassName={styles.datePickerWrapper}
-                  />
-                  {errors.startDate && <p className={styles.errorText}>{errors.startDate}</p>}
-                </div>
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>End Date</label>
-                  <DatePicker
-                    selected={formData.endDate}
-                    onChange={(date) => handleDateChange(date, "endDate")}
-                    className={styles.input}
-                    placeholderText="Select end date"
-                    minDate={formData.startDate || new Date()}
-                    wrapperClassName={styles.datePickerWrapper}
-                  />
-                  {errors.endDate && <p className={styles.errorText}>{errors.endDate}</p>}
-                </div>
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>Number of Travelers</label>
-                  <input
-                    type="number"
-                    name="travelers"
-                    value={formData.travelers}
-                    onChange={handleInputChange}
-                    className={styles.input}
-                    min="1"
-                    placeholder="How many people?"
-                  />
-                  {errors.travelers && <p className={styles.errorText}>{errors.travelers}</p>}
-                </div>
-              </>
-            )}
+              {currentStep === 2 && (
+                <>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label}>Start Date</label>
+                    <DatePicker
+                      selected={formData.startDate}
+                      onChange={(date) => handleDateChange(date, "startDate")}
+                      className="input"
+                      placeholderText="Select start date"
+                      minDate={new Date()}
+                      dateFormat="MM/dd/yyyy"
+                    />
+                    {errors.startDate && <p className="help is-danger">{errors.startDate}</p>}
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label}>End Date</label>
+                    <DatePicker
+                      selected={formData.endDate}
+                      onChange={(date) => handleDateChange(date, "endDate")}
+                      className="input"
+                      placeholderText="Select end date"
+                      minDate={formData.startDate || new Date()}
+                      dateFormat="MM/dd/yyyy"
+                    />
+                    {errors.endDate && <p className="help is-danger">{errors.endDate}</p>}
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label}>Number of Travelers</label>
+                    <input
+                      type="number"
+                      name="travelers"
+                      value={formData.travelers}
+                      onChange={handleInputChange}
+                      className="input"
+                      min="1"
+                      placeholder="How many people?"
+                    />
+                    {errors.travelers && <p className="help is-danger">{errors.travelers}</p>}
+                  </div>
+                </>
+              )}
 
-            {currentStep === 3 && (
-              <div className={styles.inputGroup}>
-                <label className={styles.label}>Select Vibe</label>
-                <div className="select is-fullwidth">
-                  <select
-                    name="vibe"
-                    value={formData.vibe}
-                    onChange={handleInputChange}
-                    className={styles.select}
-                  >
-                    <option value="">Choose a vibe...</option>
-                    {vibes.map(v => (
-                      <option key={v.value} value={v.value}>{v.label} - {v.desc}</option>
-                    ))}
-                  </select>
+              {currentStep === 3 && (
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Select Your Travel Vibe</label>
+                  <div className="select is-fullwidth">
+                    <select
+                      name="vibe"
+                      value={formData.vibe}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Choose a vibe...</option>
+                      {vibes.map(v => (
+                        <option key={v.value} value={v.value}>{v.label} - {v.desc}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {errors.vibe && <p className="help is-danger">{errors.vibe}</p>}
                 </div>
-                {errors.vibe && <p className={styles.errorText}>{errors.vibe}</p>}
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          <div className={styles.navigationButtons}>
-            {currentStep > 1 ? (
-              <button type="button" onClick={prevStep} className={`${styles.navButton} ${styles.prevButton}`}>
-                Back
+            <div className={styles.navigationButtons}>
+              {currentStep > 1 && (
+                <button type="button" onClick={prevStep} className={`button ${styles.prevButton}`}>
+                  <span className="icon"><i className="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </button>
+              )}
+              
+              <button 
+                type="button" 
+                onClick={nextStep} 
+                className={`button is-primary ${styles.nextButton}`}
+                style={{ marginLeft: currentStep === 1 ? 'auto' : '0' }}
+              >
+                <span>{currentStep === steps.length ? 'Create Trip' : 'Next Step'}</span>
+                <span className="icon"><i className="fas fa-arrow-right"></i></span>
               </button>
-            ) : (
-              <div></div> // Spacer
-            )}
-            
-            <button type="button" onClick={nextStep} className={`${styles.navButton} ${styles.nextButton}`}>
-              {currentStep === steps.length ? 'Create Trip' : 'Next Step'}
-            </button>
+            </div>
           </div>
         </div>
       </div>
