@@ -1,10 +1,10 @@
 /* src/styles/Footer.module.css */
 
 .footer {
-  background-color: #f0f9ff; /* Light blue background */
+  background-color: #bae6fd; /* Darker blue background */
   padding: 60px 20px 30px 20px;
   color: #334155;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #7dd3fc;
   margin-top: auto; /* Push to bottom */
 }
 

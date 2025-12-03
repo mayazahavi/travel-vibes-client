@@ -2,7 +2,7 @@
 
 .vibesPage {
   min-height: 100vh;
-  background: #f0f9ff; /* Light blue background */
+  background: #f8fafc; /* Light gray-blue background - same as Explore */
   padding-bottom: 80px;
 }
 
@@ -10,7 +10,7 @@
 .headerSection {
   padding: 80px 20px 40px 20px; /* Reduced padding */
   text-align: center;
-  background: #f0f9ff; /* Matches page background instead of white */
+  background: #f8fafc; /* Matches page background instead of white */
   margin-bottom: 20px;
   border-bottom: none;
 }
@@ -75,8 +75,8 @@
 }
 
 .vibeCardSelected {
-  border: 2px solid #0ea5e9;
-  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+  border: 2px solid #0369a1; /* Darker blue */
+  box-shadow: 0 0 0 4px rgba(3, 105, 161, 0.2);
 }
 
 .checkMark {
@@ -85,14 +85,14 @@
   right: 15px;
   width: 32px;
   height: 32px;
-  background-color: #0ea5e9;
+  background-color: #0369a1; /* Darker blue */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 16px;
-  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+  box-shadow: 0 4px 10px rgba(3, 105, 161, 0.4);
   z-index: 10;
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
