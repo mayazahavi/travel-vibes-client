@@ -28,6 +28,7 @@ function CreateTripPage() {
   });
 
   const [errors, setErrors] = useState({});
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const steps = [
     { id: 1, title: "Trip Details", icon: "fas fa-suitcase" },
@@ -93,7 +94,21 @@ function CreateTripPage() {
 
   const handleSubmit = () => {
     console.log("Trip Created Successfully:", formData);
-    alert(`Trip "${formData.tripName}" created! Check console for details.`);
+    setShowSuccessModal(true);
+    
+    // Auto close after 4 seconds
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      // Reset form
+      setFormData({
+        tripName: "",
+        startDate: null,
+        endDate: null,
+        travelers: "",
+        vibe: selectedVibe || ""
+      });
+      setCurrentStep(1);
+    }, 4000);
   };
 
   return (
@@ -254,6 +269,46 @@ function CreateTripPage() {
           </div>
         </div>
       </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className={`modal is-active ${styles.successModal}`}>
+          <div className="modal-background" onClick={() => setShowSuccessModal(false)} style={{ background: 'rgba(0,0,0,0.6)' }}></div>
+          <div className="modal-content">
+            <div className={styles.modalCard}>
+              <div className={styles.successIcon}>
+                <i className="fas fa-check-circle"></i>
+              </div>
+              <h2 className={styles.successTitle}>Trip Created Successfully!</h2>
+              <p className={styles.successMessage}>
+                Your trip <strong>"{formData.tripName}"</strong> has been created.
+              </p>
+              <div className={styles.tripSummary}>
+                <div className={styles.summaryItem}>
+                  <i className="fas fa-calendar-alt"></i>
+                  <span>{formData.startDate?.toLocaleDateString()} - {formData.endDate?.toLocaleDateString()}</span>
+                </div>
+                <div className={styles.summaryItem}>
+                  <i className="fas fa-users"></i>
+                  <span>{formData.travelers} {formData.travelers === '1' ? 'Traveler' : 'Travelers'}</span>
+                </div>
+                <div className={styles.summaryItem}>
+                  <i className="fas fa-heart"></i>
+                  <span>{vibes.find(v => v.value === formData.vibe)?.label} Vibe</span>
+                </div>
+              </div>
+              <p className={styles.successNote}>
+                Get ready for an amazing adventure! 🎉
+              </p>
+            </div>
+          </div>
+          <button 
+            className="modal-close is-large" 
+            aria-label="close"
+            onClick={() => setShowSuccessModal(false)}
+          ></button>
+        </div>
+      )}
     </div>
   );
 }
