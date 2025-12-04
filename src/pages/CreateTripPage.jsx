@@ -172,7 +172,7 @@ function CreateTripPage() {
                       className="input"
                       placeholderText="Select start date"
                       minDate={new Date()}
-                      dateFormat="MM/dd/yyyy"
+                      dateFormat="dd/MM/yyyy"
                     />
                     {errors.startDate && <p className="help is-danger">{errors.startDate}</p>}
                   </div>
@@ -184,7 +184,7 @@ function CreateTripPage() {
                       className="input"
                       placeholderText="Select end date"
                       minDate={formData.startDate || new Date()}
-                      dateFormat="MM/dd/yyyy"
+                      dateFormat="dd/MM/yyyy"
                     />
                     {errors.endDate && <p className="help is-danger">{errors.endDate}</p>}
                   </div>

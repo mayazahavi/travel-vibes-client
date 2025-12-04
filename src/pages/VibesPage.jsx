@@ -49,7 +49,11 @@ function VibesPage() {
             <p className={styles.detailsText}>
               {selectedVibe.details}
             </p>
-            <Link to={`/create-trip?vibe=${selectedVibe.id}`} className={styles.detailsButton}>
+            <Link 
+              to={`/create-trip?vibe=${selectedVibe.id}`} 
+              className={styles.detailsButton}
+              onClick={() => window.scrollTo(0, 0)}
+            >
               Start Planning <i className="fas fa-arrow-right"></i>
             </Link>
           </div>

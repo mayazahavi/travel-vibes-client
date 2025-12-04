@@ -1,11 +1,12 @@
 /* src/styles/Footer.module.css */
 
 .footer {
-  background-color: #bae6fd; /* Darker blue background */
+  background: linear-gradient(to bottom, #e0f2fe, #dbeafe); /* Very soft sky blue / lilac tint */
   padding: 60px 20px 30px 20px;
-  color: #334155;
-  border-top: 1px solid #7dd3fc;
+  color: #000000;
+  border-top: 1px solid #bfdbfe;
   margin-top: auto; /* Push to bottom */
+  scroll-margin-top: 70px;
 }
 
 .container {
@@ -28,14 +29,14 @@
 .brandTitle {
   font-size: 24px;
   font-weight: 800;
-  color: #0ea5e9; /* Primary blue */
+  color: #000000; /* Black for better visibility */
   margin-bottom: 15px;
   letter-spacing: -1px;
 }
 
 .brandDesc {
   font-size: 16px;
-  color: #64748b;
+  color: #1e293b;
   line-height: 1.6;
   margin-bottom: 20px;
   max-width: 300px;
@@ -44,7 +45,7 @@
 .heading {
   font-size: 14px;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 20px;
@@ -61,7 +62,7 @@
 }
 
 .link {
-  color: #64748b;
+  color: #374151;
   text-decoration: none;
   font-size: 15px;
   transition: color 0.2s ease;
@@ -110,7 +111,7 @@
 
 .copyright {
   font-size: 14px;
-  color: #94a3b8;
+  color: #4b5563;
 }
 
 .legalLinks {
@@ -120,13 +121,13 @@
 
 .legalLink {
   font-size: 14px;
-  color: #94a3b8;
+  color: #4b5563;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .legalLink:hover {
-  color: #64748b;
+  color: #000000;
 }
 
 /* Responsive */

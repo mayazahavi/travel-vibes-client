@@ -6,22 +6,17 @@ import HomePage from "./pages/HomePage.jsx";
 import VibesPage from "./pages/VibesPage.jsx";
 import ExplorePage from "./pages/ExplorePage.jsx";
 import CreateTripPage from "./pages/CreateTripPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import SignInPage from "./pages/SignInPage.jsx";
 
 function AppContent() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/signin";
-  const CurrentHeader = (isHomePage || isAuthPage) ? HeaderHome : Header;
+  const CurrentHeader = isHomePage ? HeaderHome : Header;
 
   return (
     <>
       <CurrentHeader />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signin" element={<SignInPage />} />
         <Route path="/vibes" element={<VibesPage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/create-trip" element={<CreateTripPage />} />

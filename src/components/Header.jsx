@@ -148,15 +148,15 @@ function Header() {
             <div className="navbar-item" style={{ padding: '0.5rem 0.75rem' }}>
               <Link 
                 to="/" 
-                className="button is-light" 
+                className="button" 
                 style={{ 
-                  borderColor: '#e2e8f0', 
-                  color: '#000000',
+                  borderColor: '#38bdf8', 
+                  color: '#0ea5e9',
                   fontWeight: '600',
                   borderRadius: '12px',
                   padding: '0.5rem 1.5rem',
                   transition: 'all 0.2s ease',
-                  background: 'white',
+                  background: '#e0f2fe',
                   fontSize: '17px'
                 }}
                 onMouseEnter={(e) => {
@@ -165,9 +165,9 @@ function Header() {
                   e.target.style.borderColor = '#0ea5e9';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = 'white';
-                  e.target.style.color = '#000000';
-                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.background = '#e0f2fe';
+                  e.target.style.color = '#0ea5e9';
+                  e.target.style.borderColor = '#38bdf8';
                 }}
               >
                 Logout

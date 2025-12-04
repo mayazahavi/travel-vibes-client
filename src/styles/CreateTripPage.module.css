@@ -61,8 +61,8 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  min-height: 450px;
-  max-height: 520px;
+  min-height: 400px;
+  max-height: 470px;
 }
 
 .imageSide {

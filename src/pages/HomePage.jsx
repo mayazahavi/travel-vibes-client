@@ -6,7 +6,7 @@ function HomePage() {
   return (
     <div className={styles.homePage}>
       {/* Hero Section */}
-      <section className={styles.heroSection}>
+      <section id="home" className={styles.heroSection}>
         <div className={styles.heroBackground}>
           <img 
             src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80" 
@@ -86,7 +86,7 @@ function HomePage() {
       </section>
 
       {/* About Section */}
-      <section className={styles.aboutSection}>
+      <section id="about" className={styles.aboutSection}>
         <div className={styles.aboutGrid}>
           <div className={styles.aboutImageWrapper}>
             <img 

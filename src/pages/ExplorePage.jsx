@@ -6,7 +6,6 @@ import styles from "../styles/ExplorePage.module.css";
 import { EXPLORE_VIBES } from "../constants/vibes";
 import { calculateDistance } from "../utils/distance";
 import { getPlaceImage, clearUsedImages } from "../services/imageService";
-import { useFavorites } from "../hooks/useFavorites";
 import PlaceCard from "../components/PlaceCard";
 import SearchBar from "../components/SearchBar";
 import SuccessModal from "../components/SuccessModal";
@@ -26,12 +25,10 @@ function ExplorePage() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [favorites, setFavorites] = useState([]);
   const [searched, setSearched] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
-  // Use custom hook for favorites management with localStorage persistence
-  const { favorites, toggleFavorite } = useFavorites();
 
   const loadCityOptions = async (inputValue) => {
     if (!inputValue || inputValue.length < 3) {
@@ -166,6 +163,16 @@ function ExplorePage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleFavorite = (place) => {
+    setFavorites(prev => {
+      if (prev.find(p => p.id === place.id)) {
+        return prev.filter(p => p.id !== place.id);
+      } else {
+        return [...prev, place];
+      }
+    });
   };
 
   const handleCreateTrip = () => {

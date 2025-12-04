@@ -6,7 +6,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className={styles.footer}>
+    <footer id="footer" className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.grid}>
           {/* Brand Column */}
@@ -32,7 +32,22 @@ function Footer() {
           <div className={styles.column}>
             <h3 className={styles.heading}>Company</h3>
             <ul className={styles.linkList}>
-              <li className={styles.linkItem}><Link to="/" className={styles.link}>About Us</Link></li>
+              <li className={styles.linkItem}>
+                <a 
+                  href="#about" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const aboutSection = document.getElementById('about');
+                    if (aboutSection) {
+                      aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  className={styles.link}
+                  style={{cursor: 'pointer'}}
+                >
+                  About Us
+                </a>
+              </li>
               <li className={styles.linkItem}><span className={styles.link} style={{cursor: 'pointer'}}>Careers</span></li>
               <li className={styles.linkItem}><span className={styles.link} style={{cursor: 'pointer'}}>Contact</span></li>
             </ul>

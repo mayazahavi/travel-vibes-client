@@ -2,6 +2,22 @@
 import { Link } from "react-router-dom";
 
 function HeaderHome() {
+  const handleAboutClick = (e) => {
+    e.preventDefault();
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    const footer = document.getElementById('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <nav
       className="navbar is-fixed-top"
@@ -47,36 +63,57 @@ function HeaderHome() {
 
         <div id="navbarMain" className="navbar-menu" style={{ background: 'transparent' }}>
           <div className="navbar-end" style={{ alignItems: 'center' }}>
-            <Link to="/" className="navbar-item" style={{ 
-              color: '#000000', 
-              fontWeight: '500',
-              fontSize: '17px',
-              padding: '0.5rem 0.75rem'
-            }}>
+            <a 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="navbar-item" 
+              style={{ 
+                color: '#000000', 
+                fontWeight: '700',
+                fontSize: '17px',
+                padding: '0.5rem 0.75rem',
+                cursor: 'pointer'
+              }}
+            >
               Home
-            </Link>
+            </a>
             
-            <Link to="/vibes" className="navbar-item" style={{ 
-              color: '#000000', 
-              fontWeight: '500',
-              fontSize: '17px',
-              padding: '0.5rem 0.75rem'
-            }}>
+            <a 
+              href="#" 
+              onClick={handleAboutClick}
+              className="navbar-item" 
+              style={{ 
+                color: '#000000', 
+                fontWeight: '500',
+                fontSize: '17px',
+                padding: '0.5rem 0.75rem',
+                cursor: 'pointer'
+              }}
+            >
               About
-            </Link>
+            </a>
 
-            <Link to="/explore" className="navbar-item" style={{ 
-              color: '#000000', 
-              fontWeight: '500',
-              fontSize: '17px',
-              padding: '0.5rem 0.75rem'
-            }}>
+            <a 
+              href="#" 
+              onClick={handleContactClick}
+              className="navbar-item" 
+              style={{ 
+                color: '#000000', 
+                fontWeight: '500',
+                fontSize: '17px',
+                padding: '0.5rem 0.75rem',
+                cursor: 'pointer'
+              }}
+            >
               Contact
-            </Link>
+            </a>
 
             <div className="navbar-item" style={{ padding: '0.5rem 0.75rem' }}>
               <Link 
-                to="/signin" 
+                to="/vibes" 
                 className="button is-light" 
                 style={{ 
                   background: 'white',
@@ -88,7 +125,7 @@ function HeaderHome() {
                   fontSize: '17px'
                 }}
               >
-                Login
+                Get Started
               </Link>
             </div>
           </div>

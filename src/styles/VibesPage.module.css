@@ -60,7 +60,7 @@
   border-radius: 16px; /* Slightly smaller radius */
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  height: 340px; /* Reduced height from 420px */
+  height: 380px; /* Increased height for better image display */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -103,7 +103,7 @@
 }
 
 .cardImage {
-  height: 180px; /* Reduced from 220px */
+  height: 220px; /* Increased for better image display */
   overflow: hidden;
   position: relative;
 }
