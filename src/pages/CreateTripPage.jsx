@@ -4,15 +4,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/CreateTripPage.module.css";
-
-const vibeImages = {
-  foodie: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80",
-  culture: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1000&q=80",
-  nature: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1000&q=80",
-  urban: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1000&q=80",
-  romantic: "https://images.unsplash.com/photo-1474552226712-ac0f0961a954?auto=format&fit=crop&w=1000&q=80",
-  nightlife: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=1000&q=80"
-};
+import { VIBE_IMAGES, CREATE_TRIP_VIBES } from "../constants/vibes";
 
 function CreateTripPage() {
   const [searchParams] = useSearchParams();
@@ -37,19 +29,10 @@ function CreateTripPage() {
     { id: 3, title: "Preferences", icon: "fas fa-heart" }
   ];
 
-  const vibes = [
-    { value: "foodie", label: "🍽️ Foodie", desc: "Culinary adventures" },
-    { value: "culture", label: "🏛️ Culture", desc: "History & art" },
-    { value: "nature", label: "🏞️ Nature", desc: "Outdoor scenic beauty" },
-    { value: "urban", label: "🌆 Urban", desc: "City vibes & shopping" },
-    { value: "romantic", label: "💑 Romantic", desc: "Couples getaways" },
-    { value: "nightlife", label: "🎉 Nightlife", desc: "Parties & shows" }
-  ];
-
   const getCurrentImage = () => {
     const vibe = formData.vibe || selectedVibe;
-    if (vibe && vibeImages[vibe]) {
-      return vibeImages[vibe];
+    if (vibe && VIBE_IMAGES[vibe]) {
+      return VIBE_IMAGES[vibe];
     }
     return "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=80";
   };
@@ -130,7 +113,7 @@ function CreateTripPage() {
                   {formData.tripName || "Your Trip Name"}
                 </h2>
                 <span className={styles.vibeTag}>
-                  {formData.vibe ? vibes.find(v => v.value === formData.vibe)?.label : "Select your vibe"}
+                  {formData.vibe ? CREATE_TRIP_VIBES.find(v => v.value === formData.vibe)?.label : "Select your vibe"}
                 </span>
               </div>
             </div>
@@ -231,7 +214,7 @@ function CreateTripPage() {
                       onChange={handleInputChange}
                     >
                       <option value="">Choose a vibe...</option>
-                      {vibes.map(v => (
+                      {CREATE_TRIP_VIBES.map(v => (
                         <option key={v.value} value={v.value}>{v.label} - {v.desc}</option>
                       ))}
                     </select>
@@ -287,7 +270,7 @@ function CreateTripPage() {
                 </div>
                 <div className={styles.summaryItem}>
                   <i className="fas fa-heart"></i>
-                  <span>{vibes.find(v => v.value === formData.vibe)?.label} Vibe</span>
+                  <span>{CREATE_TRIP_VIBES.find(v => v.value === formData.vibe)?.label} Vibe</span>
                 </div>
               </div>
               <p className={styles.successNote}>
