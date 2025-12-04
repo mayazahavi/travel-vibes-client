@@ -6,6 +6,7 @@ const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 // Track used images to avoid duplicates across searches
 const usedImages = new Set();
+let placeCounter = 0; // Counter for each place to ensure variety
 
 /**
  * Clear the used images cache
@@ -13,6 +14,7 @@ const usedImages = new Set();
  */
 export const clearUsedImages = () => {
   usedImages.clear();
+  placeCounter = 0;
 };
 
 /**
@@ -81,83 +83,59 @@ export const fetchUnsplashImage = async (query, page = 1) => {
  * @returns {Promise<string>} - Image URL (never null, falls back to default)
  */
 export const getPlaceImage = async (placeName, category, city, vibe, placeId, cuisine, brand, street) => {
+  // Increment counter for each place
+  placeCounter++;
+  
   // Clean up place name
   const cleanName = placeName.toLowerCase().trim();
   const cleanCity = city.toLowerCase().trim();
   
-  // Strategy 1: Try Wikipedia for famous landmarks
+  // Strategy 1: Try Wikipedia for famous landmarks (free!)
   const wikiImage = await fetchWikipediaImage(placeName, city);
-  if (wikiImage && !usedImages.has(wikiImage)) {
-    usedImages.add(wikiImage);
+  if (wikiImage) {
     return wikiImage;
   }
   
-  // Strategy 2: Try Unsplash with specific place name + city (for known establishments)
-  if (placeName.length > 3 && !placeName.includes('street') && !placeName.includes('road')) {
-    let query = `${placeName} ${city}`;
-    let image = await fetchUnsplashImage(query, 1);
-    if (image && !usedImages.has(image)) {
-      usedImages.add(image);
-      return image;
+  // Strategy 2: Smart category-based search (ONE Unsplash call per place)
+  // Parse category to extract relevant keywords
+  let categoryKeywords = '';
+  if (category && category.includes('.')) {
+    const parts = category.split('.');
+    const relevantParts = parts.slice(1).filter(p => p && p.length > 0);
+    
+    if (relevantParts.length > 0) {
+      categoryKeywords = relevantParts.reverse().join(' ').replace(/_/g, ' ');
+    } else {
+      categoryKeywords = parts[0];
     }
+  } else {
+    categoryKeywords = category || 'place';
   }
   
-  // Strategy 3: Use brand/chain name if available (e.g. McDonald's, Starbucks)
-  if (brand) {
-    let query = `${brand} ${category.split('.')[1] || 'restaurant'}`;
-    const pageNum = (placeId.charCodeAt(0) % 3) + 1;
-    let image = await fetchUnsplashImage(query, pageNum);
-    if (image && !usedImages.has(image)) {
-      usedImages.add(image);
-      return image;
-    }
+  // Add variety words for diversity
+  const varietyWords = ['beautiful', 'amazing', 'great', 'best', 'stunning', 'popular', 'top', 'favorite', 'lovely', 'perfect'];
+  const varietyWord = varietyWords[placeCounter % varietyWords.length];
+  
+  // Use full placeId for better hash distribution
+  const placeHash = Math.abs(placeId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
+  const pageNum = (placeHash + placeCounter) % 15 + 1;
+  
+  // ONE strategic Unsplash call with all relevant info
+  let query = `${varietyWord} ${categoryKeywords} ${vibe} ${city}`;
+  let image = await fetchUnsplashImage(query, pageNum);
+  if (image) {
+    return image;
   }
   
-  // Strategy 4: Cuisine-specific for food places
-  if (cuisine && vibe === 'foodie') {
-    const cuisineTypes = cuisine.split(';')[0]; // Take first cuisine
-    let query = `${cuisineTypes} food ${city}`;
-    const pageNum = (placeId.charCodeAt(0) % 5) + 1;
-    let image = await fetchUnsplashImage(query, pageNum);
-    if (image && !usedImages.has(image)) {
-      usedImages.add(image);
-      return image;
-    }
-  }
-  
-  // Strategy 5: Category + vibe + city with variation
-  const categorySimple = category.split('.')[1] || category.split('.')[0];
-  const categoryKeywords = {
-    'restaurant': 'restaurant interior',
-    'cafe': 'cafe coffee',
-    'bar': 'bar drinks',
-    'pub': 'pub beer',
-    'museum': 'museum art',
-    'park': 'park nature',
-    'shopping': 'shopping mall',
-    'beach': 'beach coast'
+  // Final Fallback: Vibe-specific placeholders (different for each vibe!)
+  const vibeFallbacks = {
+    'foodie': `https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80`,
+    'culture': `https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=800&q=80`,
+    'nature': `https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80`,
+    'romantic': `https://images.unsplash.com/photo-1515516969-d465f0f4d1c5?auto=format&fit=crop&w=800&q=80`,
+    'urban': `https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=800&q=80`,
+    'nightlife': `https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=800&q=80`
   };
   
-  const categoryWord = categoryKeywords[categorySimple] || categorySimple;
-  const pageNum = Math.abs(placeId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 10 + 1;
-  
-  let query = `${categoryWord} ${city}`;
-  let image = await fetchUnsplashImage(query, pageNum);
-  if (image && !usedImages.has(image)) {
-    usedImages.add(image);
-    return image;
-  }
-  
-  // Strategy 6: Generic vibe + category (different page)
-  const pageNum2 = Math.abs(placeId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 7 + 5;
-  query = `${vibe} ${categoryWord}`;
-  image = await fetchUnsplashImage(query, pageNum2);
-  if (image && !usedImages.has(image)) {
-    usedImages.add(image);
-    return image;
-  }
-  
-  // Fallback: use a placeholder
-  return `https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80`;
+  return vibeFallbacks[vibe] || `https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80`;
 };
-

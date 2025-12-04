@@ -10,7 +10,11 @@
 .headerSection {
   padding: 100px 20px 30px 20px;
   text-align: center;
-  background: #f8fafc;
+  background-image: linear-gradient(rgba(248, 250, 252, 0.65), rgba(248, 250, 252, 0.75)), 
+                    url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
+  background-size: contain;
+  background-position: center bottom;
+  background-repeat: no-repeat;
   margin-bottom: 25px;
 }
 
@@ -62,7 +66,7 @@
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   min-height: 400px;
-  max-height: 470px;
+  max-height: 550px;
 }
 
 .imageSide {
@@ -116,7 +120,7 @@
   padding: 25px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* Progress Bar */
@@ -189,7 +193,7 @@
   margin-bottom: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  min-height: 200px;
 }
 
 .inputGroup {

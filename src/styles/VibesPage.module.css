@@ -10,7 +10,11 @@
 .headerSection {
   padding: 80px 20px 40px 20px; /* Reduced padding */
   text-align: center;
-  background: #f8fafc; /* Matches page background instead of white */
+  background-image: linear-gradient(rgba(248, 250, 252, 0.65), rgba(248, 250, 252, 0.75)), 
+                    url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
+  background-size: contain;
+  background-position: center bottom;
+  background-repeat: no-repeat;
   margin-bottom: 20px;
   border-bottom: none;
 }

@@ -117,11 +117,27 @@ function ExplorePage() {
 
       // Fetch places with images sequentially to track duplicates
       const formattedPlaces = [];
+      const seenPlaceIds = new Set(); // Track places we've already added
       
       for (const feature of data.features) {
         const props = feature.properties;
+        
+        // Skip if we've already seen this place
+        if (seenPlaceIds.has(props.place_id)) {
+          console.log(`⚠️ Skipping duplicate place: ${props.name || props.street}`);
+          continue;
+        }
+        
+        // Skip places without a proper name
+        const placeName = props.name || props.street;
+        if (!placeName || placeName.trim() === '' || placeName === 'Unknown Place') {
+          console.log(`⚠️ Skipping place without name`);
+          continue;
+        }
+        
+        seenPlaceIds.add(props.place_id);
+        
         const distance = calculateDistance(lat, lon, props.lat, props.lon);
-        const placeName = props.name || props.street || "Unknown Place";
         
         // Extract additional info for better image search
         const cuisine = props.cuisine ? Object.keys(props.cuisine).join(';') : '';
@@ -221,7 +237,7 @@ function ExplorePage() {
           <>
             {searched && (
               <h2 className={styles.resultsTitle}>
-                Found {places.length} places for you in {selectedLocation?.label.split(',')[0]}
+                Found {places.length} {selectedVibe?.label.toLowerCase()} places for you in {selectedLocation?.label.split(',')[0]}
               </h2>
             )}
             

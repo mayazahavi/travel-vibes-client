@@ -110,21 +110,27 @@ function Header() {
                   background: 'transparent',
                   cursor: 'pointer',
                   padding: '0.5rem',
-                  paddingRight: '2rem',
+                  paddingRight: '2.5rem',
                   border: 'none'
                 }}
               >
                 {currentPage}
               </a>
 
-              <div className="navbar-dropdown" style={{
-                background: 'rgba(255, 255, 255, 0.98)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-                borderRadius: '12px',
-                marginTop: '8px'
-              }}>
+              <div 
+                className="navbar-dropdown" 
+                style={{
+                  background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid #cbd5e1',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.1)',
+                  borderRadius: '16px',
+                  marginTop: '12px',
+                  padding: '8px',
+                  minWidth: '180px',
+                  animation: isDropdownActive ? 'fadeInDown 0.3s ease' : 'none'
+                }}
+              >
                 {otherPages.map(page => (
                   <Link 
                     key={page.path}
@@ -132,11 +138,24 @@ function Header() {
                     className="navbar-item" 
                     onClick={closeDropdown}
                     style={{ 
-                      color: '#000000',
-                      fontWeight: '500',
+                      color: '#1e293b',
+                      fontWeight: '600',
                       fontSize: '15px',
                       transition: 'all 0.2s ease',
-                      padding: '0.5rem 1rem'
+                      padding: '10px 16px',
+                      borderRadius: '10px',
+                      margin: '2px 0',
+                      display: 'block'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = 'linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)';
+                      e.target.style.color = '#ffffff';
+                      e.target.style.transform = 'translateX(4px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'transparent';
+                      e.target.style.color = '#1e293b';
+                      e.target.style.transform = 'translateX(0)';
                     }}
                   >
                     {page.name}
@@ -153,11 +172,11 @@ function Header() {
                   borderColor: '#38bdf8', 
                   color: '#0ea5e9',
                   fontWeight: '600',
-                  borderRadius: '12px',
-                  padding: '0.5rem 1.5rem',
+                  borderRadius: '10px',
+                  padding: '0.4rem 1rem',
                   transition: 'all 0.2s ease',
                   background: '#e0f2fe',
-                  fontSize: '17px'
+                  fontSize: '15px'
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.background = '#0ea5e9';
@@ -168,6 +187,7 @@ function Header() {
                   e.target.style.background = '#e0f2fe';
                   e.target.style.color = '#0ea5e9';
                   e.target.style.borderColor = '#38bdf8';
+                  e.target.style.fontSize = '15px';
                 }}
               >
                 Logout
