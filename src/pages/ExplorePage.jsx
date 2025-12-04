@@ -7,8 +7,8 @@ import { FaHeart, FaRegHeart, FaSearch, FaMapMarkerAlt, FaPlane, FaPhone, FaGlob
 import styles from "../styles/ExplorePage.module.css";
 
 // --- Configuration & Helpers ---
-const GEOAPIFY_API_KEY = "e2c1b7b6fba342c68d7bac595f2c5be2";
-const UNSPLASH_ACCESS_KEY = "-8mpF3mmvi04NNzqPBmUdPzyxIEl9hevQwT4qPBcVnM";
+const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 const vibes = [
   { 

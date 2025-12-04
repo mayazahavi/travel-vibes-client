@@ -8,10 +8,10 @@
 
 /* Header Section - Same as other pages */
 .headerSection {
-  padding: 100px 20px 40px 20px;
+  padding: 100px 20px 30px 20px;
   text-align: center;
   background: #f8fafc;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 .headerEyebrow {
@@ -113,10 +113,10 @@
 
 .formSide {
   flex: 1;
-  padding: 30px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 /* Progress Bar */
@@ -124,7 +124,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .progressStep {
@@ -133,15 +133,15 @@
 }
 
 .stepCircle {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: #e2e8f0;
   color: #94a3b8;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.3s ease;
 }
 
@@ -157,7 +157,7 @@
 }
 
 .stepLine {
-  width: 50px;
+  width: 40px;
   height: 2px;
   background: #e2e8f0;
   transition: all 0.3s ease;
@@ -169,50 +169,54 @@
 
 .stepInfo {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .stepTitle {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: #0f172a;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .stepDescription {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
 }
 
 .formContent {
   flex: 1;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .inputGroup {
-  margin-bottom: 18px;
+  margin-bottom: 15px;
 }
 
 .label {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #334155;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .errorText {
   color: #ef4444;
-  font-size: 12px;
-  margin-top: 5px;
+  font-size: 11px;
+  margin-top: 4px;
 }
 
 .navigationButtons {
   display: flex;
   justify-content: space-between;
-  gap: 15px;
-  padding-top: 20px;
+  gap: 12px;
+  padding-top: 15px;
   border-top: 1px solid #f1f5f9;
+  margin-top: auto;
 }
 
 .navButton {
@@ -250,14 +254,24 @@
 /* Success Modal */
 .successModal {
   z-index: 2000;
+  overflow: hidden;
+}
+
+.successModal :global(.modal-background) {
+  overflow: hidden;
+}
+
+.successModal :global(.modal-content) {
+  overflow: visible;
+  max-height: none;
 }
 
 .modalCard {
   background: white;
-  border-radius: 20px;
-  padding: 40px 35px;
+  border-radius: 16px;
+  padding: 30px 25px;
   text-align: center;
-  max-width: 450px;
+  max-width: 380px;
   margin: 0 auto;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   animation: modalFadeIn 0.3s ease-out;
@@ -275,9 +289,9 @@
 }
 
 .successIcon {
-  font-size: 60px;
+  font-size: 50px;
   color: #10b981;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   animation: successPulse 0.5s ease-out;
 }
 
@@ -288,48 +302,49 @@
 }
 
 .successTitle {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
   color: #0f172a;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .successMessage {
-  font-size: 16px;
+  font-size: 15px;
   color: #64748b;
-  margin-bottom: 25px;
-  line-height: 1.6;
+  margin-bottom: 20px;
+  line-height: 1.5;
 }
 
 .tripSummary {
   background: #f8fafc;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .summaryItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 15px;
+  gap: 10px;
+  font-size: 14px;
   color: #334155;
-  padding: 8px 12px;
+  padding: 6px 10px;
   background: white;
   border-radius: 8px;
 }
 
 .summaryItem i {
   color: #0ea5e9;
-  width: 20px;
+  width: 18px;
   text-align: center;
+  font-size: 14px;
 }
 
 .successNote {
-  font-size: 14px;
+  font-size: 13px;
   color: #94a3b8;
   font-style: italic;
 }
@@ -362,6 +377,14 @@
 
   .modalCard {
     margin: 0 20px;
-    padding: 35px 25px;
+    padding: 25px 20px;
+  }
+
+  .successIcon {
+    font-size: 45px;
+  }
+
+  .successTitle {
+    font-size: 22px;
   }
 }

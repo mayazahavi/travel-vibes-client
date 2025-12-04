@@ -1,6 +1,6 @@
 // src/pages/CreateTripPage.js
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/CreateTripPage.module.css";
@@ -16,6 +16,7 @@ const vibeImages = {
 
 function CreateTripPage() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const selectedVibe = searchParams.get('vibe');
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -96,19 +97,11 @@ function CreateTripPage() {
     console.log("Trip Created Successfully:", formData);
     setShowSuccessModal(true);
     
-    // Auto close after 4 seconds
+    // Show modal for 3 seconds then navigate to Explore
     setTimeout(() => {
       setShowSuccessModal(false);
-      // Reset form
-      setFormData({
-        tripName: "",
-        startDate: null,
-        endDate: null,
-        travelers: "",
-        vibe: selectedVibe || ""
-      });
-      setCurrentStep(1);
-    }, 4000);
+      navigate(`/explore?vibe=${formData.vibe || selectedVibe}`);
+    }, 3000);
   };
 
   return (
