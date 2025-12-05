@@ -1,24 +1,9 @@
-// src/components/SuccessModal.jsx
-/**
- * SuccessModal Component
- * Displays a success message when places are saved to favorites
- * Shows list of saved places and auto-closes after timeout
- * 
- * @param {boolean} isOpen - Whether the modal is visible
- * @param {Function} onClose - Callback to close the modal
- * @param {Array} favorites - List of favorite places
- * @param {Object} styles - CSS module styles object
- */
 function SuccessModal({ isOpen, onClose, favorites, styles }) {
   if (!isOpen) return null;
 
   return (
     <div className={`modal is-active ${styles.successModal}`}>
-      <div 
-        className="modal-background" 
-        onClick={onClose} 
-        style={{ background: 'rgba(0,0,0,0.5)' }}
-      ></div>
+      <div className="modal-background" onClick={onClose} style={{ background: 'rgba(0,0,0,0.5)' }}></div>
       <div className="modal-content">
         <div className={styles.modalCard}>
           <div className={styles.successIcon}>
@@ -46,14 +31,9 @@ function SuccessModal({ isOpen, onClose, favorites, styles }) {
           </p>
         </div>
       </div>
-      <button 
-        className="modal-close is-large" 
-        aria-label="close"
-        onClick={onClose}
-      ></button>
+      <button className="modal-close is-large" aria-label="close" onClick={onClose}></button>
     </div>
   );
 }
 
 export default SuccessModal;
-

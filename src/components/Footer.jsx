@@ -9,7 +9,6 @@ function Footer() {
     <footer id="footer" className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.grid}>
-          {/* Brand Column */}
           <div className={styles.column}>
             <h2 className={styles.brandTitle}>Travel Vibes</h2>
             <p className={styles.brandDesc}>
@@ -17,8 +16,6 @@ function Footer() {
               Find your rhythm in the world.
             </p>
           </div>
-
-          {/* Discover Column */}
           <div className={styles.column}>
             <h3 className={styles.heading}>Discover</h3>
             <ul className={styles.linkList}>
@@ -27,8 +24,6 @@ function Footer() {
               <li className={styles.linkItem}><Link to="/create-trip" className={styles.link}>Plan a Trip</Link></li>
             </ul>
           </div>
-
-          {/* Company Column */}
           <div className={styles.column}>
             <h3 className={styles.heading}>Company</h3>
             <ul className={styles.linkList}>
@@ -52,8 +47,6 @@ function Footer() {
               <li className={styles.linkItem}><span className={styles.link} style={{cursor: 'pointer'}}>Contact</span></li>
             </ul>
           </div>
-
-          {/* Connect Column */}
           <div className={styles.column}>
             <h3 className={styles.heading}>Follow Us</h3>
             <div className={styles.socialLinks}>
@@ -69,7 +62,6 @@ function Footer() {
             </div>
           </div>
         </div>
-
         <div className={styles.bottomBar}>
           <p className={styles.copyright}>&copy; {currentYear} Travel Vibes. All rights reserved.</p>
           <div className={styles.legalLinks}>

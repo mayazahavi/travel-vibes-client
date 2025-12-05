@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
@@ -6,7 +5,6 @@ function Header() {
   const location = useLocation();
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
-  // Get current page name
   const getCurrentPageName = () => {
     switch (location.pathname) {
       case "/vibes":
@@ -20,7 +18,6 @@ function Header() {
     }
   };
 
-  // Get other pages for dropdown (excluding current page)
   const getOtherPages = () => {
     const allPages = [
       { path: "/vibes", name: "Vibes" },
@@ -42,17 +39,12 @@ function Header() {
   };
 
   return (
-    <nav
-      className="navbar is-fixed-top"
-      role="navigation"
-      aria-label="main navigation"
-      style={{
-        background: 'rgba(240, 249, 255, 0.95)', // Very light blue, slightly transparent
-        backdropFilter: 'blur(10px)',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
-        borderBottom: '1px solid rgba(14, 165, 233, 0.1)'
-      }}
-    >
+    <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation" style={{
+      background: 'rgba(240, 249, 255, 0.95)',
+      backdropFilter: 'blur(10px)',
+      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
+      borderBottom: '1px solid rgba(14, 165, 233, 0.1)'
+    }}>
       <div className="container" style={{ maxWidth: '100%', padding: '0 40px' }}>
         <div className="navbar-brand">
           <Link to="/" className="navbar-item" style={{ padding: '0.5rem 0.75rem' }}>
@@ -66,71 +58,46 @@ function Header() {
               🌍 TravelVibes
             </span>
           </Link>
-
-          <a
-            role="button"
-            className="navbar-burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarMain"
-            style={{ color: '#000000' }}
-          >
+          <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain" style={{ color: '#000000' }}>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
           </a>
         </div>
-
         <div id="navbarMain" className="navbar-menu">
           <div className="navbar-end" style={{ alignItems: 'center' }}>
-            <Link 
-              to="/" 
-              className="navbar-item" 
-              style={{ 
-                color: '#000000', 
-                fontWeight: '500',
-                fontSize: '17px',
-                padding: '0.5rem 0.75rem'
-              }}
-            >
+            <Link to="/" className="navbar-item" style={{ 
+              color: '#000000', 
+              fontWeight: '500',
+              fontSize: '17px',
+              padding: '0.5rem 0.75rem'
+            }}>
               Home
             </Link>
-
-            <div 
-              className={`navbar-item has-dropdown ${isDropdownActive ? 'is-active' : ''}`} 
-              style={{ padding: '0.5rem 0.75rem', position: 'relative' }}
-            >
-              <a 
-                className="navbar-link" 
-                onClick={toggleDropdown}
-                style={{ 
-                  color: '#000000', 
-                  fontWeight: '700',
-                  fontSize: '17px',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  padding: '0.5rem',
-                  paddingRight: '2.5rem',
-                  border: 'none'
-                }}
-              >
+            <div className={`navbar-item has-dropdown ${isDropdownActive ? 'is-active' : ''}`} style={{ padding: '0.5rem 0.75rem', position: 'relative' }}>
+              <a className="navbar-link" onClick={toggleDropdown} style={{ 
+                color: '#000000', 
+                fontWeight: '700',
+                fontSize: '17px',
+                background: 'transparent',
+                cursor: 'pointer',
+                padding: '0.5rem',
+                paddingRight: '2.5rem',
+                border: 'none'
+              }}>
                 {currentPage}
               </a>
-
-              <div 
-                className="navbar-dropdown" 
-                style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-                  backdropFilter: 'blur(12px)',
-                  border: '1px solid #cbd5e1',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.1)',
-                  borderRadius: '16px',
-                  marginTop: '12px',
-                  padding: '8px',
-                  minWidth: '180px',
-                  animation: isDropdownActive ? 'fadeInDown 0.3s ease' : 'none'
-                }}
-              >
+              <div className="navbar-dropdown" style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid #cbd5e1',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.1)',
+                borderRadius: '16px',
+                marginTop: '12px',
+                padding: '8px',
+                minWidth: '180px',
+                animation: isDropdownActive ? 'fadeInDown 0.3s ease' : 'none'
+              }}>
                 {otherPages.map(page => (
                   <Link 
                     key={page.path}
@@ -163,33 +130,28 @@ function Header() {
                 ))}
               </div>
             </div>
-
             <div className="navbar-item" style={{ padding: '0.5rem 0.75rem' }}>
-              <Link 
-                to="/" 
-                className="button" 
-                style={{ 
-                  borderColor: '#38bdf8', 
-                  color: '#0ea5e9',
-                  fontWeight: '600',
-                  borderRadius: '10px',
-                  padding: '0.4rem 1rem',
-                  transition: 'all 0.2s ease',
-                  background: '#e0f2fe',
-                  fontSize: '15px'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = '#0ea5e9';
-                  e.target.style.color = 'white';
-                  e.target.style.borderColor = '#0ea5e9';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = '#e0f2fe';
-                  e.target.style.color = '#0ea5e9';
-                  e.target.style.borderColor = '#38bdf8';
-                  e.target.style.fontSize = '15px';
-                }}
-              >
+              <Link to="/" className="button" style={{ 
+                borderColor: '#38bdf8', 
+                color: '#0ea5e9',
+                fontWeight: '600',
+                borderRadius: '10px',
+                padding: '0.4rem 1rem',
+                transition: 'all 0.2s ease',
+                background: '#e0f2fe',
+                fontSize: '15px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#0ea5e9';
+                e.target.style.color = 'white';
+                e.target.style.borderColor = '#0ea5e9';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = '#e0f2fe';
+                e.target.style.color = '#0ea5e9';
+                e.target.style.borderColor = '#38bdf8';
+                e.target.style.fontSize = '15px';
+              }}>
                 Logout
               </Link>
             </div>

@@ -1,28 +1,13 @@
-// src/services/imageService.js
-// Service for fetching images from various sources (Wikipedia, Unsplash)
-
-// Get API keys from environment variables
 const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
-// Track used images to avoid duplicates across searches
 const usedImages = new Set();
-let placeCounter = 0; // Counter for each place to ensure variety
+let placeCounter = 0;
 
-/**
- * Clear the used images cache
- * Call this when starting a new search to allow image reuse
- */
 export const clearUsedImages = () => {
   usedImages.clear();
   placeCounter = 0;
 };
 
-/**
- * Fetch image from Wikipedia for a place
- * @param {string} placeName - Name of the place
- * @param {string} city - City name
- * @returns {Promise<string|null>} - Image URL or null if not found
- */
 export const fetchWikipediaImage = async (placeName, city) => {
   try {
     const searchQuery = `${placeName} ${city}`;
@@ -43,12 +28,6 @@ export const fetchWikipediaImage = async (placeName, city) => {
   }
 };
 
-/**
- * Fetch image from Unsplash
- * @param {string} query - Search query
- * @param {number} page - Page number for pagination
- * @returns {Promise<string|null>} - Image URL or null if not found
- */
 export const fetchUnsplashImage = async (query, page = 1) => {
   try {
     const response = await fetch(
@@ -68,36 +47,14 @@ export const fetchUnsplashImage = async (query, page = 1) => {
   }
 };
 
-/**
- * Smart image fetching with multiple strategies
- * Tries different approaches to find the best image for a place
- * 
- * @param {string} placeName - Name of the place
- * @param {string} category - Place category
- * @param {string} city - City name
- * @param {string} vibe - Selected vibe (foodie, culture, etc.)
- * @param {string} placeId - Unique place ID
- * @param {string} cuisine - Cuisine type (for restaurants)
- * @param {string} brand - Brand/chain name
- * @param {string} street - Street name
- * @returns {Promise<string>} - Image URL (never null, falls back to default)
- */
 export const getPlaceImage = async (placeName, category, city, vibe, placeId, cuisine, brand, street) => {
-  // Increment counter for each place
   placeCounter++;
   
-  // Clean up place name
-  const cleanName = placeName.toLowerCase().trim();
-  const cleanCity = city.toLowerCase().trim();
-  
-  // Strategy 1: Try Wikipedia for famous landmarks (free!)
   const wikiImage = await fetchWikipediaImage(placeName, city);
   if (wikiImage) {
     return wikiImage;
   }
   
-  // Strategy 2: Smart category-based search (ONE Unsplash call per place)
-  // Parse category to extract relevant keywords
   let categoryKeywords = '';
   if (category && category.includes('.')) {
     const parts = category.split('.');
@@ -112,22 +69,18 @@ export const getPlaceImage = async (placeName, category, city, vibe, placeId, cu
     categoryKeywords = category || 'place';
   }
   
-  // Add variety words for diversity
   const varietyWords = ['beautiful', 'amazing', 'great', 'best', 'stunning', 'popular', 'top', 'favorite', 'lovely', 'perfect'];
   const varietyWord = varietyWords[placeCounter % varietyWords.length];
   
-  // Use full placeId for better hash distribution
   const placeHash = Math.abs(placeId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
   const pageNum = (placeHash + placeCounter) % 15 + 1;
   
-  // ONE strategic Unsplash call with all relevant info
   let query = `${varietyWord} ${categoryKeywords} ${vibe} ${city}`;
   let image = await fetchUnsplashImage(query, pageNum);
   if (image) {
     return image;
   }
   
-  // Final Fallback: Vibe-specific placeholders (different for each vibe!)
   const vibeFallbacks = {
     'foodie': `https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80`,
     'culture': `https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=800&q=80`,

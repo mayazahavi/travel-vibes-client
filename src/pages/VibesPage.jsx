@@ -17,8 +17,6 @@ function VibesPage() {
   const handleStartPlanning = (e) => {
     e.preventDefault();
     setShowSuccessModal(true);
-    
-    // Auto close after 3 seconds and navigate
     setTimeout(() => {
       setShowSuccessModal(false);
       navigate(`/create-trip?vibe=${selectedVibe.id}`);
@@ -40,11 +38,7 @@ function VibesPage() {
         <div className={`columns is-multiline is-centered ${styles.vibesGrid}`}>
           {DETAILED_VIBES.map((vibe) => (
             <div key={vibe.id} className="column is-4-tablet is-4-desktop">
-              <VibeCard
-                vibe={vibe}
-                isSelected={selectedVibe.id === vibe.id}
-                onSelect={() => handleVibeSelect(vibe)}
-              />
+              <VibeCard vibe={vibe} isSelected={selectedVibe.id === vibe.id} onSelect={() => handleVibeSelect(vibe)} />
             </div>
           ))}
         </div>
@@ -63,18 +57,12 @@ function VibesPage() {
             <p className={styles.detailsText}>
               {selectedVibe.details}
             </p>
-            <a 
-              href="#"
-              onClick={handleStartPlanning}
-              className={styles.detailsButton}
-            >
+            <a href="#" onClick={handleStartPlanning} className={styles.detailsButton}>
               Start Planning <i className="fas fa-arrow-right"></i>
             </a>
           </div>
         </div>
       </div>
-
-      {/* Success Modal */}
       {showSuccessModal && (
         <div className={`modal is-active ${styles.successModal}`}>
           <div className="modal-background" onClick={() => setShowSuccessModal(false)} style={{ background: 'rgba(0,0,0,0.5)' }}></div>
@@ -95,14 +83,11 @@ function VibesPage() {
               </p>
             </div>
           </div>
-          <button 
-            className="modal-close is-large" 
-            aria-label="close"
-            onClick={() => setShowSuccessModal(false)}
-          ></button>
+          <button className="modal-close is-large" aria-label="close" onClick={() => setShowSuccessModal(false)}></button>
         </div>
       )}
     </div>
   );
 }
+
 export default VibesPage;

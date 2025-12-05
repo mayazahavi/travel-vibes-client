@@ -1,23 +1,7 @@
-// src/components/SearchBar.jsx
 import AsyncSelect from "react-select/async";
 import Select from "react-select";
 import { FaSearch } from "react-icons/fa";
 
-/**
- * SearchBar Component
- * Provides search interface for selecting vibe and location
- * 
- * @param {Object} selectedVibe - Currently selected vibe object
- * @param {Function} onVibeChange - Callback when vibe selection changes
- * @param {Object} selectedLocation - Currently selected location object
- * @param {Function} onLocationChange - Callback when location selection changes
- * @param {Function} onSearch - Callback when search button is clicked
- * @param {Function} loadCityOptions - Async function to load city options
- * @param {Array} vibeOptions - Array of available vibe options
- * @param {boolean} loading - Whether search is in progress
- * @param {boolean} apiError - Whether there's an API error
- * @param {Object} styles - CSS module styles object
- */
 function SearchBar({
   selectedVibe,
   onVibeChange,
@@ -37,7 +21,6 @@ function SearchBar({
           ⚠️ API connection issue. Please try again.
         </div>
       )}
-      
       <div className={styles.searchBox}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>Your Vibe</label>
@@ -50,9 +33,7 @@ function SearchBar({
             classNamePrefix="select"
           />
         </div>
-        
         <div className={styles.divider}></div>
-
         <div className={styles.filterGroup}>
           <label className={styles.label}>Where to?</label>
           <AsyncSelect
@@ -69,12 +50,7 @@ function SearchBar({
             }
           />
         </div>
-
-        <button 
-          className={styles.searchButton}
-          onClick={onSearch}
-          disabled={!selectedVibe || !selectedLocation || loading}
-        >
+        <button className={styles.searchButton} onClick={onSearch} disabled={!selectedVibe || !selectedLocation || loading}>
           <FaSearch />
         </button>
       </div>
@@ -83,4 +59,3 @@ function SearchBar({
 }
 
 export default SearchBar;
-

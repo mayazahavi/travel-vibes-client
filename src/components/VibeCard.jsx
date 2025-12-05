@@ -12,15 +12,9 @@ function VibeCard({ vibe, isSelected, onSelect }) {
           <i className="fas fa-check"></i>
         </div>
       )}
-      
       <div className={styles.cardImage}>
-        <img
-          src={vibe.image}
-          alt={vibe.title}
-          className={styles.vibeImage}
-        />
+        <img src={vibe.image} alt={vibe.title} className={styles.vibeImage} />
       </div>
-
       <div className={styles.cardContent}>
         <div className="content">
           <h3 className={`title is-5 has-text-centered ${styles.vibeTitle}`}>{vibe.title}</h3>

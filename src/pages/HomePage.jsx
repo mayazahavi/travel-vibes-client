@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
-import { FaMapMarkedAlt, FaHeart, FaCompass, FaGlobeAmericas, FaRoute } from 'react-icons/fa';
+import { FaMapMarkedAlt, FaCompass, FaGlobeAmericas, FaRoute } from 'react-icons/fa';
 import styles from '../styles/HomePage.module.css';
 
 function HomePage() {
   return (
     <div className={styles.homePage}>
-      {/* Hero Section */}
       <section id="home" className={styles.heroSection}>
         <div className={styles.heroBackground}>
           <img 
@@ -15,7 +14,6 @@ function HomePage() {
           />
           <div className={styles.heroOverlay}></div>
         </div>
-        
         <div className={styles.heroContentWrapper}>
           <div className={styles.heroContent}>
             <span className={styles.heroBadge}>EXPLORE THE WORLD</span>
@@ -32,8 +30,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Features Section */}
       <section className={styles.featuresSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Plan Your Perfect Trip</h2>
@@ -41,7 +37,6 @@ function HomePage() {
             Everything you need to discover, explore, and organize your next adventure in one place.
           </p>
         </div>
-
         <div className={styles.featuresGrid}>
           <div className={styles.featureCard}>
             <div className={`${styles.iconContainer} ${styles.iconVibe}`}>
@@ -52,7 +47,6 @@ function HomePage() {
               Nature? Culture? Food? Romance? Choose the vibe that suits you - we'll bring you the right destinations.
             </p>
           </div>
-
           <div className={styles.featureCard}>
             <div className={`${styles.iconContainer} ${styles.iconLocation}`}>
               <FaGlobeAmericas className={styles.icon} />
@@ -62,7 +56,6 @@ function HomePage() {
               Pick your dream country and city. We'll recommend perfect places matching your vibe.
             </p>
           </div>
-
           <div className={styles.featureCard}>
             <div className={`${styles.iconContainer} ${styles.iconAttraction}`}>
               <FaMapMarkedAlt className={styles.icon} />
@@ -72,7 +65,6 @@ function HomePage() {
               View cards with a photo, location, type, hours, and rating. Save the ones you love.
             </p>
           </div>
-
           <div className={styles.featureCard}>
             <div className={`${styles.iconContainer} ${styles.iconItinerary}`}>
               <FaRoute className={styles.icon} />
@@ -84,8 +76,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* About Section */}
       <section id="about" className={styles.aboutSection}>
         <div className={styles.aboutGrid}>
           <div className={styles.aboutImageWrapper}>
@@ -95,7 +85,6 @@ function HomePage() {
               className={styles.aboutImage}
             />
           </div>
-          
           <div className={styles.aboutContent}>
             <h2 className={styles.aboutTitle}>Redefining How You Travel</h2>
             <p className={styles.aboutText}>
@@ -104,7 +93,6 @@ function HomePage() {
             <p className={styles.aboutText}>
               Born from a passion for exploration and built with a community of travelers, we've curated experiences over towns, maps. Let us guide you to your next unforgettable memory.
             </p>
-
             <div className={styles.statsRow}>
               <div className={styles.statItem}>
                 <h4>50k+</h4>
@@ -122,14 +110,11 @@ function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Testimonials Section */}
       <section className={styles.testimonialsSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>What Travelers Say</h2>
           <p className={styles.sectionSubtitle}>Real stories from people who found their perfect place.</p>
         </div>
-        
         <div className={styles.testimonialsGrid}>
           <div className={styles.testimonialCard}>
             <div className={styles.stars}>
@@ -144,7 +129,6 @@ function HomePage() {
               </div>
             </div>
           </div>
-
           <div className={styles.testimonialCard}>
             <div className={styles.stars}>
               <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
@@ -158,7 +142,6 @@ function HomePage() {
               </div>
             </div>
           </div>
-
           <div className={styles.testimonialCard}>
             <div className={styles.stars}>
               <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>

@@ -1,7 +1,3 @@
-// src/constants/vibes.js
-// Centralized vibes configuration for the entire app
-
-// Shared vibe images URLs
 export const VIBE_IMAGES = {
   foodie: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80",
   culture: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1000&q=80",
@@ -11,7 +7,6 @@ export const VIBE_IMAGES = {
   nightlife: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=1000&q=80"
 };
 
-// Vibes configuration for ExplorePage (with API categories)
 export const EXPLORE_VIBES = [
   { 
     value: "foodie", 
@@ -45,7 +40,6 @@ export const EXPLORE_VIBES = [
   }
 ];
 
-// Vibes configuration for CreateTripPage (simple with descriptions)
 export const CREATE_TRIP_VIBES = [
   { value: "foodie", label: "🍽️ Foodie", desc: "Culinary adventures" },
   { value: "culture", label: "🏛️ Culture", desc: "History & art" },
@@ -55,7 +49,6 @@ export const CREATE_TRIP_VIBES = [
   { value: "nightlife", label: "🎉 Nightlife", desc: "Parties & shows" }
 ];
 
-// Detailed vibes configuration for VibesPage (with full descriptions)
 export const DETAILED_VIBES = [
   {
     id: "foodie",
@@ -106,4 +99,3 @@ export const DETAILED_VIBES = [
     image: VIBE_IMAGES.nightlife
   }
 ];
-

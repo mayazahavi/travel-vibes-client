@@ -12,7 +12,6 @@ code {
     monospace;
 }
 
-/* Dropdown Animation */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -24,7 +23,6 @@ code {
   }
 }
 
-/* Page Transition Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;

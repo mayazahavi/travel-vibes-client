@@ -1,12 +1,9 @@
-/* src/styles/ExplorePage.module.css */
-
 .explorePage {
   min-height: 100vh;
   background-color: #f8fafc;
   padding-bottom: 60px;
 }
 
-/* Header Section with Map Background */
 .headerSection {
   background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.6)), 
                     url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
@@ -51,7 +48,6 @@
   line-height: 1.6;
 }
 
-/* Search Box Container */
 .searchContainer {
   max-width: 900px;
   margin: 0 auto;
@@ -135,7 +131,6 @@
   transform: none;
 }
 
-/* Results Grid */
 .resultsTitle {
   font-size: 24px;
   font-weight: 700;
@@ -314,7 +309,6 @@
   font-weight: 600;
 }
 
-/* Contact Info Section */
 .contactInfo {
   display: flex;
   flex-direction: column;
@@ -378,7 +372,6 @@
   transform: translateX(3px);
 }
 
-/* Bottom Bar */
 .bottomBar {
   position: fixed;
   bottom: 0;
@@ -462,7 +455,6 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Success Modal */
 .successModal {
   z-index: 2000;
   overflow: hidden;

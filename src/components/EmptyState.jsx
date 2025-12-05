@@ -1,10 +1,3 @@
-// src/components/EmptyState.jsx
-/**
- * EmptyState Component
- * Displays a message when no results are found
- * 
- * @param {Object} styles - CSS module styles object
- */
 function EmptyState({ styles }) {
   return (
     <div className={styles.emptyState}>
@@ -14,4 +7,3 @@ function EmptyState({ styles }) {
 }
 
 export default EmptyState;
-

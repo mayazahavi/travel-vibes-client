@@ -1,15 +1,12 @@
-/* src/styles/VibesPage.module.css */
-
 .vibesPage {
   min-height: 100vh;
-  background: #f8fafc; /* Light gray-blue background - same as Explore */
+  background: #f8fafc;
   padding-bottom: 80px;
   animation: fadeIn 0.4s ease-in;
 }
 
-/* Header Section */
 .headerSection {
-  padding: 80px 20px 40px 20px; /* Reduced padding */
+  padding: 80px 20px 40px 20px;
   text-align: center;
   background-image: linear-gradient(rgba(248, 250, 252, 0.65), rgba(248, 250, 252, 0.75)), 
                     url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
@@ -22,7 +19,7 @@
 
 .headerEyebrow {
   display: block;
-  font-size: 12px; /* Smaller */
+  font-size: 12px;
   font-weight: 700;
   color: #0ea5e9;
   letter-spacing: 2px;
@@ -31,14 +28,14 @@
 }
 
 .mainTitle {
-  font-size: 36px; /* Smaller from 48px */
+  font-size: 36px;
   font-weight: 800;
   color: #0f172a;
   margin-bottom: 15px;
 }
 
 .headerDivider {
-  width: 40px; /* Smaller */
+  width: 40px;
   height: 3px;
   background: #0ea5e9;
   margin: 0 auto 20px auto;
@@ -46,32 +43,30 @@
 }
 
 .mainSubtitle {
-  font-size: 16px; /* Smaller */
+  font-size: 16px;
   color: #64748b;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
 }
 
-/* Vibes Grid */
 .vibesGrid {
   margin-bottom: 60px;
   padding: 0 20px;
 }
 
-/* Vibe Card Styling - Adjusted Proportions */
 .vibeCard {
   transition: all 0.3s ease;
   border-radius: 16px; /* Slightly smaller radius */
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  height: 380px; /* Increased height for better image display */
+  height: 380px;
   width: 100%;
   display: flex;
   flex-direction: column;
   background: white;
   border: 1px solid transparent;
-  position: relative; /* Needed for checkmark positioning */
+  position: relative;
 }
 
 .vibeCard:hover {
@@ -80,7 +75,7 @@
 }
 
 .vibeCardSelected {
-  border: 2px solid #0369a1; /* Darker blue */
+  border: 2px solid #0369a1;
   box-shadow: 0 0 0 4px rgba(3, 105, 161, 0.2);
 }
 
@@ -90,7 +85,7 @@
   right: 15px;
   width: 32px;
   height: 32px;
-  background-color: #0369a1; /* Darker blue */
+  background-color: #0369a1;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -108,7 +103,7 @@
 }
 
 .cardImage {
-  height: 220px; /* Increased for better image display */
+  height: 220px;
   overflow: hidden;
   position: relative;
 }
@@ -130,19 +125,19 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px; /* Reduced padding */
+  padding: 20px;
 }
 
 .vibeTitle {
   color: #0f172a;
   font-weight: 700;
-  font-size: 1.1rem; /* Smaller */
+  font-size: 1.1rem;
   margin-bottom: 8px !important;
 }
 
 .vibeShort {
   color: #64748b;
-  font-size: 0.9rem; /* Smaller */
+  font-size: 0.9rem;
   line-height: 1.4;
   margin-bottom: 0 !important;
 }

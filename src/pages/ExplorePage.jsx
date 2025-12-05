@@ -1,4 +1,3 @@
-// src/pages/ExplorePage.jsx
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FaHeart, FaPlane } from "react-icons/fa";
@@ -12,7 +11,6 @@ import SuccessModal from "../components/SuccessModal";
 import LoadingState from "../components/LoadingState";
 import EmptyState from "../components/EmptyState";
 
-// --- Configuration & Helpers ---
 const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
 
 function ExplorePage() {
@@ -39,7 +37,6 @@ function ExplorePage() {
     
     try {
       const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(inputValue)}&type=city&limit=10&apiKey=${GEOAPIFY_API_KEY}`;
-      
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -93,13 +90,12 @@ function ExplorePage() {
     setLoading(true);
     setSearched(true);
     setPlaces([]);
-    clearUsedImages(); // Reset used images for new search
+    clearUsedImages();
 
     try {
       const { lat, lon, city } = selectedLocation.value;
       const categories = selectedVibe.categories;
       
-      // Build the URL with proper encoding
       const url = `https://api.geoapify.com/v2/places?categories=${encodeURIComponent(categories)}&filter=circle:${lon},${lat},5000&bias=proximity:${lon},${lat}&limit=20&apiKey=${GEOAPIFY_API_KEY}`;
       
       console.log("Searching places with URL:", url);
@@ -115,25 +111,20 @@ function ExplorePage() {
       const data = await response.json();
       console.log("Places found:", data.features?.length || 0);
 
-      // Fetch places with images sequentially to track duplicates
       const formattedPlaces = [];
-      const seenLocations = new Set(); // Track places by location only
+      const seenLocations = new Set();
       
       for (const feature of data.features) {
         const props = feature.properties;
         
-        // Skip places without a proper name
         const placeName = props.name || props.street;
         if (!placeName || placeName.trim() === '' || placeName === 'Unknown Place') {
           console.log(`⚠️ Skipping place without name`);
           continue;
         }
         
-        // Create unique identifier based ONLY on location (lat/lon with 3 decimal precision)
-        // This catches same place even if name has different spelling/accents
         const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
         
-        // Skip if we've already seen this exact location
         if (seenLocations.has(locationKey)) {
           console.log(`⚠️ Skipping duplicate at ${locationKey}: ${placeName}`);
           continue;
@@ -143,7 +134,6 @@ function ExplorePage() {
         
         const distance = calculateDistance(lat, lon, props.lat, props.lon);
         
-        // Extract additional info for better image search
         const cuisine = props.cuisine ? Object.keys(props.cuisine).join(';') : '';
         const brand = props.brand || props.datasource?.raw?.brand || '';
         const street = props.street || '';
@@ -197,22 +187,18 @@ function ExplorePage() {
 
   const handleCreateTrip = () => {
     setShowSuccessModal(true);
-    // Auto close after 3 seconds
     setTimeout(() => {
       setShowSuccessModal(false);
-      // Later: navigate(`/create-trip?vibe=${selectedVibe?.value}`);
     }, 3000);
   };
 
   return (
     <div className={styles.explorePage}>
-      {/* Header Section */}
       <div className={styles.headerSection}>
         <span className={styles.headerEyebrow}>DISCOVER YOUR DESTINATION</span>
         <h1 className={styles.title}>Explore Destinations</h1>
         <div className={styles.headerDivider}></div>
         <p className={styles.subtitle}>Discover hidden gems tailored to your vibe</p>
-        
         <SearchBar
           selectedVibe={selectedVibe}
           onVibeChange={setSelectedVibe}
@@ -226,15 +212,9 @@ function ExplorePage() {
           styles={styles}
         />
       </div>
-
-      {/* Results Section */}
       <div className="container" style={{ padding: '40px 20px', paddingBottom: favorites.length > 0 ? '100px' : '40px' }}>
         {loading ? (
-          <LoadingState
-            vibe={selectedVibe?.value}
-            location={selectedLocation?.label}
-            styles={styles}
-          />
+          <LoadingState vibe={selectedVibe?.value} location={selectedLocation?.label} styles={styles} />
         ) : searched && places.length === 0 ? (
           <EmptyState styles={styles} />
         ) : (
@@ -244,7 +224,6 @@ function ExplorePage() {
                 Found {places.length} {selectedVibe?.label.toLowerCase()} places for you in {selectedLocation?.label.split(',')[0]}
               </h2>
             )}
-            
             <div className={styles.placesGrid}>
               {places.map(place => (
                 <PlaceCard
@@ -259,8 +238,6 @@ function ExplorePage() {
           </>
         )}
       </div>
-
-      {/* Bottom Action Bar */}
       {favorites.length > 0 && (
         <div className={styles.bottomBar}>
           <div className={styles.barContent}>
@@ -275,8 +252,6 @@ function ExplorePage() {
           </div>
         </div>
       )}
-
-      {/* Success Modal */}
       <SuccessModal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}

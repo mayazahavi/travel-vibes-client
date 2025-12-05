@@ -1,11 +1,9 @@
-/* src/styles/Footer.module.css */
-
 .footer {
-  background: linear-gradient(to bottom, #e0f2fe, #dbeafe); /* Very soft sky blue / lilac tint */
+  background: linear-gradient(to bottom, #e0f2fe, #dbeafe);
   padding: 60px 20px 30px 20px;
   color: #000000;
   border-top: 1px solid #bfdbfe;
-  margin-top: auto; /* Push to bottom */
+  margin-top: auto;
   scroll-margin-top: 70px;
 }
 
@@ -29,7 +27,7 @@
 .brandTitle {
   font-size: 24px;
   font-weight: 800;
-  color: #000000; /* Black for better visibility */
+  color: #000000;
   margin-bottom: 15px;
   letter-spacing: -1px;
 }
@@ -130,7 +128,6 @@
   color: #000000;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr 1fr;
@@ -147,4 +144,3 @@
     text-align: center;
   }
 }
-
