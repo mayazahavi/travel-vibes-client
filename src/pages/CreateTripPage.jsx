@@ -82,6 +82,7 @@ function CreateTripPage() {
     setTimeout(() => {
       setShowSuccessModal(false);
       navigate(`/explore?vibe=${formData.vibe || selectedVibe}`);
+      setTimeout(() => window.scrollTo(0, 0), 100);
     }, 3000);
   };
 
