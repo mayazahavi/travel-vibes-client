@@ -42,7 +42,6 @@ export const fetchUnsplashImage = async (query, page = 1) => {
     }
     return null;
   } catch (error) {
-    console.error("Unsplash error:", error);
     return null;
   }
 };

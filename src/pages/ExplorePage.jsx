@@ -78,7 +78,6 @@ function ExplorePage() {
       return Array.from(uniqueCities.values()).slice(0, 8);
       
     } catch (error) {
-      console.error("Error loading cities:", error);
       setApiError(true);
       return [];
     }
@@ -98,18 +97,13 @@ function ExplorePage() {
       
       const url = `https://api.geoapify.com/v2/places?categories=${encodeURIComponent(categories)}&filter=circle:${lon},${lat},5000&bias=proximity:${lon},${lat}&limit=20&apiKey=${GEOAPIFY_API_KEY}`;
       
-      console.log("Searching places with URL:", url);
-      
       const response = await fetch(url);
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Places API error:", response.status, errorText);
         throw new Error("Failed to fetch places");
       }
       
       const data = await response.json();
-      console.log("Places found:", data.features?.length || 0);
 
       const formattedPlaces = [];
       const seenLocations = new Set();
@@ -119,14 +113,12 @@ function ExplorePage() {
         
         const placeName = props.name || props.street;
         if (!placeName || placeName.trim() === '' || placeName === 'Unknown Place') {
-          console.log(`⚠️ Skipping place without name`);
           continue;
         }
         
         const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
         
         if (seenLocations.has(locationKey)) {
-          console.log(`⚠️ Skipping duplicate at ${locationKey}: ${placeName}`);
           continue;
         }
         
@@ -168,7 +160,6 @@ function ExplorePage() {
 
       setPlaces(formattedPlaces);
     } catch (error) {
-      console.error("Error fetching places:", error);
       alert("Failed to load places. Please try again.");
     } finally {
       setLoading(false);
