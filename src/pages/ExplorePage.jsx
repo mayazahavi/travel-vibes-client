@@ -117,16 +117,10 @@ function ExplorePage() {
 
       // Fetch places with images sequentially to track duplicates
       const formattedPlaces = [];
-      const seenPlaceIds = new Set(); // Track places we've already added
+      const seenLocations = new Set(); // Track places by location only
       
       for (const feature of data.features) {
         const props = feature.properties;
-        
-        // Skip if we've already seen this place
-        if (seenPlaceIds.has(props.place_id)) {
-          console.log(`⚠️ Skipping duplicate place: ${props.name || props.street}`);
-          continue;
-        }
         
         // Skip places without a proper name
         const placeName = props.name || props.street;
@@ -135,7 +129,17 @@ function ExplorePage() {
           continue;
         }
         
-        seenPlaceIds.add(props.place_id);
+        // Create unique identifier based ONLY on location (lat/lon with 3 decimal precision)
+        // This catches same place even if name has different spelling/accents
+        const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
+        
+        // Skip if we've already seen this exact location
+        if (seenLocations.has(locationKey)) {
+          console.log(`⚠️ Skipping duplicate at ${locationKey}: ${placeName}`);
+          continue;
+        }
+        
+        seenLocations.add(locationKey);
         
         const distance = calculateDistance(lat, lon, props.lat, props.lon);
         

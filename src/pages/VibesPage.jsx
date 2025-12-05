@@ -1,15 +1,29 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VibeCard from "../components/VibeCard.jsx";
 import styles from "../styles/VibesPage.module.css";
 import { DETAILED_VIBES } from "../constants/vibes";
 
 function VibesPage() {
   const [selectedVibe, setSelectedVibe] = useState(DETAILED_VIBES[0]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const detailsRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleVibeSelect = (vibe) => {
     setSelectedVibe(vibe);
+  };
+
+  const handleStartPlanning = (e) => {
+    e.preventDefault();
+    setShowSuccessModal(true);
+    
+    // Auto close after 3 seconds and navigate
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate(`/create-trip?vibe=${selectedVibe.id}`);
+      window.scrollTo(0, 0);
+    }, 3000);
   };
 
   return (
@@ -49,16 +63,45 @@ function VibesPage() {
             <p className={styles.detailsText}>
               {selectedVibe.details}
             </p>
-            <Link 
-              to={`/create-trip?vibe=${selectedVibe.id}`} 
+            <a 
+              href="#"
+              onClick={handleStartPlanning}
               className={styles.detailsButton}
-              onClick={() => window.scrollTo(0, 0)}
             >
               Start Planning <i className="fas fa-arrow-right"></i>
-            </Link>
+            </a>
           </div>
         </div>
       </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className={`modal is-active ${styles.successModal}`}>
+          <div className="modal-background" onClick={() => setShowSuccessModal(false)} style={{ background: 'rgba(0,0,0,0.5)' }}></div>
+          <div className="modal-content">
+            <div className={styles.modalCard}>
+              <div className={styles.successIcon}>
+                <span className={styles.vibeEmoji}>{selectedVibe.emoji}</span>
+              </div>
+              <h2 className={styles.successTitle}>Vibe Selected!</h2>
+              <p className={styles.successMessage}>
+                You've chosen <strong>{selectedVibe.title}</strong> for your next adventure!
+              </p>
+              <p className={styles.successNote}>
+                {selectedVibe.details}
+              </p>
+              <p className={styles.redirectMessage}>
+                Taking you to trip planning... ✈️
+              </p>
+            </div>
+          </div>
+          <button 
+            className="modal-close is-large" 
+            aria-label="close"
+            onClick={() => setShowSuccessModal(false)}
+          ></button>
+        </div>
+      )}
     </div>
   );
 }

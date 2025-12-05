@@ -4,6 +4,7 @@
   min-height: 100vh;
   background: #f8fafc; /* Light gray-blue background - same as Explore */
   padding-bottom: 80px;
+  animation: fadeIn 0.4s ease-in;
 }
 
 /* Header Section */
@@ -267,5 +268,85 @@
 
   .detailsContent {
     padding: 25px;
+  }
+}
+
+/* Success Modal Styles */
+.successModal {
+  z-index: 9999;
+}
+
+.modalCard {
+  background: white;
+  border-radius: 16px;
+  padding: 30px 25px;
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.successIcon {
+  margin-bottom: 15px;
+}
+
+.vibeEmoji {
+  font-size: 60px;
+  display: block;
+  animation: bounceIn 0.6s ease;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.successTitle {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0ea5e9;
+  margin-bottom: 12px;
+}
+
+.successMessage {
+  font-size: 16px;
+  color: #334155;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.successNote {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 15px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.redirectMessage {
+  font-size: 13px;
+  color: #0ea5e9;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modalCard {
+    max-width: 90%;
+    padding: 25px 20px;
+  }
+  
+  .vibeEmoji {
+    font-size: 50px;
+  }
+  
+  .successTitle {
+    font-size: 22px;
+  }
+  
+  .successMessage {
+    font-size: 15px;
   }
 }

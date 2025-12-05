@@ -23,3 +23,13 @@ code {
     transform: translateY(0);
   }
 }
+
+/* Page Transition Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
