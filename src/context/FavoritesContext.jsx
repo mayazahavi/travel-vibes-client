@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext } from 'react';
 
 const FavoritesContext = createContext();
 
@@ -6,20 +6,20 @@ export function FavoritesProvider({ children }) {
   const [trips, setTrips] = useState([]);
   const [currentTripId, setCurrentTripId] = useState(null);
   const currentTrip = trips.find(t => t.id === currentTripId) || null;
+
   const createTrip = (details) => {
     const newTrip = {
-      id: Date.now().toString(), 
+      id: Date.now().toString(),
       ...details,
-      favorites: [], 
+      favorites: [],
       createdAt: new Date().toISOString()
     };
-    
+
     setTrips(prev => [...prev, newTrip]);
     setCurrentTripId(newTrip.id);
     return newTrip.id;
   };
 
- 
   const addToFavorites = (place) => {
     let targetTripId = currentTripId;
 
@@ -34,7 +34,7 @@ export function FavoritesProvider({ children }) {
         favorites: [],
         createdAt: new Date().toISOString()
       };
-      
+
       setTrips(prev => [...prev, newTrip]);
       setCurrentTripId(newTrip.id);
       targetTripId = newTrip.id;
@@ -70,6 +70,7 @@ export function FavoritesProvider({ children }) {
       setCurrentTripId(null);
     }
   };
+
   const selectTrip = (tripId) => {
     setCurrentTripId(tripId);
   };
@@ -82,11 +83,11 @@ export function FavoritesProvider({ children }) {
     deleteTrip,
     selectTrip,
 
-    favorites: currentTrip?.favorites || [], 
+    favorites: currentTrip?.favorites || [],
     addToFavorites,
     removeFromFavorites,
     isFavorite,
-    saveTripDetails: createTrip, 
+    saveTripDetails: createTrip,
     tripDetails: currentTrip
   };
 

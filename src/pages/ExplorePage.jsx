@@ -25,9 +25,9 @@ function ExplorePage() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
   const { favorites, addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
-  
+
   const [searched, setSearched] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -36,36 +36,36 @@ function ExplorePage() {
     if (!inputValue || inputValue.length < 3) {
       return [];
     }
-    
+
     setApiError(false);
-    
+
     try {
       const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(inputValue)}&type=city&limit=10&apiKey=${GEOAPIFY_API_KEY}`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         setApiError(true);
         return [];
       }
 
       const data = await response.json();
-      
+
       if (!data.features || data.features.length === 0) {
         return [];
       }
 
       const uniqueCities = new Map();
-      
+
       data.features.forEach(feature => {
         const props = feature.properties;
         const cityName = props.city || props.name;
         const countryName = props.country;
-        
+
         if (!cityName || !countryName) return;
-        
+
         const label = `${cityName}, ${countryName}`;
         const key = label.toLowerCase();
-        
+
         if (!uniqueCities.has(key)) {
           uniqueCities.set(key, {
             value: {
@@ -80,7 +80,7 @@ function ExplorePage() {
       });
 
       return Array.from(uniqueCities.values()).slice(0, 8);
-      
+
     } catch (error) {
       setApiError(true);
       return [];
@@ -98,42 +98,42 @@ function ExplorePage() {
     try {
       const { lat, lon, city } = selectedLocation.value;
       const categories = selectedVibe.categories;
-      
+
       const url = `https://api.geoapify.com/v2/places?categories=${encodeURIComponent(categories)}&filter=circle:${lon},${lat},5000&bias=proximity:${lon},${lat}&limit=20&apiKey=${GEOAPIFY_API_KEY}`;
-      
+
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch places");
       }
-      
+
       const data = await response.json();
 
       const formattedPlaces = [];
       const seenLocations = new Set();
-      
+
       for (const feature of data.features) {
         const props = feature.properties;
-        
+
         const placeName = props.name || props.street;
         if (!placeName || placeName.trim() === '' || placeName === 'Unknown Place') {
           continue;
         }
-        
+
         const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
-        
+
         if (seenLocations.has(locationKey)) {
           continue;
         }
-        
+
         seenLocations.add(locationKey);
-        
+
         const distance = calculateDistance(lat, lon, props.lat, props.lon);
-        
+
         const cuisine = props.cuisine ? Object.keys(props.cuisine).join(';') : '';
         const brand = props.brand || props.datasource?.raw?.brand || '';
         const street = props.street || '';
-        
+
         const imageUrl = await getPlaceImage(
           placeName,
           props.categories ? props.categories[0] : "place",
@@ -144,7 +144,7 @@ function ExplorePage() {
           brand,
           street
         );
-        
+
         formattedPlaces.push({
           id: props.place_id,
           name: placeName,
@@ -176,7 +176,7 @@ function ExplorePage() {
     } else {
       // Add necessary properties for FavoritesPage display
       const { city, country } = selectedLocation?.value || {};
-      
+
       addToFavorites({
         id: place.id,
         name: place.name,

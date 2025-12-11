@@ -58,10 +58,10 @@
 
 .vibeCard {
   transition: all 0.3s ease;
-  border-radius: 16px; /* Slightly smaller radius */
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  height: 380px;
+  height: 320px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -104,7 +104,7 @@
 }
 
 .cardImage {
-  height: 220px;
+  height: 180px;
   overflow: hidden;
   position: relative;
 }
@@ -152,14 +152,14 @@
 
 .detailsCard {
   background: white;
-  border-radius: 16px; /* Slightly smaller radius */
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 15px 40px rgba(0,0,0,0.08);
   display: flex;
-  max-width: 800px; /* Reduced from 900px */
+  max-width: 750px;
   width: 100%;
-  min-height: 300px; /* Reduced from 350px */
-  align-items: stretch; /* Ensures image stretches */
+  min-height: 280px;
+  align-items: stretch;
 }
 
 .detailsImageWrapper {
@@ -204,14 +204,14 @@
 }
 
 .detailsTitle {
-  font-size: 28px; /* Smaller from 36px */
+  font-size: 24px;
   font-weight: 700;
   color: #0f172a;
   margin-bottom: 15px;
 }
 
 .detailsText {
-  font-size: 16px; /* Smaller from 18px */
+  font-size: 15px;
   color: #475569;
   line-height: 1.6;
   margin-bottom: 25px;
