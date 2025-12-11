@@ -21,10 +21,27 @@ export function FavoritesProvider({ children }) {
 
  
   const addToFavorites = (place) => {
-    if (!currentTripId) return; 
+    let targetTripId = currentTripId;
+
+    if (!targetTripId) {
+      const newTrip = {
+        id: Date.now().toString(),
+        name: "My Trip",
+        startDate: new Date(),
+        endDate: new Date(),
+        vibe: place.vibe || "General",
+        travelers: "1",
+        favorites: [],
+        createdAt: new Date().toISOString()
+      };
+      
+      setTrips(prev => [...prev, newTrip]);
+      setCurrentTripId(newTrip.id);
+      targetTripId = newTrip.id;
+    }
 
     setTrips(prev => prev.map(trip => {
-      if (trip.id === currentTripId) {
+      if (trip.id === targetTripId) {
         if (trip.favorites.find(p => p.id === place.id)) return trip;
         return { ...trip, favorites: [...trip.favorites, place] };
       }
