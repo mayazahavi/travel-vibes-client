@@ -13,8 +13,10 @@ function Header() {
         return "Explore";
       case "/create-trip":
         return "Create Trip";
+      case "/my-trips":
+        return "My Trips";
       case "/favorites":
-        return "My Saved Trips";
+        return "Trip Details";
       default:
         return "Dashboard";
     }
@@ -25,7 +27,7 @@ function Header() {
       { path: "/vibes", name: "Vibes" },
       { path: "/explore", name: "Explore" },
       { path: "/create-trip", name: "Create Trip" },
-      { path: "/favorites", name: "My Saved Trips" }
+      { path: "/my-trips", name: "My Trips" }
     ];
     return allPages.filter(page => page.path !== location.pathname);
   };

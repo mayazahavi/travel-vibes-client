@@ -3,16 +3,32 @@ import { useFavorites } from '../context/FavoritesContext';
 import styles from '../styles/FavoritesPage.module.css';
 
 function FavoritesPage() {
-  const { favorites, removeFromFavorites } = useFavorites();
+  const { favorites, removeFromFavorites, tripDetails } = useFavorites();
+
+  const getPageTitle = () => {
+    if (tripDetails?.name) {
+      return tripDetails.name;
+    }
+    return "My Saved Trips";
+  };
+
+  const getPageSubtitle = () => {
+    if (tripDetails?.startDate && tripDetails?.endDate) {
+      const start = new Date(tripDetails.startDate).toLocaleDateString();
+      const end = new Date(tripDetails.endDate).toLocaleDateString();
+      return `Planned for ${start} - ${end} • ${favorites.length} places saved`;
+    }
+    return `Your personal collection of dream destinations. Keep track of the places that inspire you (${favorites.length}).`;
+  };
 
   return (
     <div className={styles.favoritesPage}>
       <div className={styles.headerSection}>
         <span className={styles.headerEyebrow}>YOUR COLLECTION</span>
-        <h1 className={styles.mainTitle}>My Saved Trips</h1>
+        <h1 className={styles.mainTitle}>{getPageTitle()}</h1>
         <div className={styles.headerDivider}></div>
         <p className={styles.mainSubtitle}>
-          Your personal collection of dream destinations. Keep track of the places that inspire you ({favorites.length}).
+          {getPageSubtitle()}
         </p>
       </div>
 
