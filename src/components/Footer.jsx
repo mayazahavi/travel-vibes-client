@@ -22,6 +22,7 @@ function Footer() {
               <li className={styles.linkItem}><Link to="/vibes" className={styles.link}>Vibes</Link></li>
               <li className={styles.linkItem}><Link to="/explore" className={styles.link}>Explore</Link></li>
               <li className={styles.linkItem}><Link to="/create-trip" className={styles.link}>Plan a Trip</Link></li>
+              <li className={styles.linkItem}><Link to="/my-trips" className={styles.link}>My Trips</Link></li>
             </ul>
           </div>
           <div className={styles.column}>
