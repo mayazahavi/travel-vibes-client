@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FaHeart, FaPlane } from "react-icons/fa";
+import { useFavorites } from "../context/FavoritesContext";
 import styles from "../styles/ExplorePage.module.css";
 import { EXPLORE_VIBES } from "../constants/vibes";
 import { calculateDistance } from "../utils/distance";
@@ -23,7 +24,9 @@ function ExplorePage() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [favorites, setFavorites] = useState([]);
+  
+  const { favorites, addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  
   const [searched, setSearched] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -167,13 +170,20 @@ function ExplorePage() {
   };
 
   const toggleFavorite = (place) => {
-    setFavorites(prev => {
-      if (prev.find(p => p.id === place.id)) {
-        return prev.filter(p => p.id !== place.id);
-      } else {
-        return [...prev, place];
-      }
-    });
+    if (isFavorite(place.id)) {
+      removeFromFavorites(place.id);
+    } else {
+      // Add necessary properties for FavoritesPage display
+      addToFavorites({
+        id: place.id,
+        name: place.name,
+        imageUrl: place.image, // Mapping image to imageUrl to match FavoritesPage expectation
+        rating: place.rating || '4.5',
+        location: place.address || selectedLocation?.label?.split(',')[0],
+        vibe: selectedVibe?.label,
+        priceLevel: '$$' // Placeholder or actual data if available
+      });
+    }
   };
 
   const handleCreateTrip = () => {

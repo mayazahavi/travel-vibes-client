@@ -1,0 +1,231 @@
+.favoritesPage {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding-bottom: 80px;
+  animation: fadeIn 0.4s ease-in;
+}
+
+/* Reusing Header Styles from VibesPage */
+.headerSection {
+  padding: 80px 20px 40px 20px;
+  text-align: center;
+  background-image: linear-gradient(rgba(248, 250, 252, 0.65), rgba(248, 250, 252, 0.75)), 
+                    url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
+  background-size: contain;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.headerEyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0ea5e9;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.mainTitle {
+  font-size: 36px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 15px;
+}
+
+.headerDivider {
+  width: 40px;
+  height: 3px;
+  background: #0ea5e9;
+  margin: 0 auto 20px auto;
+  border-radius: 2px;
+}
+
+.mainSubtitle {
+  font-size: 16px;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Places Grid */
+.placesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
+}
+
+/* Card Styles */
+.placeCard {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.placeCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.imageWrapper {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.placeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.placeCard:hover .placeImage {
+  transform: scale(1.05);
+}
+
+.placeRating {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.deleteButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  color: #ef4444;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.deleteButton:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.1);
+}
+
+.cardContent {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.placeName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  /* Truncate text after 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.placeLocation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.locationIcon {
+  color: #0ea5e9;
+  flex-shrink: 0;
+}
+
+.tagsContainer {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vibeTag {
+  background: #f0f9ff;
+  color: #0ea5e9;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.priceTag {
+  background: #f8fafc;
+  color: #64748b;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 20px;
+  border: 2px dashed #e2e8f0;
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+}
+
+.emptyTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+.emptyText {
+  color: #94a3b8;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .placesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
