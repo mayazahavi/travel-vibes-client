@@ -175,14 +175,24 @@ function ExplorePage() {
       removeFromFavorites(place.id);
     } else {
       // Add necessary properties for FavoritesPage display
+      const { city, country } = selectedLocation?.value || {};
+      
       addToFavorites({
         id: place.id,
         name: place.name,
-        imageUrl: place.image, // Mapping image to imageUrl to match FavoritesPage expectation
+        imageUrl: place.image,
         rating: place.rating || '4.5',
         location: place.address || selectedLocation?.label?.split(',')[0],
+        city: city || selectedLocation?.label?.split(',')[0],
+        country: country || (selectedLocation?.label?.includes(',') ? selectedLocation?.label?.split(',').pop().trim() : ''),
         vibe: selectedVibe?.label,
-        priceLevel: '$$' // Placeholder or actual data if available
+        distance: place.distance,
+        description: place.description,
+        phone: place.phone,
+        website: place.website,
+        openingHours: place.openingHours,
+        lat: place.lat,
+        lon: place.lon
       });
     }
   };

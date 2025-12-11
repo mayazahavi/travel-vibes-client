@@ -1,9 +1,18 @@
-import { FaHeart, FaMapMarkerAlt, FaTrash } from 'react-icons/fa';
+/* Reusing styles from module */
+import { useNavigate } from 'react-router-dom';
+import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt } from 'react-icons/fa';
 import { useFavorites } from '../context/FavoritesContext';
 import styles from '../styles/FavoritesPage.module.css';
 
 function FavoritesPage() {
   const { favorites, removeFromFavorites, tripDetails } = useFavorites();
+  const navigate = useNavigate();
+
+  const handleAddMore = () => {
+    // Navigate back to explore, preserving the trip vibe if available
+    const vibeParam = tripDetails?.vibe ? `?vibe=${tripDetails.vibe}` : '';
+    navigate(`/explore${vibeParam}`);
+  };
 
   const getPageTitle = () => {
     if (tripDetails?.name) {
@@ -16,23 +25,99 @@ function FavoritesPage() {
     if (tripDetails?.startDate && tripDetails?.endDate) {
       const start = new Date(tripDetails.startDate).toLocaleDateString();
       const end = new Date(tripDetails.endDate).toLocaleDateString();
-      return `Planned for ${start} - ${end} • ${favorites.length} places saved`;
+      return `Planned for ${start} - ${end}`;
     }
-    return `Your personal collection of dream destinations. Keep track of the places that inspire you (${favorites.length}).`;
+    return `Your personal collection of dream destinations.`;
+  };
+
+  const getLocationsSubtitle = () => {
+    if (favorites.length === 0) return null;
+    
+    // Extract unique locations (City, Country) from favorites
+    const locations = [...new Set(favorites.map(place => {
+      if (place.city && place.country) {
+        return `${place.city}, ${place.country}`;
+      }
+      
+      if (!place.location) return '';
+      
+      const parts = place.location.split(',');
+      let relevantParts = parts;
+      
+      if (parts.length >= 2) {
+        relevantParts = parts.slice(-2);
+      }
+      
+      const cleanLocation = relevantParts
+        .map(part => part.replace(/[0-9]/g, '').trim())
+        .filter(part => part.length > 1)
+        .join(', ');
+        
+      return cleanLocation;
+    }))].filter(Boolean);
+
+    if (locations.length === 0) return null;
+
+    return (
+      <div style={{ marginTop: '8px', fontSize: '1rem', color: '#64748b', fontWeight: '500', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+        <FaMapMarkerAlt style={{ color: '#0ea5e9' }} />
+        <span>{locations.join(' • ')}</span>
+      </div>
+    );
   };
 
   return (
     <div className={styles.favoritesPage}>
-      <div className={styles.headerSection}>
-        <span className={styles.headerEyebrow}>YOUR COLLECTION</span>
-        <h1 className={styles.mainTitle}>{getPageTitle()}</h1>
-        <div className={styles.headerDivider}></div>
-        <p className={styles.mainSubtitle}>
-          {getPageSubtitle()}
-        </p>
+      <div className={styles.headerSection} style={{ padding: '100px 20px 40px 20px' }}>
+        <span className={styles.headerEyebrow}>TRIP ITINERARY</span>
+        <h1 className={styles.mainTitle} style={{ marginBottom: '10px' }}>{getPageTitle()}</h1>
+        
+        {tripDetails?.startDate && tripDetails?.endDate && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#64748b', marginBottom: '5px' }}>
+            <FaCalendarAlt style={{ color: '#0ea5e9' }} />
+            <span>
+              {new Date(tripDetails.startDate).toLocaleDateString()} - {new Date(tripDetails.endDate).toLocaleDateString()}
+            </span>
+          </div>
+        )}
+
+        {getLocationsSubtitle()}
+        
+        <div style={{ marginTop: '25px' }}>
+          <button 
+            onClick={handleAddMore}
+            className="button is-info is-rounded is-light"
+            style={{ 
+              fontWeight: '600',
+              border: '1px solid #0ea5e9',
+              color: '#0ea5e9',
+              paddingLeft: '24px',
+              paddingRight: '24px',
+              height: '44px',
+              fontSize: '1rem'
+            }}
+          >
+            <span className="icon">
+              <FaPlus />
+            </span>
+            <span>Add More Places</span>
+          </button>
+        </div>
       </div>
 
-      <div className="container" style={{ padding: '0 20px' }}>
+      <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
+        {favorites.length > 0 && (
+          <div className="level mb-5">
+            <div className="level-left">
+              <p className="level-item">
+                <strong className="title is-4 has-text-grey-dark">
+                  {favorites.length} {favorites.length === 1 ? 'Place' : 'Places'} Saved
+                </strong>
+              </p>
+            </div>
+          </div>
+        )}
+
         {favorites.length === 0 ? (
           <div className={styles.emptyState}>
             <FaHeart className={styles.emptyIcon} />
@@ -44,31 +129,140 @@ function FavoritesPage() {
             </p>
           </div>
         ) : (
-          <div className={styles.placesGrid}>
+          <div className="columns is-multiline is-mobile">
             {favorites.map(place => (
-              <div key={place.id} className={styles.placeCard}>
-                <div className={styles.imageWrapper}>
+              <div key={place.id} className="column is-12-mobile is-6-tablet is-4-desktop is-3-widescreen">
+                <div className={styles.placeCard} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <div className={styles.imageWrapper} style={{ height: '180px' }}>
                   <img src={place.imageUrl} alt={place.name} className={styles.placeImage} />
                   <div className={styles.placeRating}>
                     <span>⭐ {place.rating}</span>
                   </div>
                   <button 
                     onClick={() => removeFromFavorites(place.id)}
-                    className={styles.deleteButton}
+                    className="button is-danger is-light is-rounded"
                     title="Remove from favorites"
+                    style={{ 
+                      position: 'absolute', 
+                      top: '10px', 
+                      right: '10px',
+                      height: '36px',
+                      width: '36px',
+                      padding: 0,
+                      border: '1px solid rgba(255, 56, 96, 0.2)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                      zIndex: 10
+                    }}
                   >
-                    <FaTrash size={14} />
+                    <span className="icon is-small">
+                      <FaTrash />
+                    </span>
                   </button>
                 </div>
-                <div className={styles.cardContent}>
-                  <h3 className={styles.placeName}>{place.name}</h3>
-                  <div className={styles.placeLocation}>
-                    <FaMapMarkerAlt className={styles.locationIcon} />
-                    <span>{place.location}</span>
-                  </div>
-                  <div className={styles.tagsContainer}>
-                    {place.vibe && <span className={styles.vibeTag}>{place.vibe}</span>}
-                    <span className={styles.priceTag}>{place.priceLevel || '$$'}</span>
+                  <div className={styles.cardContent}>
+                    {/* Location Badge */}
+                    <div style={{ marginBottom: '8px' }}>
+                      <span style={{ 
+                        fontSize: '0.8rem', 
+                        fontWeight: '600', 
+                        color: '#0ea5e9',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>
+                        {place.location?.split(',').slice(-2).join(', ') || place.location}
+                      </span>
+                    </div>
+
+                    {/* Place Name */}
+                    <h3 className={styles.placeName} style={{ marginBottom: '12px', fontSize: '1.25rem' }}>
+                      {place.name}
+                    </h3>
+                    
+                    {/* Tags Row */}
+                    <div className={styles.tagsContainer} style={{ marginBottom: '20px' }}>
+                      {place.vibe && <span className={styles.vibeTag}>{place.vibe}</span>}
+                      {place.distance && (
+                        <span style={{ 
+                          background: '#f8fafc', 
+                          color: '#64748b', 
+                          padding: '4px 10px', 
+                          borderRadius: '6px', 
+                          fontSize: '0.75rem', 
+                          fontWeight: '500',
+                          border: '1px solid #e2e8f0',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <FaWalking size={10} /> {place.distance}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Info Section */}
+                    <div style={{ 
+                      marginTop: 'auto',
+                      paddingTop: '15px', 
+                      borderTop: '1px solid #f1f5f9',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '12px'
+                    }}>
+                      {place.phone && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem' }}>
+                          <div style={{ width: '24px', height: '24px', background: '#f0f9ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <FaPhone style={{ color: '#0ea5e9', fontSize: '10px' }} />
+                          </div>
+                          <a href={`tel:${place.phone}`} style={{ color: '#64748b', textDecoration: 'none' }}>{place.phone}</a>
+                        </div>
+                      )}
+                      
+                      {place.website && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem' }}>
+                          <div style={{ width: '24px', height: '24px', background: '#f0f9ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <FaGlobe style={{ color: '#0ea5e9', fontSize: '10px' }} />
+                          </div>
+                          <a 
+                            href={place.website.startsWith('http') ? place.website : `https://${place.website}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            style={{ color: '#0f172a', textDecoration: 'none', fontWeight: '500' }}
+                          >
+                            Visit Website
+                          </a>
+                        </div>
+                      )}
+
+                      {place.openingHours && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem' }}>
+                          <div style={{ width: '24px', height: '24px', background: '#f0f9ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <FaClock style={{ color: '#0ea5e9', fontSize: '10px' }} />
+                          </div>
+                          <span style={{ color: '#64748b' }}>Open Now</span>
+                        </div>
+                      )}
+                      
+                      {place.lat && place.lon && (
+                        <div style={{ marginTop: '5px' }}>
+                          <a 
+                            href={`https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lon}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ 
+                              color: '#0ea5e9', 
+                              fontWeight: '600', 
+                              fontSize: '0.9rem',
+                              textDecoration: 'none',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            View on Map →
+                          </a>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
