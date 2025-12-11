@@ -5,10 +5,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/CreateTripPage.module.css";
 import { VIBE_IMAGES, CREATE_TRIP_VIBES } from "../constants/vibes";
 import ProgressBar from "../components/ProgressBar";
+import { useFavorites } from "../context/FavoritesContext";
 
 function CreateTripPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { createTrip } = useFavorites();
   const selectedVibe = searchParams.get('vibe');
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -78,6 +80,16 @@ function CreateTripPage() {
 
   const handleSubmit = () => {
     console.log("Trip Created Successfully:", formData);
+    
+    // Create new trip in context
+    createTrip({
+      name: formData.tripName,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      vibe: formData.vibe,
+      travelers: formData.travelers
+    });
+
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);

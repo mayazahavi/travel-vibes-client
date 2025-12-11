@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { FaHeart, FaPlane } from "react-icons/fa";
 import { useFavorites } from "../context/FavoritesContext";
 import styles from "../styles/ExplorePage.module.css";
@@ -16,6 +16,7 @@ const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
 
 function ExplorePage() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const initialVibe = searchParams.get('vibe');
 
   const [selectedVibe, setSelectedVibe] = useState(
@@ -190,6 +191,8 @@ function ExplorePage() {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
+      navigate('/favorites');
+      window.scrollTo(0, 0);
     }, 3000);
   };
 
