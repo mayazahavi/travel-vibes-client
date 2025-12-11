@@ -83,7 +83,7 @@ function FavoritesPage() {
 
         <div style={{ marginTop: '25px', display: 'flex', gap: '15px', justifyContent: 'center' }}>
           <button 
-            onClick={handleAddMore}
+            onClick={() => navigate('/itinerary')}
             className="button is-info is-rounded"
             style={{ 
               boxShadow: '0 4px 20px rgba(14, 165, 233, 0.4)',
@@ -105,13 +105,13 @@ function FavoritesPage() {
             }}
           >
             <span className="icon">
-              <FaPlus />
+              <FaCalendarAlt />
             </span>
-            <span>Add More Places</span>
+            <span>Plan Schedule</span>
           </button>
 
           <button 
-            onClick={() => navigate('/my-trips')}
+            onClick={handleAddMore}
             className="button is-white is-rounded"
             style={{ 
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
@@ -139,41 +139,9 @@ function FavoritesPage() {
             }}
           >
             <span className="icon">
-              <FaArrowLeft />
+              <FaPlus />
             </span>
-            <span>All Trips</span>
-          </button>
-
-          <button 
-            onClick={() => navigate('/itinerary')}
-            className="button is-white is-rounded"
-            style={{ 
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-              fontWeight: '600',
-              border: '1px solid #e2e8f0',
-              color: '#0ea5e9',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-              paddingLeft: '24px',
-              paddingRight: '24px',
-              height: '48px',
-              display: 'inline-flex',
-              alignItems: 'center'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 6px 25px rgba(0, 0, 0, 0.1)';
-              e.currentTarget.style.borderColor = '#0ea5e9';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';
-              e.currentTarget.style.borderColor = '#e2e8f0';
-            }}
-          >
-            <span className="icon">
-              <FaCalendarAlt />
-            </span>
-            <span>Schedule</span>
+            <span>Add More Places</span>
           </button>
         </div>
       </div>

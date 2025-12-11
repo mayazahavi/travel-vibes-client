@@ -18,6 +18,40 @@ function ItineraryPage() {
     return diffDays > 0 ? diffDays : 1;
   };
 
+  const getLocationsSubtitle = () => {
+    if (favorites.length === 0) return null;
+    const locations = [...new Set(favorites.map(place => {
+      if (place.city && place.country) {
+        return `${place.city}, ${place.country}`;
+      }
+      
+      if (!place.location) return '';
+      
+      const parts = place.location.split(',');
+      let relevantParts = parts;
+      
+      if (parts.length >= 2) {
+        relevantParts = parts.slice(-2);
+      }
+      
+      const cleanLocation = relevantParts
+        .map(part => part.replace(/[0-9]/g, '').trim())
+        .filter(part => part.length > 1)
+        .join(', ');
+        
+      return cleanLocation;
+    }))].filter(Boolean);
+
+    if (locations.length === 0) return null;
+
+    return (
+      <div style={{ marginTop: '8px', fontSize: '1rem', color: '#64748b', fontWeight: '500', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+        <FaMapMarkerAlt style={{ color: '#0ea5e9' }} />
+        <span>{locations.join(' • ')}</span>
+      </div>
+    );
+  };
+
   const daysCount = getDaysCount();
   const days = Array.from({ length: daysCount }, (_, i) => i + 1);
 
@@ -49,6 +83,8 @@ function ItineraryPage() {
             </span>
           </div>
         )}
+
+        {getLocationsSubtitle()}
 
         <div style={{ marginTop: '25px' }}>
           <button 
