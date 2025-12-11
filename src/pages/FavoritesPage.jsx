@@ -1,6 +1,6 @@
 /* Reusing styles from module */
 import { useNavigate } from 'react-router-dom';
-import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt } from 'react-icons/fa';
+import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt, FaArrowLeft } from 'react-icons/fa';
 import { useFavorites } from '../context/FavoritesContext';
 import styles from '../styles/FavoritesPage.module.css';
 
@@ -81,11 +81,11 @@ function FavoritesPage() {
 
         {getLocationsSubtitle()}
 
-        <div style={{ marginTop: '25px' }}>
-          <button
+        <div style={{ marginTop: '25px', display: 'flex', gap: '15px', justifyContent: 'center' }}>
+          <button 
             onClick={handleAddMore}
             className="button is-info is-rounded"
-            style={{
+            style={{ 
               boxShadow: '0 4px 20px rgba(14, 165, 233, 0.4)',
               fontWeight: '600',
               border: 'none',
@@ -108,6 +108,40 @@ function FavoritesPage() {
               <FaPlus />
             </span>
             <span>Add More Places</span>
+          </button>
+
+          <button 
+            onClick={() => navigate('/my-trips')}
+            className="button is-white is-rounded"
+            style={{ 
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+              fontWeight: '600',
+              border: '1px solid #e2e8f0',
+              color: '#64748b',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              paddingLeft: '24px',
+              paddingRight: '24px',
+              height: '48px',
+              display: 'inline-flex',
+              alignItems: 'center'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 25px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.borderColor = '#cbd5e1';
+              e.currentTarget.style.color = '#334155';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';
+              e.currentTarget.style.borderColor = '#e2e8f0';
+              e.currentTarget.style.color = '#64748b';
+            }}
+          >
+            <span className="icon">
+              <FaArrowLeft />
+            </span>
+            <span>All Trips</span>
           </button>
         </div>
       </div>
