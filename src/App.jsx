@@ -9,6 +9,7 @@ import ExplorePage from "./pages/ExplorePage.jsx";
 import CreateTripPage from "./pages/CreateTripPage.jsx";
 import FavoritesPage from "./pages/FavoritesPage.jsx";
 import MyTripsPage from "./pages/MyTripsPage.jsx";
+import ItineraryPage from "./pages/ItineraryPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function AppContent() {
@@ -26,6 +27,7 @@ function AppContent() {
         <Route path="/create-trip" element={<CreateTripPage />} />
         <Route path="/my-trips" element={<MyTripsPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/itinerary" element={<ItineraryPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />

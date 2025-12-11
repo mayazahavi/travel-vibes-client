@@ -60,6 +60,23 @@ export function FavoritesProvider({ children }) {
     }));
   };
 
+  const assignPlaceToDay = (placeId, dayIndex) => {
+    if (!currentTripId) return;
+
+    setTrips(prev => prev.map(trip => {
+      if (trip.id === currentTripId) {
+        const updatedFavorites = trip.favorites.map(place => {
+          if (place.id === placeId) {
+            return { ...place, assignedDay: dayIndex }; // dayIndex: 1, 2, 3... (null means unscheduled)
+          }
+          return place;
+        });
+        return { ...trip, favorites: updatedFavorites };
+      }
+      return trip;
+    }));
+  };
+
   const isFavorite = (placeId) => {
     return currentTrip?.favorites.some(p => p.id === placeId) || false;
   };
@@ -86,6 +103,7 @@ export function FavoritesProvider({ children }) {
     favorites: currentTrip?.favorites || [],
     addToFavorites,
     removeFromFavorites,
+    assignPlaceToDay,
     isFavorite,
     saveTripDetails: createTrip,
     tripDetails: currentTrip
