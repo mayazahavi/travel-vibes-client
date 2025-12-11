@@ -24,6 +24,7 @@ I created `FavoritesContext` to manage the application's global state using Reac
     *   **ExplorePage:** Uses `addToFavorites` to save places specifically to the currently active trip.
     *   **MyTripsPage:** Consumes the `trips` array to display a dashboard of all planned journeys.
     *   **FavoritesPage:** Retrieves the current trip details to display the itinerary and saved places.
+    *   **ItineraryPage:** Uses `assignPlaceToDay` to organize saved places into a daily schedule.
 
 ## Routing
 
@@ -35,4 +36,5 @@ I implemented `React Router` to handle navigation across the application:
 *   `/explore` → **Explore Page** (API page - search destinations and save favorites)
 *   `/my-trips` → **My Trips Page** (Dashboard - view all created trips)
 *   `/favorites` → **Favorites Page** (Trip details - view specific trip's saved places)
+*   `/itinerary` → **Itinerary Page** (Daily planner - schedule activities per day)
 *   `*` → **404 Not Found** (Handles unknown routes)
