@@ -1,22 +1,30 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSuitcase, FaCalendarAlt, FaTrash, FaPlus, FaMapMarkerAlt, FaArrowRight } from 'react-icons/fa';
 import { useFavorites } from '../context/FavoritesContext';
 import styles from '../styles/FavoritesPage.module.css';
 import { VIBE_IMAGES } from '../constants/vibes';
+import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 
 function MyTripsPage() {
   const { trips, selectTrip, deleteTrip } = useFavorites();
   const navigate = useNavigate();
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, tripId: null });
 
   const handleTripSelect = (tripId) => {
     selectTrip(tripId);
     navigate('/favorites');
   };
 
-  const handleDeleteTrip = (e, tripId) => {
+  const handleDeleteClick = (e, tripId) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to delete this trip?')) {
-      deleteTrip(tripId);
+    setDeleteModal({ isOpen: true, tripId });
+  };
+
+  const confirmDelete = () => {
+    if (deleteModal.tripId) {
+      deleteTrip(deleteModal.tripId);
+      setDeleteModal({ isOpen: false, tripId: null });
     }
   };
 
@@ -112,7 +120,7 @@ function MyTripsPage() {
                           </span>
                       </div>
                       <button 
-                        onClick={(e) => handleDeleteTrip(e, trip.id)}
+                        onClick={(e) => handleDeleteClick(e, trip.id)}
                         className="button is-danger is-light is-rounded"
                         title="Delete Trip"
                         style={{ 
@@ -185,6 +193,14 @@ function MyTripsPage() {
             ))}
           </div>
         )}
+        
+        <DeleteConfirmationModal 
+          isOpen={deleteModal.isOpen}
+          onClose={() => setDeleteModal({ isOpen: false, tripId: null })}
+          onConfirm={confirmDelete}
+          title="Delete Trip?"
+          message="Are you sure you want to remove this trip? All saved places for this trip will be lost."
+        />
       </div>
     </div>
   );
