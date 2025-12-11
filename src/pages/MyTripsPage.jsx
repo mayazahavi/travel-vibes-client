@@ -37,6 +37,34 @@ function MyTripsPage() {
         <p className={styles.mainSubtitle}>
           Manage all your planned journeys in one place.
         </p>
+        <button 
+          onClick={() => navigate('/create-trip')}
+          className="button is-info is-rounded"
+          style={{ 
+            marginTop: '25px',
+            boxShadow: '0 4px 20px rgba(14, 165, 233, 0.4)',
+            fontWeight: '600',
+            border: 'none',
+            background: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            height: '48px',
+            paddingLeft: '24px',
+            paddingRight: '24px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 6px 25px rgba(14, 165, 233, 0.5)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(14, 165, 233, 0.4)';
+          }}
+        >
+          <span className="icon">
+            <FaPlus />
+          </span>
+          <span>Plan New Trip</span>
+        </button>
       </div>
 
       <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
@@ -48,21 +76,6 @@ function MyTripsPage() {
                         {trips.length} {trips.length === 1 ? 'Trip' : 'Trips'} Planned
                     </strong>
                 </p>
-            </div>
-            <div className="level-right">
-                <button 
-                    onClick={() => navigate('/create-trip')}
-                    className="button is-info is-rounded" 
-                    style={{ 
-                    boxShadow: '0 4px 15px rgba(14, 165, 233, 0.3)',
-                    fontWeight: '600'
-                    }}
-                >
-                    <span className="icon">
-                        <FaPlus />
-                    </span>
-                    <span>Plan New Trip</span>
-                </button>
             </div>
         </div>
 

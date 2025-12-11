@@ -68,6 +68,7 @@ function FavoritesPage() {
       <div className={styles.headerSection} style={{ padding: '100px 20px 40px 20px' }}>
         <span className={styles.headerEyebrow}>TRIP ITINERARY</span>
         <h1 className={styles.mainTitle} style={{ marginBottom: '10px' }}>{getPageTitle()}</h1>
+        <div className={styles.headerDivider} style={{ marginBottom: '15px' }}></div>
         
         {tripDetails?.startDate && tripDetails?.endDate && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#64748b', marginBottom: '5px' }}>
@@ -83,15 +84,24 @@ function FavoritesPage() {
         <div style={{ marginTop: '25px' }}>
           <button 
             onClick={handleAddMore}
-            className="button is-info is-rounded is-light"
+            className="button is-info is-rounded"
             style={{ 
+              boxShadow: '0 4px 20px rgba(14, 165, 233, 0.4)',
               fontWeight: '600',
-              border: '1px solid #0ea5e9',
-              color: '#0ea5e9',
+              border: 'none',
+              background: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               paddingLeft: '24px',
               paddingRight: '24px',
-              height: '44px',
-              fontSize: '1rem'
+              height: '48px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 25px rgba(14, 165, 233, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(14, 165, 233, 0.4)';
             }}
           >
             <span className="icon">

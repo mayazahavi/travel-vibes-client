@@ -5,15 +5,16 @@
   animation: fadeIn 0.4s ease-in;
 }
 .headerSection {
-  padding: 80px 20px 40px 20px;
+  padding: 100px 20px 60px 20px;
   text-align: center;
   background-image: linear-gradient(rgba(248, 250, 252, 0.65), rgba(248, 250, 252, 0.75)), 
                     url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
-  background-size: contain;
-  background-position: center bottom;
+  background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
   margin-bottom: 0;
   border-bottom: none;
+  width: 100%;
 }
 
 .headerEyebrow {
@@ -24,6 +25,7 @@
   letter-spacing: 2px;
   margin-bottom: 10px;
   text-transform: uppercase;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
 }
 
 .mainTitle {
