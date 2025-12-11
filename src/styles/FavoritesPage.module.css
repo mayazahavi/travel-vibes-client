@@ -4,8 +4,6 @@
   padding-bottom: 80px;
   animation: fadeIn 0.4s ease-in;
 }
-
-/* Reusing Header Styles from VibesPage */
 .headerSection {
   padding: 80px 20px 40px 20px;
   text-align: center;

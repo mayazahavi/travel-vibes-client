@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import styles from '../styles/HomePage.module.css'; // Using existing styles for consistency
-
+import styles from '../styles/HomePage.module.css'; 
 function NotFoundPage() {
   return (
     <div style={{ 

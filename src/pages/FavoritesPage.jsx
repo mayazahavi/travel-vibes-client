@@ -1,4 +1,4 @@
-/* Reusing styles from module */
+
 import { useNavigate } from 'react-router-dom';
 import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt } from 'react-icons/fa';
 import { useFavorites } from '../context/FavoritesContext';
@@ -9,7 +9,6 @@ function FavoritesPage() {
   const navigate = useNavigate();
 
   const handleAddMore = () => {
-    // Navigate back to explore, preserving the trip vibe if available
     const vibeParam = tripDetails?.vibe ? `?vibe=${tripDetails.vibe}` : '';
     navigate(`/explore${vibeParam}`);
   };
@@ -32,8 +31,6 @@ function FavoritesPage() {
 
   const getLocationsSubtitle = () => {
     if (favorites.length === 0) return null;
-    
-    // Extract unique locations (City, Country) from favorites
     const locations = [...new Set(favorites.map(place => {
       if (place.city && place.country) {
         return `${place.city}, ${place.country}`;
