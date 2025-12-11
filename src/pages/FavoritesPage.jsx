@@ -143,6 +143,38 @@ function FavoritesPage() {
             </span>
             <span>All Trips</span>
           </button>
+
+          <button 
+            onClick={() => navigate('/itinerary')}
+            className="button is-white is-rounded"
+            style={{ 
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+              fontWeight: '600',
+              border: '1px solid #e2e8f0',
+              color: '#0ea5e9',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              paddingLeft: '24px',
+              paddingRight: '24px',
+              height: '48px',
+              display: 'inline-flex',
+              alignItems: 'center'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 25px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.borderColor = '#0ea5e9';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';
+              e.currentTarget.style.borderColor = '#e2e8f0';
+            }}
+          >
+            <span className="icon">
+              <FaCalendarAlt />
+            </span>
+            <span>Schedule</span>
+          </button>
         </div>
       </div>
 
