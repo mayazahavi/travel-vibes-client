@@ -1,6 +1,6 @@
 /* Reusing styles from module */
 import { useNavigate } from 'react-router-dom';
-import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt, FaArrowLeft } from 'react-icons/fa';
+import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt } from 'react-icons/fa';
 import { useFavorites } from '../context/FavoritesContext';
 import styles from '../styles/FavoritesPage.module.css';
 
@@ -18,15 +18,6 @@ function FavoritesPage() {
       return tripDetails.name;
     }
     return "My Saved Trips";
-  };
-
-  const getPageSubtitle = () => {
-    if (tripDetails?.startDate && tripDetails?.endDate) {
-      const start = new Date(tripDetails.startDate).toLocaleDateString();
-      const end = new Date(tripDetails.endDate).toLocaleDateString();
-      return `Planned for ${start} - ${end}`;
-    }
-    return `Your personal collection of dream destinations.`;
   };
 
   const getLocationsSubtitle = () => {
