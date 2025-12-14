@@ -60,14 +60,14 @@ export function FavoritesProvider({ children }) {
     }));
   };
 
-  const assignPlaceToDay = (placeId, dayIndex) => {
+  const assignPlaceToDay = (placeId, dayIndex, time = null) => {
     if (!currentTripId) return;
 
     setTrips(prev => prev.map(trip => {
       if (trip.id === currentTripId) {
         const updatedFavorites = trip.favorites.map(place => {
           if (place.id === placeId) {
-            return { ...place, assignedDay: dayIndex }; // dayIndex: 1, 2, 3... (null means unscheduled)
+            return { ...place, assignedDay: dayIndex, assignedTime: time }; 
           }
           return place;
         });
@@ -104,6 +104,7 @@ export function FavoritesProvider({ children }) {
     addToFavorites,
     removeFromFavorites,
     assignPlaceToDay,
+    updatePlaceTime: (placeId, time) => assignPlaceToDay(placeId, currentTrip?.favorites.find(p => p.id === placeId)?.assignedDay, time),
     isFavorite,
     saveTripDetails: createTrip,
     tripDetails: currentTrip

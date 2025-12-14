@@ -171,26 +171,39 @@ function FavoritesPage() {
                     <div className={styles.placeRating}>
                       <span>⭐ {place.rating}</span>
                     </div>
-                    <button
-                      onClick={() => removeFromFavorites(place.id)}
-                      className="button is-danger is-light is-rounded"
-                      title="Remove from favorites"
-                      style={{
-                        position: 'absolute',
-                        top: '10px',
-                        right: '10px',
-                        height: '36px',
-                        width: '36px',
-                        padding: 0,
-                        border: '1px solid rgba(255, 56, 96, 0.2)',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        zIndex: 10
-                      }}
-                    >
-                      <span className="icon is-small">
-                        <FaTrash />
-                      </span>
-                    </button>
+                  <button 
+                    onClick={() => removeFromFavorites(place.id)}
+                    className="button is-white is-rounded"
+                    title="Remove from favorites"
+                    style={{ 
+                      position: 'absolute', 
+                      top: '10px', 
+                      right: '10px',
+                      height: '32px',
+                      width: '32px',
+                      padding: 0,
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      border: '1px solid rgba(239, 68, 68, 0.2)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                      color: '#ef4444',
+                      zIndex: 10,
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#fee2e2';
+                      e.currentTarget.style.borderColor = '#ef4444';
+                      e.currentTarget.style.transform = 'scale(1.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+                      e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                  >
+                    <span className="icon is-small">
+                      <FaTrash size={12} />
+                    </span>
+                  </button>
                   </div>
                   <div className={styles.cardContent}>
                     {/* Location Badge */}
