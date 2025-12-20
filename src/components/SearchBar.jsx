@@ -1,6 +1,6 @@
 import AsyncSelect from "react-select/async";
 import Select from "react-select";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaMapMarkerAlt, FaUmbrellaBeach } from "react-icons/fa";
 
 function SearchBar({
   selectedVibe,
@@ -23,7 +23,10 @@ function SearchBar({
       )}
       <div className={styles.searchBox}>
         <div className={styles.filterGroup}>
-          <label className={styles.label}>Your Vibe</label>
+          <label className={styles.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <FaUmbrellaBeach style={{ color: '#0ea5e9' }} />
+            Your Vibe
+          </label>
           <Select
             value={selectedVibe}
             onChange={onVibeChange}
@@ -35,7 +38,10 @@ function SearchBar({
         </div>
         <div className={styles.divider}></div>
         <div className={styles.filterGroup}>
-          <label className={styles.label}>Where to?</label>
+          <label className={styles.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <FaMapMarkerAlt style={{ color: '#0ea5e9' }} />
+            Where to?
+          </label>
           <AsyncSelect
             loadOptions={loadCityOptions}
             onChange={onLocationChange}
