@@ -8,10 +8,10 @@
 .headerSection {
   padding: 100px 20px 40px 20px;
   text-align: center;
-  background-image: linear-gradient(rgba(248, 250, 252, 0.85), rgba(248, 250, 252, 0.92)), 
+  background-image: linear-gradient(rgba(248, 250, 252, 0.8), rgba(248, 250, 252, 0.85)), 
                     url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   background-repeat: no-repeat;
   margin-bottom: 0;
   border-bottom: none;
@@ -20,9 +20,9 @@
 
 .headerEyebrow {
   display: block;
-  font-size: 12px;
-  font-weight: 700;
-  color: #0ea5e9;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
   letter-spacing: 2px;
   margin-bottom: 10px;
   text-transform: uppercase;
@@ -31,14 +31,14 @@
 .mainTitle {
   font-size: 36px;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   margin-bottom: 15px;
 }
 
 .headerDivider {
   width: 40px;
-  height: 3px;
-  background: #0ea5e9;
+  height: 4px;
+  background: #0f172a;
   margin: 0 auto 20px auto;
   border-radius: 2px;
 }

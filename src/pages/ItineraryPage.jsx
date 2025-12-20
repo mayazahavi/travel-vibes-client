@@ -38,7 +38,7 @@ function ItineraryPage() {
     if (locations.length === 0) return null;
 
     return (
-      <div style={{ marginTop: '8px', fontSize: '1rem', color: '#64748b', fontWeight: '500', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+      <div style={{ marginTop: '8px', fontSize: '1rem', color: '#0f172a', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
         <FaMapMarkerAlt style={{ color: '#0ea5e9' }} />
         <span>{locations.join(' • ')}</span>
       </div>
@@ -67,15 +67,23 @@ function ItineraryPage() {
 
   return (
     <div className={styles.favoritesPage}>
-      <div className={styles.headerSection} style={{ padding: '100px 20px 0 20px', paddingBottom: '30px', backgroundSize: 'cover' }}>
-        <span className={styles.headerEyebrow}>DAILY PLANNER</span>
-        <h1 className={styles.mainTitle} style={{ marginBottom: '10px' }}>
+      <div className={styles.headerSection} style={{ 
+        padding: '100px 20px 30px 20px', 
+        marginBottom: '20px',
+        background: `linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.65)), url('https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=2000&q=80')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+        minHeight: 'auto'
+      }}>
+        <span className={styles.headerEyebrow} style={{ color: '#0f172a', fontWeight: '800', fontSize: '11px', marginBottom: '5px' }}>DAILY PLANNER</span>
+        <h1 className={styles.mainTitle} style={{ marginBottom: '5px', color: '#000000', fontSize: '2rem' }}>
           {tripDetails?.name || "My Trip Itinerary"}
         </h1>
-        <div className={styles.headerDivider} style={{ marginBottom: '15px' }}></div>
+        <div className={styles.headerDivider} style={{ marginBottom: '10px', background: '#0f172a', height: '3px', width: '30px' }}></div>
         
         {tripDetails?.startDate && tripDetails?.endDate && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#64748b', marginBottom: '5px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#1e293b', fontWeight: '700', fontSize: '15px', marginBottom: '5px' }}>
             <FaCalendarAlt style={{ color: '#0ea5e9' }} />
             <span>
               {new Date(tripDetails.startDate).toLocaleDateString()} - {new Date(tripDetails.endDate).toLocaleDateString()}
@@ -119,7 +127,7 @@ function ItineraryPage() {
             <div className="column is-3" style={{ background: '#f8fafc', borderRight: '1px solid #e2e8f0', minHeight: '800px' }}>
               <div style={{ padding: '30px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                  <h3 className="title is-6 is-uppercase has-text-grey-light mb-0" style={{ letterSpacing: '1px', fontSize: '0.8rem' }}>Unscheduled</h3>
+                  <h3 className="title is-6 is-uppercase mb-0" style={{ letterSpacing: '1px', fontSize: '0.8rem', color: '#0f172a', fontWeight: '700' }}>Unscheduled</h3>
                   <span className="tag is-rounded">{unscheduledPlaces.length}</span>
                 </div>
                 
@@ -129,8 +137,8 @@ function ItineraryPage() {
                       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                         <img src={place.imageUrl} alt={place.name} style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }} />
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <h4 style={{ fontSize: '0.9rem', fontWeight: '700', color: '#334155', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{place.name}</h4>
-                          <p style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{place.category?.split('.')[1] || 'Place'}</p>
+                          <h4 style={{ fontSize: '0.9rem', fontWeight: '700', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{place.name}</h4>
+                          <p style={{ fontSize: '0.75rem', color: '#475569', fontWeight: '500' }}>{place.category?.split('.')[1] || 'Place'}</p>
                         </div>
                         <button 
                           className="button is-small is-info is-light is-rounded" 
@@ -184,8 +192,8 @@ function ItineraryPage() {
               <div style={{ padding: '40px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                   <div>
-                    <h2 className="title is-4 mb-1">Day {selectedDay}</h2>
-                    <p className="subtitle is-6 has-text-grey">{getDayDate(selectedDay)} • {dayPlaces.length} Activities</p>
+                    <h2 className="title is-4 mb-1" style={{ color: '#000000', fontWeight: '800' }}>Day {selectedDay}</h2>
+                    <p className="subtitle is-6" style={{ color: '#334155', fontWeight: '500' }}>{getDayDate(selectedDay)} • {dayPlaces.length} Activities</p>
                   </div>
                 </div>
 
@@ -282,8 +290,8 @@ function ItineraryPage() {
                           <div style={{ flex: 1, padding: '20px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                               <div>
-                                <h4 style={{ fontWeight: '700', fontSize: '1.1rem', color: '#1e293b', marginBottom: '5px' }}>{place.name}</h4>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '0.85rem' }}>
+                                <h4 style={{ fontWeight: '800', fontSize: '1.1rem', color: '#000000', marginBottom: '5px' }}>{place.name}</h4>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#475569', fontSize: '0.85rem', fontWeight: '500' }}>
                                   <FaMapMarkerAlt size={12} style={{ color: '#0ea5e9' }} />
                                   <span>{place.location?.split(',')[0]}</span>
                                 </div>
