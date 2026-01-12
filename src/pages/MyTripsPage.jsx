@@ -1,24 +1,34 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaPlaneDeparture, FaCalendarAlt, FaTrash, FaPlus, FaMapMarkerAlt, FaArrowRight, FaUserFriends } from 'react-icons/fa';
-import { useFavorites } from '../context/FavoritesContext';
+// import { useFavorites } from '../context/FavoritesContext'; // Removing Context
+import { 
+  selectTrips, 
+  setCurrentTrip, 
+  deleteTrip 
+} from '../store/slices/tripsSlice';
 import styles from '../styles/FavoritesPage.module.css';
 import { VIBE_IMAGES } from '../constants/vibes';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 
 function MyTripsPage() {
-  const { trips, selectTrip, deleteTrip } = useFavorites();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Redux Selectors
+  const trips = useSelector(selectTrips);
+
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, tripId: null });
 
   const handleTripSelect = (tripId) => {
-    selectTrip(tripId);
+    dispatch(setCurrentTrip(tripId));
     navigate('/favorites');
   };
 
   const handleTripSchedule = (e, tripId) => {
     e.stopPropagation();
-    selectTrip(tripId);
+    dispatch(setCurrentTrip(tripId));
     navigate('/itinerary');
   };
 
@@ -29,7 +39,7 @@ function MyTripsPage() {
 
   const confirmDelete = () => {
     if (deleteModal.tripId) {
-      deleteTrip(deleteModal.tripId);
+      dispatch(deleteTrip(deleteModal.tripId));
       setDeleteModal({ isOpen: false, tripId: null });
     }
   };

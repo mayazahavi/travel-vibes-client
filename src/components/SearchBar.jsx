@@ -49,6 +49,7 @@ function SearchBar({
             placeholder="Type at least 3 letters (e.g. Paris, Tokyo)..."
             className={styles.reactSelect}
             classNamePrefix="select"
+            loadingMessage={() => "Searching cities..."}
             noOptionsMessage={({ inputValue }) => 
               !inputValue ? "Start typing to search cities..." : 
               inputValue.length < 3 ? "Type at least 3 characters..." :

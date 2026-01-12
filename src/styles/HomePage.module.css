@@ -8,6 +8,14 @@
   background-attachment: fixed;
 }
 
+[data-theme='dark'] .homePage {
+  background: linear-gradient(to bottom, rgba(26, 32, 44, 0.9), rgba(45, 55, 72, 0.9)),
+    url('https://images.unsplash.com/photo-1499346030926-9a72daac6ea6?auto=format&fit=crop&w=2000&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 .heroSection {
   position: relative;
   height: 70vh;
@@ -147,6 +155,10 @@
   position: relative;
 }
 
+[data-theme='dark'] .featuresSection {
+  background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
+}
+
 .sectionHeader {
   text-align: center;
   margin-bottom: 40px;
@@ -166,12 +178,20 @@
   -webkit-text-fill-color: transparent;
 }
 
+[data-theme='dark'] .sectionTitle {
+  color: #f7fafc;
+}
+
 .sectionSubtitle {
   font-size: 16px;
   color: #64748b;
   max-width: 550px;
   margin: 0 auto;
   line-height: 1.5;
+}
+
+[data-theme='dark'] .sectionSubtitle {
+  color: #a0aec0;
 }
 
 .featuresGrid {
@@ -203,6 +223,12 @@
   z-index: 1;
 }
 
+[data-theme='dark'] .featureCard {
+  background: #2d3748;
+  border-color: #4a5568;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+}
+
 .featureCard::before {
   counter-increment: feature-counter;
   content: "0" counter(feature-counter);
@@ -218,6 +244,11 @@
   opacity: 0.5;
   font-family: 'Inter', sans-serif;
   letter-spacing: -3px;
+}
+
+[data-theme='dark'] .featureCard::before {
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  opacity: 0.3;
 }
 
 .featureCard:hover {
@@ -245,9 +276,19 @@
   color: #059669;
 }
 
+[data-theme='dark'] .iconVibe {
+  background: rgba(5, 150, 105, 0.2);
+  color: #34d399;
+}
+
 .iconLocation {
   background: #f0f9ff;
   color: #0284c7;
+}
+
+[data-theme='dark'] .iconLocation {
+  background: rgba(2, 132, 199, 0.2);
+  color: #38bdf8;
 }
 
 .iconAttraction {
@@ -255,9 +296,19 @@
   color: #2563eb;
 }
 
+[data-theme='dark'] .iconAttraction {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+}
+
 .iconItinerary {
   background: #ecfeff;
   color: #0891b2;
+}
+
+[data-theme='dark'] .iconItinerary {
+  background: rgba(8, 145, 178, 0.2);
+  color: #22d3ee;
 }
 
 .cardTitle {
@@ -267,16 +318,28 @@
   margin-bottom: 8px;
 }
 
+[data-theme='dark'] .cardTitle {
+  color: #f7fafc;
+}
+
 .cardDescription {
   font-size: 14px;
   color: #64748b;
   line-height: 1.5;
 }
 
+[data-theme='dark'] .cardDescription {
+  color: #a0aec0;
+}
+
 .aboutSection {
   padding: 60px 20px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   scroll-margin-top: 80px;
+}
+
+[data-theme='dark'] .aboutSection {
+  background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
 }
 
 .aboutGrid {
@@ -322,6 +385,10 @@
   margin-bottom: 24px;
 }
 
+[data-theme='dark'] .aboutText {
+  color: #a0aec0;
+}
+
 .statsRow {
   display: flex;
   gap: 30px;
@@ -343,9 +410,17 @@
   letter-spacing: 0.5px;
 }
 
+[data-theme='dark'] .statItem p {
+  color: #a0aec0;
+}
+
 .testimonialsSection {
   padding: 60px 20px 140px;
   background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+[data-theme='dark'] .testimonialsSection {
+  background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
 }
 
 .testimonialsGrid {
@@ -362,6 +437,11 @@
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   transition: transform 0.3s ease;
+}
+
+[data-theme='dark'] .testimonialCard {
+  background: #2d3748;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .testimonialCard:hover {
@@ -384,6 +464,10 @@
   margin-bottom: 20px;
 }
 
+[data-theme='dark'] .quoteText {
+  color: #cbd5e1;
+}
+
 .userInfo {
   display: flex;
   align-items: center;
@@ -404,9 +488,17 @@
   margin-bottom: 0;
 }
 
+[data-theme='dark'] .userName h5 {
+  color: #f7fafc;
+}
+
 .userName span {
   font-size: 12px;
   color: #64748b;
+}
+
+[data-theme='dark'] .userName span {
+  color: #a0aec0;
 }
 
 @keyframes fadeInUp {

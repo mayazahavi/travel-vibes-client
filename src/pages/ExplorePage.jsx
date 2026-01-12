@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { FaHeart, FaPlane } from "react-icons/fa";
-import { useFavorites } from "../context/FavoritesContext";
+// import { useFavorites } from "../context/FavoritesContext"; // Removing Context
+import { 
+  addToFavorites, 
+  removeFromFavorites, 
+  selectFavorites, 
+  selectCurrentTripId 
+} from "../store/slices/tripsSlice";
+import useApi from "../hooks/useApi";
 import styles from "../styles/ExplorePage.module.css";
 import { EXPLORE_VIBES } from "../constants/vibes";
 import { calculateDistance } from "../utils/distance";
@@ -17,6 +25,12 @@ const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
 function ExplorePage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Redux Selectors
+  const favorites = useSelector(selectFavorites);
+  const currentTripId = useSelector(selectCurrentTripId);
+
   const initialVibe = searchParams.get('vibe');
 
   const [selectedVibe, setSelectedVibe] = useState(
@@ -24,13 +38,96 @@ function ExplorePage() {
   );
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [places, setPlaces] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const { favorites, addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  
+  // Use custom hook for API calls
+  const placesApi = useApi();
 
   const [searched, setSearched] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // Helper to check if favorite
+  const isFavorite = (placeId) => {
+    return favorites.some(p => p.id === placeId);
+  };
+
+  // Effect to process places data when API returns
+  useEffect(() => {
+    if (placesApi.loading) {
+      setSearched(true);
+      setProcessing(true); // Start processing
+    }
+
+    if (placesApi.data && selectedLocation) {
+      const processPlaces = async () => {
+        try {
+          const { lat, lon, city } = selectedLocation.value;
+          const features = placesApi.data.features || [];
+          const formattedPlaces = [];
+          // ... processing logic ...
+          
+          const seenLocations = new Set();
+
+          for (const feature of features) {
+            // ... feature processing ...
+            const props = feature.properties;
+            const placeName = props.name || props.street;
+            if (!placeName || placeName.trim() === '' || placeName === 'Unknown Place') continue;
+
+            const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
+            if (seenLocations.has(locationKey)) continue;
+            seenLocations.add(locationKey);
+
+            const distance = calculateDistance(lat, lon, props.lat, props.lon);
+            const cuisine = props.cuisine ? Object.keys(props.cuisine).join(';') : '';
+            const brand = props.brand || props.datasource?.raw?.brand || '';
+            const street = props.street || '';
+
+            const imageUrl = await getPlaceImage(
+              placeName,
+              props.categories ? props.categories[0] : "place",
+              city,
+              selectedVibe.value,
+              props.place_id,
+              cuisine,
+              brand,
+              street
+            );
+
+            formattedPlaces.push({
+              id: props.place_id,
+              name: placeName,
+              address: props.address_line2 || props.formatted || props.address_line1,
+              category: props.categories ? props.categories[0] : "place",
+              image: imageUrl,
+              phone: props.contact?.phone || props.datasource?.raw?.phone,
+              website: props.contact?.website || props.datasource?.raw?.website,
+              openingHours: props.opening_hours,
+              rating: props.datasource?.raw?.rating,
+              description: props.datasource?.raw?.description,
+              distance: distance,
+              lat: props.lat,
+              lon: props.lon
+            });
+          }
+
+          setPlaces(formattedPlaces);
+        } catch (error) {
+          console.error("Error processing places:", error);
+          setApiError(true);
+        } finally {
+          setProcessing(false); // Finished processing
+        }
+      };
+
+      processPlaces();
+    } else if (placesApi.error) {
+      setApiError(true);
+      setProcessing(false);
+      alert("Failed to load places. Please try again.");
+    }
+  }, [placesApi.data, placesApi.loading, placesApi.error, selectedLocation, selectedVibe]);
 
   const loadCityOptions = async (inputValue) => {
     if (!inputValue || inputValue.length < 3) {
@@ -90,94 +187,35 @@ function ExplorePage() {
   const handleSearch = async () => {
     if (!selectedVibe || !selectedLocation) return;
 
-    setLoading(true);
-    setSearched(true);
+    // Reset states
+    // setSearched(true); // Don't set yet
     setPlaces([]);
+    setApiError(false);
     clearUsedImages();
 
-    try {
-      const { lat, lon, city } = selectedLocation.value;
-      const categories = selectedVibe.categories;
+    const { lat, lon } = selectedLocation.value;
+    const categories = selectedVibe.categories;
 
-      const url = `https://api.geoapify.com/v2/places?categories=${encodeURIComponent(categories)}&filter=circle:${lon},${lat},5000&bias=proximity:${lon},${lat}&limit=20&apiKey=${GEOAPIFY_API_KEY}`;
+    const url = `https://api.geoapify.com/v2/places?categories=${encodeURIComponent(categories)}&filter=circle:${lon},${lat},5000&bias=proximity:${lon},${lat}&limit=20&apiKey=${GEOAPIFY_API_KEY}`;
 
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch places");
-      }
-
-      const data = await response.json();
-
-      const formattedPlaces = [];
-      const seenLocations = new Set();
-
-      for (const feature of data.features) {
-        const props = feature.properties;
-
-        const placeName = props.name || props.street;
-        if (!placeName || placeName.trim() === '' || placeName === 'Unknown Place') {
-          continue;
-        }
-
-        const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
-
-        if (seenLocations.has(locationKey)) {
-          continue;
-        }
-
-        seenLocations.add(locationKey);
-
-        const distance = calculateDistance(lat, lon, props.lat, props.lon);
-
-        const cuisine = props.cuisine ? Object.keys(props.cuisine).join(';') : '';
-        const brand = props.brand || props.datasource?.raw?.brand || '';
-        const street = props.street || '';
-
-        const imageUrl = await getPlaceImage(
-          placeName,
-          props.categories ? props.categories[0] : "place",
-          city,
-          selectedVibe.value,
-          props.place_id,
-          cuisine,
-          brand,
-          street
-        );
-
-        formattedPlaces.push({
-          id: props.place_id,
-          name: placeName,
-          address: props.address_line2 || props.formatted || props.address_line1,
-          category: props.categories ? props.categories[0] : "place",
-          image: imageUrl,
-          phone: props.contact?.phone || props.datasource?.raw?.phone,
-          website: props.contact?.website || props.datasource?.raw?.website,
-          openingHours: props.opening_hours,
-          rating: props.datasource?.raw?.rating,
-          description: props.datasource?.raw?.description,
-          distance: distance,
-          lat: props.lat,
-          lon: props.lon
-        });
-      }
-
-      setPlaces(formattedPlaces);
-    } catch (error) {
-      alert("Failed to load places. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    placesApi.refetch(url);
   };
+
+  // Effect to handle searched state
+  // useEffect(() => {
+  //   if (placesApi.loading) {
+  //     setSearched(true);
+  //   }
+  // }, [placesApi.loading]);
 
   const toggleFavorite = (place) => {
     if (isFavorite(place.id)) {
-      removeFromFavorites(place.id);
+      dispatch(removeFromFavorites(place.id));
     } else {
       // Add necessary properties for FavoritesPage display
       const { city, country } = selectedLocation?.value || {};
 
-      addToFavorites({
+      dispatch(addToFavorites({
         id: place.id,
         name: place.name,
         imageUrl: place.image,
@@ -193,7 +231,7 @@ function ExplorePage() {
         openingHours: place.openingHours,
         lat: place.lat,
         lon: place.lon
-      });
+      }));
     }
   };
 
@@ -221,23 +259,27 @@ function ExplorePage() {
           onSearch={handleSearch}
           loadCityOptions={loadCityOptions}
           vibeOptions={EXPLORE_VIBES}
-          loading={loading}
+          loading={placesApi.loading}
           apiError={apiError}
           styles={styles}
         />
       </div>
       <div className="container" style={{ padding: '40px 20px', paddingBottom: favorites.length > 0 ? '100px' : '40px' }}>
-        {loading ? (
+        {placesApi.loading || processing ? (
           <LoadingState vibe={selectedVibe?.value} location={selectedLocation?.label} styles={styles} />
-        ) : searched && places.length === 0 ? (
+        ) : !searched ? (
+          <div className={styles.emptyState}>
+            <div style={{ fontSize: '48px', marginBottom: '20px' }}>🌍</div>
+            <h3 className={styles.emptyTitle} style={{ color: 'var(--text-primary)' }}>Ready to Explore?</h3>
+            <p className={styles.emptyText}>Select a vibe and a destination to start your journey.</p>
+          </div>
+        ) : places.length === 0 ? (
           <EmptyState styles={styles} />
         ) : (
           <>
-            {searched && (
-              <h2 className={styles.resultsTitle}>
-                Found {places.length} {selectedVibe?.label.toLowerCase()} places for you in {selectedLocation?.label.split(',')[0]}
-              </h2>
-            )}
+            <h2 className={styles.resultsTitle}>
+              Found {places.length} {selectedVibe?.label.toLowerCase()} places for you in {selectedLocation?.label.split(',')[0]}
+            </h2>
             <div className={styles.placesGrid}>
               {places.map(place => (
                 <PlaceCard

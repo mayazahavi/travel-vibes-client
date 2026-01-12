@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
-function Header() {
+function Header({ theme, toggleTheme }) {
   const location = useLocation();
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
@@ -45,10 +46,11 @@ function Header() {
 
   return (
     <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation" style={{
-      background: 'rgba(240, 249, 255, 0.95)',
+      background: 'var(--header-bg)',
       backdropFilter: 'blur(10px)',
-      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
-      borderBottom: '1px solid rgba(14, 165, 233, 0.1)'
+      boxShadow: 'var(--shadow-sm)',
+      borderBottom: '1px solid var(--border-color)',
+      transition: 'background-color 0.3s ease, border-color 0.3s ease'
     }}>
       <div className="container" style={{ maxWidth: '100%', padding: '0 40px' }}>
         <div className="navbar-brand">
@@ -57,13 +59,13 @@ function Header() {
               fontFamily: "'Poppins', 'Segoe UI', sans-serif",
               fontSize: '1.5rem',
               fontWeight: '700',
-              color: '#000000',
+              color: 'var(--text-primary)',
               letterSpacing: '-0.5px'
             }}>
               🌍 TravelVibes
             </span>
           </Link>
-          <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain" style={{ color: '#000000' }}>
+          <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain" style={{ color: 'var(--text-primary)' }}>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -72,7 +74,7 @@ function Header() {
         <div id="navbarMain" className="navbar-menu">
           <div className="navbar-end" style={{ alignItems: 'center' }}>
             <Link to="/" className="navbar-item" style={{ 
-              color: '#000000', 
+              color: 'var(--text-primary)', 
               fontWeight: '500',
               fontSize: '17px',
               padding: '0.5rem 0.75rem'
@@ -81,7 +83,7 @@ function Header() {
             </Link>
             <div className={`navbar-item has-dropdown ${isDropdownActive ? 'is-active' : ''}`} style={{ padding: '0.5rem 0.75rem', position: 'relative' }}>
               <a className="navbar-link" onClick={toggleDropdown} style={{ 
-                color: '#000000', 
+                color: 'var(--text-primary)', 
                 fontWeight: '700',
                 fontSize: '17px',
                 background: 'transparent',
@@ -93,10 +95,10 @@ function Header() {
                 {currentPage}
               </a>
               <div className="navbar-dropdown" style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                background: 'var(--bg-card)',
                 backdropFilter: 'blur(12px)',
-                border: '1px solid #cbd5e1',
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.1)',
+                border: '1px solid var(--border-color)',
+                boxShadow: 'var(--shadow-md)',
                 borderRadius: '16px',
                 marginTop: '12px',
                 padding: '8px',
@@ -110,7 +112,7 @@ function Header() {
                     className="navbar-item" 
                     onClick={closeDropdown}
                     style={{ 
-                      color: '#1e293b',
+                      color: 'var(--text-primary)',
                       fontWeight: '600',
                       fontSize: '15px',
                       transition: 'all 0.2s ease',
@@ -126,7 +128,7 @@ function Header() {
                     }}
                     onMouseLeave={(e) => {
                       e.target.style.background = 'transparent';
-                      e.target.style.color = '#1e293b';
+                      e.target.style.color = 'var(--text-primary)';
                       e.target.style.transform = 'translateX(0)';
                     }}
                   >
@@ -135,6 +137,9 @@ function Header() {
                 ))}
               </div>
             </div>
+            
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+
             <div className="navbar-item" style={{ padding: '0.5rem 0.75rem' }}>
               <Link to="/" className="button" style={{ 
                 borderColor: '#38bdf8', 
@@ -143,7 +148,7 @@ function Header() {
                 borderRadius: '10px',
                 padding: '0.4rem 1rem',
                 transition: 'all 0.2s ease',
-                background: '#e0f2fe',
+                background: 'transparent',
                 fontSize: '15px'
               }}
               onMouseEnter={(e) => {
@@ -152,7 +157,7 @@ function Header() {
                 e.target.style.borderColor = '#0ea5e9';
               }}
               onMouseLeave={(e) => {
-                e.target.style.background = '#e0f2fe';
+                e.target.style.background = 'transparent';
                 e.target.style.color = '#0ea5e9';
                 e.target.style.borderColor = '#38bdf8';
                 e.target.style.fontSize = '15px';

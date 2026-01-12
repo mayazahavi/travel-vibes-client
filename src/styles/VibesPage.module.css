@@ -1,14 +1,15 @@
 .vibesPage {
   min-height: 100vh;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   padding-bottom: 80px;
   animation: fadeIn 0.4s ease-in;
+  transition: background-color 0.3s ease;
 }
 
 .headerSection {
   padding: 100px 20px 40px 20px;
   text-align: center;
-  background-image: linear-gradient(rgba(248, 250, 252, 0.8), rgba(248, 250, 252, 0.85)), 
+  background-image: linear-gradient(var(--overlay-color), var(--overlay-color)), 
                     url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
   background-size: cover;
   background-position: center;
@@ -16,13 +17,14 @@
   margin-bottom: 0;
   border-bottom: none;
   width: 100%;
+  transition: background-image 0.3s ease;
 }
 
 .headerEyebrow {
   display: block;
   font-size: 13px;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--text-primary);
   letter-spacing: 2px;
   margin-bottom: 10px;
   text-transform: uppercase;
@@ -31,21 +33,21 @@
 .mainTitle {
   font-size: 36px;
   font-weight: 800;
-  color: #000000;
+  color: var(--text-primary);
   margin-bottom: 15px;
 }
 
 .headerDivider {
   width: 40px;
   height: 4px;
-  background: #0f172a;
+  background: var(--text-primary);
   margin: 0 auto 20px auto;
   border-radius: 2px;
 }
 
 .mainSubtitle {
   font-size: 16px;
-  color: #64748b;
+  color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
@@ -60,19 +62,19 @@
   transition: all 0.3s ease;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   height: 320px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  background: white;
-  border: 1px solid transparent;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   position: relative;
 }
 
 .vibeCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .vibeCardSelected {
@@ -130,14 +132,14 @@
 }
 
 .vibeTitle {
-  color: #0f172a;
+  color: var(--text-primary);
   font-weight: 700;
   font-size: 1.1rem;
   margin-bottom: 8px !important;
 }
 
 .vibeShort {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.4;
   margin-bottom: 0 !important;
@@ -151,15 +153,16 @@
 }
 
 .detailsCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-md);
   display: flex;
   max-width: 750px;
   width: 100%;
   min-height: 280px;
   align-items: stretch;
+  border: 1px solid var(--border-color);
 }
 
 .detailsImageWrapper {
@@ -197,7 +200,7 @@
 .detailsEyebrow {
   font-size: 11px;
   font-weight: 700;
-  color: #64748b;
+  color: var(--text-secondary);
   letter-spacing: 1.5px;
   margin-bottom: 10px;
   text-transform: uppercase;
@@ -206,13 +209,13 @@
 .detailsTitle {
   font-size: 24px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 15px;
 }
 
 .detailsText {
   font-size: 15px;
-  color: #475569;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 25px;
 }
@@ -273,7 +276,7 @@
 }
 
 .modalCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 30px 25px;
   text-align: center;
@@ -307,14 +310,14 @@
 
 .successMessage {
   font-size: 16px;
-  color: #334155;
+  color: var(--text-primary);
   margin-bottom: 15px;
   line-height: 1.6;
 }
 
 .successNote {
   font-size: 14px;
-  color: #64748b;
+  color: var(--text-secondary);
   margin-bottom: 15px;
   line-height: 1.5;
   font-style: italic;

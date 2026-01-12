@@ -1,0 +1,60 @@
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  outline: none;
+  margin-left: 1rem;
+}
+
+.toggleTrack {
+  width: 50px;
+  height: 26px;
+  background-color: #e2e8f0;
+  border-radius: 20px;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.toggleTrack.dark {
+  background-color: #4a5568;
+}
+
+.toggleThumb {
+  width: 22px;
+  height: 22px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggleTrack.dark .toggleThumb {
+  left: calc(100% - 24px);
+  background-color: #2d3748;
+}
+
+.icon {
+  font-size: 12px;
+  color: #f6ad55; /* Sun color */
+}
+
+.toggleTrack.dark .icon {
+  color: #fbbf24; /* Moon color */
+}
+
+.toggleButton:focus-visible .toggleTrack {
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+

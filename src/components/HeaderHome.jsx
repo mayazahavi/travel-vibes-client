@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
-function HeaderHome() {
+function HeaderHome({ theme, toggleTheme }) {
   const handleAboutClick = (e) => {
     e.preventDefault();
     const aboutSection = document.getElementById('about');
@@ -78,6 +79,9 @@ function HeaderHome() {
             }}>
               Contact
             </a>
+            
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+
             <div className="navbar-item" style={{ padding: '0.5rem 0.75rem' }}>
               <Link to="/vibes" className="button is-light" style={{ 
                 background: 'white',

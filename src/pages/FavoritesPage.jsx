@@ -1,12 +1,22 @@
 /* Reusing styles from module */
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt } from 'react-icons/fa';
-import { useFavorites } from '../context/FavoritesContext';
+// import { useFavorites } from '../context/FavoritesContext'; // Removing Context
+import { 
+  removeFromFavorites, 
+  selectFavorites, 
+  selectCurrentTrip 
+} from '../store/slices/tripsSlice';
 import styles from '../styles/FavoritesPage.module.css';
 
 function FavoritesPage() {
-  const { favorites, removeFromFavorites, tripDetails } = useFavorites();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Redux Selectors
+  const favorites = useSelector(selectFavorites);
+  const tripDetails = useSelector(selectCurrentTrip);
 
   const handleAddMore = () => {
     const vibeParam = tripDetails?.vibe ? `?vibe=${tripDetails.vibe}` : '';
@@ -172,11 +182,11 @@ function FavoritesPage() {
                       <span>⭐ {place.rating}</span>
                     </div>
                   <button 
-                    onClick={() => removeFromFavorites(place.id)}
+                    onClick={() => dispatch(removeFromFavorites(place.id))}
                     className="button is-white is-rounded"
                     title="Remove from favorites"
                     style={{ 
-                      position: 'absolute', 
+                      position: 'absolute',  
                       top: '10px', 
                       right: '10px',
                       height: '32px',

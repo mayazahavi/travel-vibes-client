@@ -1,8 +1,8 @@
 .footer {
-  background: linear-gradient(to bottom, #e0f2fe, #dbeafe);
+  background: var(--footer-bg);
   padding: 60px 20px 30px 20px;
-  color: #000000;
-  border-top: 1px solid #bfdbfe;
+  color: var(--footer-text);
+  border-top: 1px solid var(--footer-border);
   margin-top: auto;
   scroll-margin-top: 70px;
 }
@@ -27,14 +27,14 @@
 .brandTitle {
   font-size: 24px;
   font-weight: 800;
-  color: #000000;
+  color: var(--footer-text);
   margin-bottom: 15px;
   letter-spacing: -1px;
 }
 
 .brandDesc {
   font-size: 16px;
-  color: #1e293b;
+  color: var(--footer-link);
   line-height: 1.6;
   margin-bottom: 20px;
   max-width: 300px;
@@ -43,7 +43,7 @@
 .heading {
   font-size: 14px;
   font-weight: 700;
-  color: #000000;
+  color: var(--footer-text);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 20px;
@@ -60,7 +60,7 @@
 }
 
 .link {
-  color: #374151;
+  color: var(--footer-link);
   text-decoration: none;
   font-size: 15px;
   transition: color 0.2s ease;
@@ -80,7 +80,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: white;
+  background: var(--bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +98,7 @@
 }
 
 .bottomBar {
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-color);
   padding-top: 30px;
   display: flex;
   justify-content: space-between;
@@ -109,7 +109,7 @@
 
 .copyright {
   font-size: 14px;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 .legalLinks {
@@ -119,13 +119,13 @@
 
 .legalLink {
   font-size: 14px;
-  color: #4b5563;
+  color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .legalLink:hover {
-  color: #000000;
+  color: var(--text-primary);
 }
 
 @media (max-width: 900px) {

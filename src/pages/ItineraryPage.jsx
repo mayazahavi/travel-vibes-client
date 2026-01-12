@@ -1,13 +1,38 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFavorites } from '../context/FavoritesContext';
+import { useSelector, useDispatch } from 'react-redux';
+// import { useFavorites } from '../context/FavoritesContext'; // Removing Context
+import { 
+  selectFavorites, 
+  selectCurrentTrip,
+  updateFavoritePlace 
+} from '../store/slices/tripsSlice';
 import styles from '../styles/FavoritesPage.module.css';
 import { FaMapMarkerAlt, FaPlus, FaCalendarDay, FaCalendarAlt, FaTrash, FaMapPin, FaClock } from 'react-icons/fa';
 
 function ItineraryPage() {
-  const { favorites, assignPlaceToDay, tripDetails, updatePlaceTime } = useFavorites();
-  const [selectedDay, setSelectedDay] = useState(1);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Redux Selectors
+  const favorites = useSelector(selectFavorites);
+  const tripDetails = useSelector(selectCurrentTrip);
+
+  const [selectedDay, setSelectedDay] = useState(1);
+
+  const updatePlaceTime = (placeId, time) => {
+    dispatch(updateFavoritePlace({
+      id: placeId,
+      updates: { assignedTime: time }
+    }));
+  };
+
+  const assignPlaceToDay = (placeId, dayIndex) => {
+    dispatch(updateFavoritePlace({
+      id: placeId,
+      updates: { assignedDay: dayIndex }
+    }));
+  };
 
   const getDaysCount = () => {
     if (!tripDetails?.startDate || !tripDetails?.endDate) return 3; 

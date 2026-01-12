@@ -1,11 +1,11 @@
 .explorePage {
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: var(--bg-secondary);
   padding-bottom: 60px;
 }
 
 .headerSection {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.5)), 
+  background-image: linear-gradient(var(--overlay-color), var(--overlay-color)), 
                     url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2000&q=80');
   background-size: cover;
   background-position: center 20%;
@@ -19,37 +19,34 @@
   display: block;
   font-size: 13px;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--text-primary);
   letter-spacing: 2px;
   margin-bottom: 10px;
   text-transform: uppercase;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .title {
   font-size: 36px;
   font-weight: 900;
-  color: #000000;
+  color: var(--text-primary);
   margin-bottom: 15px;
-  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
 }
 
 .headerDivider {
   width: 40px;
   height: 4px;
-  background: #0f172a;
+  background: var(--text-primary);
   margin: 0 auto 20px auto;
   border-radius: 2px;
 }
 
 .subtitle {
   font-size: 17px;
-  color: #1e293b;
+  color: var(--text-primary);
   max-width: 600px;
   margin: 0 auto 40px auto;
   line-height: 1.6;
   font-weight: 600;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .searchContainer {
@@ -60,13 +57,13 @@
 }
 
 .searchBox {
-  background: white;
+  background: var(--bg-card);
   padding: 10px;
   border-radius: 100px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
 }
 
 .filterGroup {
@@ -79,7 +76,7 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -88,7 +85,7 @@
 .divider {
   width: 1px;
   height: 40px;
-  background-color: #e2e8f0;
+  background-color: var(--border-color);
 }
 
 /* React Select Customization */
@@ -98,6 +95,30 @@
   background: transparent;
   padding: 0;
   min-height: auto;
+  color: var(--text-primary);
+}
+
+.reactSelect :global(.select__single-value) {
+  color: var(--text-primary) !important;
+}
+
+.reactSelect :global(.select__input-container) {
+  color: var(--text-primary) !important;
+}
+
+.reactSelect :global(.select__menu) {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.reactSelect :global(.select__option) {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.reactSelect :global(.select__option--is-focused) {
+  background-color: var(--hover-bg);
 }
 
 .reactSelect :global(.select__value-container) {
@@ -138,7 +159,7 @@
 .resultsTitle {
   font-size: 24px;
   font-weight: 700;
-  color: #334155;
+  color: var(--text-primary);
   margin-bottom: 30px;
 }
 
@@ -170,21 +191,22 @@
 }
 
 .placeCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
   position: relative;
   display: flex;
   flex-direction: column;
   max-height: 540px;
   height: 100%;
+  border: 1px solid var(--border-color);
 }
 
 .placeCard:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .placeImageWrapper {
@@ -206,7 +228,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: white;
+  background: var(--bg-card);
   border: none;
   color: #cbd5e1;
   font-size: 16px;
@@ -254,7 +276,7 @@
 .placeName {
   font-size: 17px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 6px;
   line-height: 1.3;
   overflow: hidden;
@@ -264,7 +286,7 @@
 
 .placeAddress {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-secondary);
   margin-bottom: 10px;
   display: flex;
   align-items: flex-start;
@@ -319,7 +341,7 @@
   gap: 8px;
   margin-bottom: 12px;
   padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border-color);
 }
 
 .contactItem {
@@ -327,10 +349,10 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #475569;
+  color: var(--text-secondary);
   text-decoration: none;
   padding: 6px 10px;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 8px;
   transition: all 0.2s ease;
 }
@@ -349,7 +371,7 @@
 
 .placeDescription {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-secondary);
   line-height: 1.5;
   margin-bottom: 12px;
   font-style: italic;
@@ -367,7 +389,7 @@
   text-decoration: none;
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border-color);
   display: inline-block;
   transition: all 0.2s ease;
 }
@@ -382,8 +404,8 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: white;
-  border-top: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
   padding: 20px;
   box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
   z-index: 1000;
@@ -409,7 +431,7 @@
   gap: 10px;
   font-size: 18px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-primary);
 }
 
 .heartIcon {
@@ -441,14 +463,14 @@
 .loadingState, .emptyState {
   text-align: center;
   padding: 60px 20px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 18px;
 }
 
 .loader {
   width: 40px;
   height: 40px;
-  border: 3px solid #e2e8f0;
+  border: 3px solid var(--border-color);
   border-top: 3px solid #0ea5e9;
   border-radius: 50%;
   margin: 0 auto 20px;
@@ -475,7 +497,7 @@
 }
 
 .modalCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 35px 30px;
   text-align: center;
@@ -512,19 +534,19 @@
 .successTitle {
   font-size: 28px;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 12px;
 }
 
 .successMessage {
   font-size: 16px;
-  color: #64748b;
+  color: var(--text-secondary);
   margin-bottom: 20px;
   line-height: 1.6;
 }
 
 .savedPlacesList {
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 15px;
@@ -539,8 +561,8 @@
   gap: 10px;
   padding: 6px 0;
   font-size: 14px;
-  color: #334155;
-  border-bottom: 1px solid #e2e8f0;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .savedPlaceItem:last-child {

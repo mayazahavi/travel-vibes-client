@@ -1,21 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/CreateTripPage.module.css";
 import { VIBE_IMAGES, CREATE_TRIP_VIBES } from "../constants/vibes";
 import ProgressBar from "../components/ProgressBar";
-import { useFavorites } from "../context/FavoritesContext";
+// import { useFavorites } from "../context/FavoritesContext";
+import { createTrip } from "../store/slices/tripsSlice";
+import useApi from "../hooks/useApi";
+
+const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
 
 function CreateTripPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { createTrip } = useFavorites();
+  const dispatch = useDispatch();
+  // const { createTrip } = useFavorites();
   const selectedVibe = searchParams.get('vibe');
+
+  // API hook for city search
+  const cityApi = useApi();
+  const [destinationQuery, setDestinationQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const suggestionsRef = useRef(null);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     tripName: "",
+    destination: "",
     startDate: null,
     endDate: null,
     travelers: "",
@@ -24,6 +37,63 @@ function CreateTripPage() {
 
   const [errors, setErrors] = useState({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // Close suggestions on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Handle input change
+  const handleDestinationChange = (e) => {
+    const value = e.target.value;
+    setDestinationQuery(value);
+    
+    // Clear error if user starts typing
+    if (errors.destination) setErrors(prev => ({ ...prev, destination: "" }));
+
+    // Only search if user is typing (length > 2)
+    if (value.length >= 3) {
+      // Debounce logic handled by useEffect below is still fine, 
+      // but we need to ensure we want suggestions
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
+  // Handle destination search with debounce
+  useEffect(() => {
+    // Only fetch if suggestions are meant to be shown and query is long enough
+    if (!showSuggestions || destinationQuery.length < 3) return;
+
+    const timer = setTimeout(() => {
+      const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(destinationQuery)}&type=city&limit=5&apiKey=${GEOAPIFY_API_KEY}`;
+      cityApi.refetch(url);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [destinationQuery, showSuggestions, cityApi.refetch]);
+
+  const handleDestinationSelect = (feature) => {
+    const city = feature.properties.city || feature.properties.name;
+    const country = feature.properties.country;
+    const fullName = `${city}, ${country}`;
+    
+    // Set data
+    setFormData(prev => ({ ...prev, destination: fullName }));
+    setDestinationQuery(fullName);
+    
+    // CRITICAL: Explicitly hide suggestions and prevent reopening
+    setShowSuggestions(false);
+    
+    if (errors.destination) setErrors(prev => ({ ...prev, destination: "" }));
+  };
 
   const steps = [
     { id: 1, title: "Trip Details", icon: "fas fa-suitcase" },
@@ -56,6 +126,9 @@ function CreateTripPage() {
       if (!formData.tripName || formData.tripName.length < 3) {
         newErrors.tripName = "Trip name must be at least 3 characters";
       }
+      if (!formData.destination || formData.destination.length < 3) {
+        newErrors.destination = "Please select a destination";
+      }
     } else if (currentStep === 2) {
       if (!formData.startDate) newErrors.startDate = "Start date is required";
       if (!formData.endDate) newErrors.endDate = "End date is required";
@@ -81,14 +154,15 @@ function CreateTripPage() {
   const handleSubmit = () => {
     console.log("Trip Created Successfully:", formData);
     
-    // Create new trip in context
-    createTrip({
+    // Create new trip in redux
+    dispatch(createTrip({
       name: formData.tripName,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
+      destination: formData.destination,
+      startDate: formData.startDate.toISOString(), // Serialize date for Redux
+      endDate: formData.endDate.toISOString(), // Serialize date for Redux
       vibe: formData.vibe,
       travelers: formData.travelers
-    });
+    }));
 
     setShowSuccessModal(true);
     setTimeout(() => {
@@ -129,18 +203,79 @@ function CreateTripPage() {
             </div>
             <div className={styles.formContent}>
               {currentStep === 1 && (
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>Trip Name</label>
-                  <input
-                    type="text"
-                    name="tripName"
-                    value={formData.tripName}
-                    onChange={handleInputChange}
-                    className={`input ${errors.tripName ? 'is-danger' : ''}`}
-                    placeholder="e.g., Summer in Italy 2025"
-                  />
-                  {errors.tripName && <p className="help is-danger">{errors.tripName}</p>}
-                </div>
+                <>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label}>Trip Name</label>
+                    <input
+                      type="text"
+                      name="tripName"
+                      value={formData.tripName}
+                      onChange={handleInputChange}
+                      className={`input ${errors.tripName ? 'is-danger' : ''}`}
+                      placeholder="e.g., Summer in Italy 2025"
+                    />
+                    {errors.tripName && <p className="help is-danger">{errors.tripName}</p>}
+                  </div>
+                  <div className={styles.inputGroup} style={{ position: 'relative' }} ref={suggestionsRef}>
+                    <label className={styles.label}>Destination</label>
+                    <div className={`control ${cityApi.loading ? 'is-loading' : ''}`}>
+                      <input
+                        type="text"
+                        name="destination"
+                        value={destinationQuery}
+                        onChange={handleDestinationChange}
+                        onFocus={() => destinationQuery.length >= 3 && setShowSuggestions(true)}
+                        className={`input ${errors.destination ? 'is-danger' : ''}`}
+                        placeholder="Where are you going?"
+                        autoComplete="off"
+                      />
+                    </div>
+                    {showSuggestions && cityApi.data && cityApi.data.features && cityApi.data.features.length > 0 && (
+                      <div className="box" style={{ 
+                        position: 'absolute', 
+                        top: '100%', 
+                        left: 0, 
+                        right: 0, 
+                        zIndex: 20,
+                        padding: '0',
+                        marginTop: '4px',
+                        maxHeight: '200px',
+                        overflowY: 'auto'
+                      }}>
+                        {/* Filter unique cities to prevent duplicates */}
+                        {(() => {
+                          const uniqueCities = new Set();
+                          return cityApi.data.features.filter(feature => {
+                            const label = `${feature.properties.city || feature.properties.name || ''}, ${feature.properties.country || ''}`;
+                            if (uniqueCities.has(label)) return false;
+                            uniqueCities.add(label);
+                            return true;
+                          }).map((feature, index) => {
+                            const label = `${feature.properties.city || feature.properties.name || ''}, ${feature.properties.country || ''}`;
+                            return (
+                              <div 
+                                key={index} 
+                                className={styles.suggestionItem}
+                                onClick={() => handleDestinationSelect(feature)}
+                                style={{
+                                  padding: '10px 15px',
+                                  borderBottom: '1px solid #f1f5f9',
+                                  cursor: 'pointer',
+                                  transition: 'background-color 0.2s'
+                                }}
+                                onMouseEnter={(e) => e.target.style.backgroundColor = '#f8fafc'}
+                                onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                              >
+                                {label}
+                              </div>
+                            );
+                          });
+                        })()}
+                      </div>
+                    )}
+                    {errors.destination && <p className="help is-danger">{errors.destination}</p>}
+                  </div>
+                </>
               )}
               {currentStep === 2 && (
                 <>

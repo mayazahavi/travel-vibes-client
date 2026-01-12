@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { FavoritesProvider } from "./context/FavoritesContext";
+import { useEffect } from "react";
+// import { FavoritesProvider } from "./context/FavoritesContext"; // Removing Context
+import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header.jsx";
 import HeaderHome from "./components/HeaderHome.jsx";
 import Footer from "./components/Footer.jsx";
@@ -17,9 +19,21 @@ function AppContent() {
   const isHomePage = location.pathname === "/";
   const CurrentHeader = isHomePage ? HeaderHome : Header;
 
+  // Use custom hook for theme persistence
+  const [theme, setTheme] = useLocalStorage("theme", "light");
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === "light" ? "dark" : "light");
+  };
+
+  // Apply theme to body
+  useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+  }, [theme]);
+
   return (
-    <FavoritesProvider>
-      <CurrentHeader />
+    <>
+      <CurrentHeader theme={theme} toggleTheme={toggleTheme} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/vibes" element={<VibesPage />} />
@@ -31,7 +45,7 @@ function AppContent() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
-    </FavoritesProvider>
+    </>
   );
 }
 
