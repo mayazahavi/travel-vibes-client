@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import { FavoritesProvider } from "./context/FavoritesContext"; // Removing Context
 import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header.jsx";
@@ -13,14 +14,39 @@ import FavoritesPage from "./pages/FavoritesPage.jsx";
 import MyTripsPage from "./pages/MyTripsPage.jsx";
 import ItineraryPage from "./pages/ItineraryPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import { selectTrips, setTrips, setCurrentTrip } from "./store/slices/tripsSlice";
 
 function AppContent() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const CurrentHeader = isHomePage ? HeaderHome : Header;
 
+  const dispatch = useDispatch();
+  const trips = useSelector(selectTrips);
+
   // Use custom hook for theme persistence
   const [theme, setTheme] = useLocalStorage("theme", "light");
+  
+  // Use custom hook for trips persistence (includes favorites)
+  const [savedTrips, setSavedTrips] = useLocalStorage("travel_vibes_trips", []);
+
+  // Sync saved trips to Redux on mount (hydration)
+  useEffect(() => {
+    if (savedTrips && savedTrips.length > 0) {
+      dispatch(setTrips(savedTrips));
+      // Restore the most recent trip as active to ensure favorites are visible
+      const lastTrip = savedTrips[savedTrips.length - 1];
+      if (lastTrip) {
+        dispatch(setCurrentTrip(lastTrip.id));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount
+
+  // Sync Redux trips to local storage when they change
+  useEffect(() => {
+    setSavedTrips(trips);
+  }, [trips, setSavedTrips]);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === "light" ? "dark" : "light");
