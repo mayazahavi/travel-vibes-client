@@ -33,9 +33,11 @@ const useApi = (initialUrl = null, options = {}) => {
 
       const jsonData = await response.json();
       setData(jsonData);
+      return jsonData;
     } catch (err) {
       setError(err.message || 'Something went wrong');
       setData(null);
+      throw err; // Re-throw to allow caller to handle
     } finally {
       setLoading(false);
     }
