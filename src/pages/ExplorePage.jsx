@@ -41,6 +41,7 @@ function ExplorePage() {
   
   // Use custom hook for API calls
   const placesApi = useApi();
+  const cityApi = useApi(); // New instance for city autocomplete
 
   const [searched, setSearched] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -138,16 +139,11 @@ function ExplorePage() {
 
     try {
       const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(inputValue)}&type=city&limit=10&apiKey=${GEOAPIFY_API_KEY}`;
-      const response = await fetch(url);
+      
+      // Use refetch from cityApi which now returns data
+      const data = await cityApi.refetch(url);
 
-      if (!response.ok) {
-        setApiError(true);
-        return [];
-      }
-
-      const data = await response.json();
-
-      if (!data.features || data.features.length === 0) {
+      if (!data || !data.features || data.features.length === 0) {
         return [];
       }
 
