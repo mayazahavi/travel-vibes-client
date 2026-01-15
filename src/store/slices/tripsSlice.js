@@ -74,6 +74,9 @@ export const tripsSlice = createSlice({
           trip.favorites[placeIndex] = { ...trip.favorites[placeIndex], ...action.payload.updates };
         }
       }
+    },
+    setTrips: (state, action) => {
+      state.trips = action.payload;
     }
   },
 });
@@ -84,7 +87,8 @@ export const {
   setCurrentTrip, 
   addToFavorites, 
   removeFromFavorites, 
-  updateFavoritePlace 
+  updateFavoritePlace,
+  setTrips
 } = tripsSlice.actions;
 
 // Selectors
