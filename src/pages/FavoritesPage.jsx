@@ -1,8 +1,9 @@
 /* Reusing styles from module */
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt } from 'react-icons/fa';
+import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt, FaSortAmountDown } from 'react-icons/fa';
 // import { useFavorites } from '../context/FavoritesContext'; // Removing Context
+import useLocalStorage from '../hooks/useLocalStorage';
 import { 
   removeFromFavorites, 
   selectFavorites, 
@@ -17,6 +18,9 @@ function FavoritesPage() {
   // Redux Selectors
   const favorites = useSelector(selectFavorites);
   const tripDetails = useSelector(selectCurrentTrip);
+
+  // Use custom hook for persisting sort preference
+  const [sortOrder, setSortOrder] = useLocalStorage('favorites_sort_order', 'default');
 
   const handleAddMore = () => {
     const vibeParam = tripDetails?.vibe ? `?vibe=${tripDetails.vibe}` : '';
@@ -63,6 +67,18 @@ function FavoritesPage() {
       </div>
     );
   };
+
+  // Sort Logic
+  const sortedFavorites = [...favorites].sort((a, b) => {
+    if (sortOrder === 'rating') {
+      return (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0);
+    }
+    if (sortOrder === 'name') {
+      return (a.name || '').localeCompare(b.name || '');
+    }
+    // Default or Newest (assuming array order is insertion order)
+    return 0;
+  });
 
   return (
     <div className={styles.favoritesPage}>
@@ -158,6 +174,27 @@ function FavoritesPage() {
                 </strong>
               </p>
             </div>
+            <div className="level-right">
+               <div className="level-item">
+                 <div className="field has-addons">
+                   <p className="control">
+                     <button className="button is-static">
+                       <span className="icon is-small"><FaSortAmountDown /></span>
+                       <span>Sort by:</span>
+                     </button>
+                   </p>
+                   <p className="control">
+                     <div className="select">
+                       <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+                         <option value="default">Default</option>
+                         <option value="rating">Rating</option>
+                         <option value="name">Name</option>
+                       </select>
+                     </div>
+                   </p>
+                 </div>
+               </div>
+            </div>
           </div>
         )}
 
@@ -173,7 +210,7 @@ function FavoritesPage() {
           </div>
         ) : (
           <div className="columns is-multiline is-mobile">
-            {favorites.map(place => (
+            {sortedFavorites.map(place => (
               <div key={place.id} className="column is-12-mobile is-6-tablet is-4-desktop is-3-widescreen">
                 <div className={styles.placeCard} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                   <div className={styles.imageWrapper} style={{ height: '180px' }}>
