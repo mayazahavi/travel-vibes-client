@@ -214,6 +214,14 @@ function MyTripsPage() {
                               </span>
                           </div>
                         )}
+                        {trip.destination && (
+                          <div style={{ display: 'flex', alignItems: 'center', color: '#64748b', marginTop: '8px' }}>
+                              <FaMapMarkerAlt className="mr-2" style={{ color: '#0ea5e9' }} />
+                              <span style={{ fontSize: '0.9rem' }}>
+                                  {trip.destination}
+                              </span>
+                          </div>
+                        )}
                         {trip.description && (
                           <div style={{ marginTop: '10px', fontSize: '0.9rem', color: '#475569', fontStyle: 'italic' }}>
                             "{trip.description.length > 60 ? trip.description.substring(0, 60) + '...' : trip.description}"
