@@ -383,6 +383,28 @@
   font-style: italic;
 }
 
+/* Dark mode text visibility fixes */
+[data-theme='dark'] .successTitle {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .successMessage {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .tripSummary {
+  background: #1e293b;
+}
+
+[data-theme='dark'] .summaryItem {
+  background: #334155;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .successNote {
+  color: #cbd5e1;
+}
+
 @media (max-width: 900px) {
   .createTripCard {
     flex-direction: column;
