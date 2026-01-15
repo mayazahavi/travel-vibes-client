@@ -68,15 +68,27 @@ function FavoritesPage() {
     );
   };
 
+  const parseDistance = (distStr) => {
+    if (!distStr) return Infinity;
+    if (typeof distStr === 'string') {
+      if (distStr.endsWith('km')) return parseFloat(distStr);
+      if (distStr.endsWith('m')) return parseFloat(distStr) / 1000;
+    }
+    return parseFloat(distStr) || Infinity;
+  };
+
   // Sort Logic
   const sortedFavorites = [...favorites].sort((a, b) => {
-    if (sortOrder === 'rating') {
-      return (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0);
-    }
-    if (sortOrder === 'name') {
+    if (sortOrder === 'name_asc') {
       return (a.name || '').localeCompare(b.name || '');
     }
-    // Default or Newest (assuming array order is insertion order)
+    if (sortOrder === 'name_desc') {
+      return (b.name || '').localeCompare(a.name || '');
+    }
+    if (sortOrder === 'distance') {
+      return parseDistance(a.distance) - parseDistance(b.distance);
+    }
+    // Default: Insertion order
     return 0;
   });
 
@@ -187,8 +199,9 @@ function FavoritesPage() {
                      <div className="select">
                        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
                          <option value="default">Default</option>
-                         <option value="rating">Rating</option>
-                         <option value="name">Name</option>
+                         <option value="name_asc">Name (A-Z)</option>
+                         <option value="name_desc">Name (Z-A)</option>
+                         <option value="distance">Distance (Closest)</option>
                        </select>
                      </div>
                    </p>
