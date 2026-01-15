@@ -214,6 +214,11 @@ function MyTripsPage() {
                               </span>
                           </div>
                         )}
+                        {trip.description && (
+                          <div style={{ marginTop: '10px', fontSize: '0.9rem', color: '#475569', fontStyle: 'italic' }}>
+                            "{trip.description.length > 60 ? trip.description.substring(0, 60) + '...' : trip.description}"
+                          </div>
+                        )}
                       </div>
 
                       <div style={{ marginTop: 'auto', display: 'flex', gap: '10px' }}>

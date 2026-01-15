@@ -226,10 +226,13 @@ function CreateTripPage() {
                         onChange={handleDestinationChange}
                         onFocus={() => destinationQuery.length >= 3 && setShowSuggestions(true)}
                         className={`input ${errors.destination ? 'is-danger' : ''}`}
-                        placeholder="Where are you going?"
+                        placeholder={destinationQuery.length < 3 ? "Type at least 3 characters..." : "Where are you going?"}
                         autoComplete="off"
                       />
                     </div>
+                    {destinationQuery.length > 0 && destinationQuery.length < 3 && (
+                      <p className="help is-info">Please type at least 3 characters to search</p>
+                    )}
                     {showSuggestions && cityApi.data && cityApi.data.features && cityApi.data.features.length > 0 && (
                       <div className="box" style={{ 
                         position: 'absolute', 
