@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaPlaneDeparture, FaCalendarAlt, FaTrash, FaPlus, FaMapMarkerAlt, FaArrowRight, FaUserFriends } from 'react-icons/fa';
-// import { useFavorites } from '../context/FavoritesContext'; // Removing Context
 import { 
   selectTrips, 
   setCurrentTrip, 
@@ -15,8 +14,6 @@ import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 function MyTripsPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  // Redux Selectors
   const trips = useSelector(selectTrips);
 
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, tripId: null });

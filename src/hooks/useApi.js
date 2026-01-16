@@ -15,15 +15,11 @@ const useApi = (initialUrl = null, options = {}) => {
   const fetchData = useCallback(async (overrideUrl = null) => {
     const finalUrl = overrideUrl || url;
     
-    // If no URL is available (and none provided as override), skip fetch
     if (!finalUrl) return;
 
     setLoading(true);
     setError(null);
     
-    // Only clear data if we want to reset on new fetch, otherwise keep stale data while loading
-    // setData(null); 
-
     try {
       const response = await fetch(finalUrl, options);
       
@@ -43,8 +39,6 @@ const useApi = (initialUrl = null, options = {}) => {
     }
   }, [url, options]);
 
-  // If initialUrl is provided, we can fetch automatically.
-  // If we want manual fetch only, pass null as initialUrl and use setUrl or refetch(url).
   useEffect(() => {
     if (initialUrl) {
       fetchData(initialUrl);
@@ -56,7 +50,7 @@ const useApi = (initialUrl = null, options = {}) => {
     loading, 
     error, 
     refetch: fetchData,
-    setUrl // Expose setUrl to allow changing the URL dynamically
+    setUrl 
   };
 };
 

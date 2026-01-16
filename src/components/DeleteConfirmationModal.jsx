@@ -1,4 +1,4 @@
-import styles from '../styles/ExplorePage.module.css'; // Reusing styles or creating inline overrides
+import styles from '../styles/ExplorePage.module.css'; 
 import { FaTrash, FaExclamationTriangle } from 'react-icons/fa';
 
 function DeleteConfirmationModal({ isOpen, onClose, onConfirm, title, message }) {

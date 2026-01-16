@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FaHeart, FaPlane } from "react-icons/fa";
-// import { useFavorites } from "../context/FavoritesContext"; // Removing Context
 import { 
   addToFavorites, 
   removeFromFavorites, 
@@ -38,26 +37,20 @@ function ExplorePage() {
   );
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [places, setPlaces] = useState([]);
-  
-  // Use custom hook for API calls
   const placesApi = useApi();
-  const cityApi = useApi(); // New instance for city autocomplete
+  const cityApi = useApi(); 
 
   const [searched, setSearched] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
-  // Helper to check if favorite
   const isFavorite = (placeId) => {
     return favorites.some(p => p.id === placeId);
   };
-
-  // Effect to process places data when API returns
   useEffect(() => {
     if (placesApi.loading) {
       setSearched(true);
-      setProcessing(true); // Start processing
+      setProcessing(true); 
     }
 
     if (placesApi.data && selectedLocation) {
@@ -118,7 +111,7 @@ function ExplorePage() {
           console.error("Error processing places:", error);
           setApiError(true);
         } finally {
-          setProcessing(false); // Finished processing
+          setProcessing(false); 
         }
       };
 
@@ -183,8 +176,6 @@ function ExplorePage() {
   const handleSearch = async () => {
     if (!selectedVibe || !selectedLocation) return;
 
-    // Reset states
-    // setSearched(true); // Don't set yet
     setPlaces([]);
     setApiError(false);
     clearUsedImages();
@@ -197,18 +188,10 @@ function ExplorePage() {
     placesApi.refetch(url);
   };
 
-  // Effect to handle searched state
-  // useEffect(() => {
-  //   if (placesApi.loading) {
-  //     setSearched(true);
-  //   }
-  // }, [placesApi.loading]);
-
   const toggleFavorite = (place) => {
     if (isFavorite(place.id)) {
       dispatch(removeFromFavorites(place.id));
     } else {
-      // Add necessary properties for FavoritesPage display
       const { city, country } = selectedLocation?.value || {};
 
       dispatch(addToFavorites({

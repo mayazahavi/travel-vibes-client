@@ -145,9 +145,8 @@
   margin-bottom: 0 !important;
 }
 
-/* Details Section - Adjusted Proportions */
 .detailsSection {
-  padding: 60px 20px 80px 20px; /* Increased top padding for separation */
+  padding: 60px 20px 80px 20px; 
   display: flex;
   justify-content: center;
 }
@@ -166,10 +165,10 @@
 }
 
 .detailsImageWrapper {
-  width: 40%; /* Reduced from 45% */
+  width: 40%; 
   position: relative;
   overflow: hidden;
-  display: flex; /* Keeps image full height */
+  display: flex; 
 }
 
 .detailsImage {
@@ -177,7 +176,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
-  display: block; /* Removes bottom gap */
+  display: block; 
 }
 
 .detailsOverlay {
@@ -190,8 +189,8 @@
 }
 
 .detailsContent {
-  width: 60%; /* Increased from 55% */
-  padding: 30px; /* Reduced from 40px */
+  width: 60%; 
+  padding: 30px; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -226,7 +225,7 @@
   justify-content: center;
   background: #0ea5e9;
   color: white;
-  padding: 12px 24px; /* Smaller padding */
+  padding: 12px 24px; 
   border-radius: 50px;
   font-weight: 600;
   text-decoration: none;
@@ -247,7 +246,6 @@
   margin-left: 8px;
 }
 
-/* Responsiveness */
 @media (max-width: 768px) {
   .mainTitle {
     font-size: 28px;
@@ -270,7 +268,6 @@
   }
 }
 
-/* Success Modal Styles */
 .successModal {
   z-index: 9999;
 }
@@ -330,7 +327,6 @@
   margin-top: 20px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .modalCard {
     max-width: 90%;

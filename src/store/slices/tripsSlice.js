@@ -29,14 +29,13 @@ export const tripsSlice = createSlice({
       state.currentTripId = action.payload;
     },
     addToFavorites: (state, action) => {
-      // Logic: If no current trip, create one. Then add place to current trip.
       let targetTripId = state.currentTripId;
 
       if (!targetTripId) {
         const newTrip = {
           id: Date.now().toString(),
           name: "My Trip",
-          startDate: new Date().toISOString(), // Serializable date
+          startDate: new Date().toISOString(), 
           endDate: new Date().toISOString(),
           vibe: action.payload.vibe || "General",
           travelers: "1",
@@ -64,7 +63,6 @@ export const tripsSlice = createSlice({
         trip.favorites = trip.favorites.filter(p => p.id !== action.payload);
       }
     },
-    // Optional: for editing items inside a trip (like assigning day/time)
     updateFavoritePlace: (state, action) => {
       if (!state.currentTripId) return;
       const trip = state.trips.find(t => t.id === state.currentTripId);
@@ -91,7 +89,6 @@ export const {
   setTrips
 } = tripsSlice.actions;
 
-// Selectors
 export const selectTrips = (state) => state.trips.trips;
 export const selectCurrentTripId = (state) => state.trips.currentTripId;
 export const selectCurrentTrip = (state) => 

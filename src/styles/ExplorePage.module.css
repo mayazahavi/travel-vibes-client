@@ -189,21 +189,18 @@
   gap: 20px;
 }
 
-/* Force 4 columns on larger screens */
 @media (min-width: 1200px) {
   .placesGrid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-/* 3 columns on medium screens */
 @media (min-width: 900px) and (max-width: 1199px) {
   .placesGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* 2 columns on tablets */
 @media (min-width: 600px) and (max-width: 899px) {
   .placesGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -603,7 +600,6 @@
   font-style: italic;
 }
 
-/* Mobile - 1 column */
 @media (max-width: 599px) {
   .placesGrid {
     grid-template-columns: 1fr;
@@ -615,7 +611,6 @@
   }
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .searchBox {
     flex-direction: column;

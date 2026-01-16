@@ -8,14 +8,12 @@ import { useState, useEffect } from 'react';
  * @returns {[any, Function]} - Returns the current value and a setter function.
  */
 function useLocalStorage(key, initialValue) {
-  // 1. Read initial value from localStorage or use the provided initialValue
   const [storedValue, setStoredValue] = useState(() => {
     if (typeof window === "undefined") {
       return initialValue;
     }
     try {
       const item = window.localStorage.getItem(key);
-      // Parse stored json or if none return initialValue
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.warn(`Error reading localStorage key "${key}":`, error);
@@ -23,16 +21,11 @@ function useLocalStorage(key, initialValue) {
     }
   });
 
-  // 2. Return a wrapped version of useState's setter function that persists the new value to localStorage.
   const setValue = (value) => {
     try {
-      // Allow value to be a function so we have same API as useState
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       
-      // Save state
       setStoredValue(valueToStore);
-      
-      // Save to local storage
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
@@ -40,8 +33,6 @@ function useLocalStorage(key, initialValue) {
       console.warn(`Error setting localStorage key "${key}":`, error);
     }
   };
-
-  // 3. Listen for changes in other tabs/windows to keep state in sync (optional but good practice)
   useEffect(() => {
     const handleStorageChange = (e) => {
       if (e.key === key && e.newValue) {

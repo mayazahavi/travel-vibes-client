@@ -383,7 +383,6 @@
   font-style: italic;
 }
 
-/* Dark mode text visibility fixes */
 [data-theme='dark'] .successTitle {
   color: #ffffff;
 }

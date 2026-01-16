@@ -2,7 +2,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaHeart, FaMapMarkerAlt, FaTrash, FaWalking, FaPhone, FaGlobe, FaClock, FaPlus, FaCalendarAlt, FaSortAmountDown } from 'react-icons/fa';
-// import { useFavorites } from '../context/FavoritesContext'; // Removing Context
 import useLocalStorage from '../hooks/useLocalStorage';
 import { 
   removeFromFavorites, 
@@ -14,12 +13,8 @@ import styles from '../styles/FavoritesPage.module.css';
 function FavoritesPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  // Redux Selectors
   const favorites = useSelector(selectFavorites);
   const tripDetails = useSelector(selectCurrentTrip);
-
-  // Use custom hook for persisting sort preference
   const [sortOrder, setSortOrder] = useLocalStorage('favorites_sort_order', 'default');
 
   const handleAddMore = () => {
@@ -76,8 +71,6 @@ function FavoritesPage() {
     }
     return parseFloat(distStr) || Infinity;
   };
-
-  // Sort Logic
   const sortedFavorites = [...favorites].sort((a, b) => {
     if (sortOrder === 'name_asc') {
       return (a.name || '').localeCompare(b.name || '');
@@ -88,7 +81,6 @@ function FavoritesPage() {
     if (sortOrder === 'distance') {
       return parseDistance(a.distance) - parseDistance(b.distance);
     }
-    // Default: Insertion order
     return 0;
   });
 

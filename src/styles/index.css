@@ -37,7 +37,6 @@
   --footer-link: #ffffff;
 }
 
-/* Force bright white text in dark mode for all main content elements */
 [data-theme='dark'] h1,
 [data-theme='dark'] h2,
 [data-theme='dark'] h3,
@@ -59,8 +58,6 @@
 [data-theme='dark'] textarea {
   color: #ffffff !important;
 }
-
-/* Ensure Bulma box and card components have dark background in dark mode */
 [data-theme='dark'] .box,
 [data-theme='dark'] .card {
   background-color: var(--bg-card);

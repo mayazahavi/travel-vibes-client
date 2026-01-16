@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-// import { useFavorites } from '../context/FavoritesContext'; // Removing Context
 import { 
   selectFavorites, 
   selectCurrentTrip,
@@ -13,8 +12,6 @@ import { FaMapMarkerAlt, FaPlus, FaCalendarDay, FaCalendarAlt, FaTrash, FaMapPin
 function ItineraryPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  // Redux Selectors
   const favorites = useSelector(selectFavorites);
   const tripDetails = useSelector(selectCurrentTrip);
 

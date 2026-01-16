@@ -6,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/CreateTripPage.module.css";
 import { VIBE_IMAGES, CREATE_TRIP_VIBES } from "../constants/vibes";
 import ProgressBar from "../components/ProgressBar";
-// import { useFavorites } from "../context/FavoritesContext";
 import { createTrip } from "../store/slices/tripsSlice";
 import useApi from "../hooks/useApi";
 
@@ -16,10 +15,9 @@ function CreateTripPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { createTrip } = useFavorites();
   const selectedVibe = searchParams.get('vibe');
 
-  // API hook for city search
+  
   const cityApi = useApi();
   const [destinationQuery, setDestinationQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -38,7 +36,7 @@ function CreateTripPage() {
   const [errors, setErrors] = useState({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // Close suggestions on click outside
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
@@ -49,27 +47,17 @@ function CreateTripPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle input change
   const handleDestinationChange = (e) => {
     const value = e.target.value;
     setDestinationQuery(value);
-    
-    // Clear error if user starts typing
     if (errors.destination) setErrors(prev => ({ ...prev, destination: "" }));
-
-    // Only search if user is typing (length > 2)
     if (value.length >= 3) {
-      // Debounce logic handled by useEffect below is still fine, 
-      // but we need to ensure we want suggestions
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
     }
   };
-
-  // Handle destination search with debounce
   useEffect(() => {
-    // Only fetch if suggestions are meant to be shown and query is long enough
     if (!showSuggestions || destinationQuery.length < 3) return;
 
     const timer = setTimeout(() => {
@@ -85,11 +73,8 @@ function CreateTripPage() {
     const country = feature.properties.country;
     const fullName = `${city}, ${country}`;
     
-    // Set data
     setFormData(prev => ({ ...prev, destination: fullName }));
     setDestinationQuery(fullName);
-    
-    // CRITICAL: Explicitly hide suggestions and prevent reopening
     setShowSuggestions(false);
     
     if (errors.destination) setErrors(prev => ({ ...prev, destination: "" }));
@@ -153,13 +138,11 @@ function CreateTripPage() {
 
   const handleSubmit = () => {
     console.log("Trip Created Successfully:", formData);
-    
-    // Create new trip in redux
     dispatch(createTrip({
       name: formData.tripName,
       destination: formData.destination,
-      startDate: formData.startDate.toISOString(), // Serialize date for Redux
-      endDate: formData.endDate.toISOString(), // Serialize date for Redux
+      startDate: formData.startDate.toISOString(), 
+      endDate: formData.endDate.toISOString(), 
       vibe: formData.vibe,
       travelers: formData.travelers
     }));

@@ -71,7 +71,6 @@
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Places Grid */
 .placesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -79,7 +78,6 @@
   padding: 20px 0;
 }
 
-/* Card Styles */
 .placeCard {
   background: var(--bg-card);
   border-radius: 16px;
@@ -216,7 +214,6 @@
   border: 1px solid var(--border-color);
 }
 
-/* Empty State */
 .emptyState {
   text-align: center;
   padding: 80px 20px;

@@ -47,11 +47,11 @@
 
 .icon {
   font-size: 12px;
-  color: #f6ad55; /* Sun color */
+  color: #f6ad55; 
 }
 
 .toggleTrack.dark .icon {
-  color: #fbbf24; /* Moon color */
+  color: #fbbf24; 
 }
 
 .toggleButton:focus-visible .toggleTrack {
