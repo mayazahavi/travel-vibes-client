@@ -22,8 +22,8 @@
   --bg-primary: #1a202c;
   --bg-secondary: #2d3748;
   --bg-card: #2d3748;
-  --text-primary: #f7fafc;
-  --text-secondary: #a0aec0;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
   --border-color: #4a5568;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
@@ -33,8 +33,38 @@
   --hover-bg: #4a5568;
   --footer-bg: linear-gradient(to bottom, #1e293b, #0f172a);
   --footer-border: #334155;
-  --footer-text: #f8fafc;
-  --footer-link: #cbd5e1;
+  --footer-text: #ffffff;
+  --footer-link: #ffffff;
+}
+
+/* Force bright white text in dark mode for all main content elements */
+[data-theme='dark'] h1,
+[data-theme='dark'] h2,
+[data-theme='dark'] h3,
+[data-theme='dark'] h4,
+[data-theme='dark'] h5,
+[data-theme='dark'] h6,
+[data-theme='dark'] p,
+[data-theme='dark'] label,
+[data-theme='dark'] li,
+[data-theme='dark'] strong,
+[data-theme='dark'] b,
+[data-theme='dark'] .modal-card-title,
+[data-theme='dark'] .modal-card-body,
+[data-theme='dark'] .content,
+[data-theme='dark'] .subtitle,
+[data-theme='dark'] .title,
+[data-theme='dark'] input,
+[data-theme='dark'] select,
+[data-theme='dark'] textarea {
+  color: #ffffff !important;
+}
+
+/* Ensure Bulma box and card components have dark background in dark mode */
+[data-theme='dark'] .box,
+[data-theme='dark'] .card {
+  background-color: var(--bg-card);
+  color: #ffffff;
 }
 
 body {
