@@ -5,7 +5,7 @@ function VibeCard({ vibe, isSelected, onSelect }) {
     <div
       className={`card ${styles.vibeCard} ${isSelected ? styles.vibeCardSelected : ""}`}
       onClick={onSelect}
-      style={{ cursor: 'pointer', position: 'relative' }}
+      style={{ cursor: "pointer", position: "relative" }}
     >
       {isSelected && (
         <div className={styles.checkMark}>
@@ -17,8 +17,12 @@ function VibeCard({ vibe, isSelected, onSelect }) {
       </div>
       <div className={styles.cardContent}>
         <div className="content">
-          <h3 className={`title is-5 has-text-centered ${styles.vibeTitle}`}>{vibe.title}</h3>
-          <p className={`subtitle is-6 has-text-centered ${styles.vibeShort}`}>{vibe.short}</p>
+          <h3 className={`title is-5 has-text-centered ${styles.vibeTitle}`}>
+            {vibe.title}
+          </h3>
+          <p className={`subtitle is-6 has-text-centered ${styles.vibeShort}`}>
+            {vibe.short}
+          </p>
         </div>
       </div>
     </div>

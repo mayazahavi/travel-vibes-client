@@ -3,7 +3,11 @@ function SuccessModal({ isOpen, onClose, favorites, styles }) {
 
   return (
     <div className={`modal is-active ${styles.successModal}`}>
-      <div className="modal-background" onClick={onClose} style={{ background: 'rgba(0,0,0,0.5)' }}></div>
+      <div
+        className="modal-background"
+        onClick={onClose}
+        style={{ background: "rgba(0,0,0,0.5)" }}
+      ></div>
       <div className="modal-content">
         <div className={styles.modalCard}>
           <div className={styles.successIcon}>
@@ -11,12 +15,20 @@ function SuccessModal({ isOpen, onClose, favorites, styles }) {
           </div>
           <h2 className={styles.successTitle}>Places Saved!</h2>
           <p className={styles.successMessage}>
-            You've saved <strong>{favorites.length} amazing {favorites.length === 1 ? 'place' : 'places'}</strong> to your favorites.
+            You've saved{" "}
+            <strong>
+              {favorites.length} amazing{" "}
+              {favorites.length === 1 ? "place" : "places"}
+            </strong>{" "}
+            to your favorites.
           </p>
           <div className={styles.savedPlacesList}>
-            {favorites.slice(0, 3).map(place => (
+            {favorites.slice(0, 3).map((place) => (
               <div key={place.id} className={styles.savedPlaceItem}>
-                <i className="fas fa-map-marker-alt" style={{color: '#0ea5e9'}}></i>
+                <i
+                  className="fas fa-map-marker-alt"
+                  style={{ color: "#0ea5e9" }}
+                ></i>
                 <span>{place.name}</span>
               </div>
             ))}
@@ -31,7 +43,11 @@ function SuccessModal({ isOpen, onClose, favorites, styles }) {
           </p>
         </div>
       </div>
-      <button className="modal-close is-large" aria-label="close" onClick={onClose}></button>
+      <button
+        className="modal-close is-large"
+        aria-label="close"
+        onClick={onClose}
+      ></button>
     </div>
   );
 }

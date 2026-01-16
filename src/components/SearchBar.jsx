@@ -12,19 +12,24 @@ function SearchBar({
   vibeOptions,
   loading,
   apiError,
-  styles
+  styles,
 }) {
   return (
     <div className={styles.searchContainer}>
       {apiError && (
-        <div style={{color: '#ef4444', fontSize: '14px', marginBottom: '10px'}}>
+        <div
+          style={{ color: "#ef4444", fontSize: "14px", marginBottom: "10px" }}
+        >
           ⚠️ API connection issue. Please try again.
         </div>
       )}
       <div className={styles.searchBox}>
         <div className={styles.filterGroup}>
-          <label className={styles.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <FaUmbrellaBeach style={{ color: '#0ea5e9' }} />
+          <label
+            className={styles.label}
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <FaUmbrellaBeach style={{ color: "#0ea5e9" }} />
             Your Vibe
           </label>
           <Select
@@ -38,8 +43,11 @@ function SearchBar({
         </div>
         <div className={styles.divider}></div>
         <div className={styles.filterGroup}>
-          <label className={styles.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <FaMapMarkerAlt style={{ color: '#0ea5e9' }} />
+          <label
+            className={styles.label}
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <FaMapMarkerAlt style={{ color: "#0ea5e9" }} />
             Where to?
           </label>
           <AsyncSelect
@@ -50,14 +58,20 @@ function SearchBar({
             className={styles.reactSelect}
             classNamePrefix="select"
             loadingMessage={() => "Searching cities..."}
-            noOptionsMessage={({ inputValue }) => 
-              !inputValue ? "Start typing to search cities..." : 
-              inputValue.length < 3 ? "Type at least 3 characters..." :
-              "No cities found. Try different spelling."
+            noOptionsMessage={({ inputValue }) =>
+              !inputValue
+                ? "Start typing to search cities..."
+                : inputValue.length < 3
+                  ? "Type at least 3 characters..."
+                  : "No cities found. Try different spelling."
             }
           />
         </div>
-        <button className={styles.searchButton} onClick={onSearch} disabled={!selectedVibe || !selectedLocation || loading}>
+        <button
+          className={styles.searchButton}
+          onClick={onSearch}
+          disabled={!selectedVibe || !selectedLocation || loading}
+        >
           <FaSearch />
         </button>
       </div>

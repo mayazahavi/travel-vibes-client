@@ -1,15 +1,20 @@
-import { Link } from 'react-router-dom';
-import { FaMapMarkedAlt, FaCompass, FaGlobeAmericas, FaRoute } from 'react-icons/fa';
-import styles from '../styles/HomePage.module.css';
+import { Link } from "react-router-dom";
+import {
+  FaMapMarkedAlt,
+  FaCompass,
+  FaGlobeAmericas,
+  FaRoute,
+} from "react-icons/fa";
+import styles from "../styles/HomePage.module.css";
 
 function HomePage() {
   return (
     <div className={styles.homePage}>
       <section id="home" className={styles.heroSection}>
         <div className={styles.heroBackground}>
-          <img 
-            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80" 
-            alt="Beautiful beach destination" 
+          <img
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80"
+            alt="Beautiful beach destination"
             className={styles.heroImage}
           />
           <div className={styles.heroOverlay}></div>
@@ -21,7 +26,8 @@ function HomePage() {
               Welcome to <span className={styles.highlight}>TravelVibes</span>
             </h1>
             <p className={styles.heroSubtitle}>
-              Discover your perfect travel experience. Choose your vibe, explore destinations, and plan your dream journey.
+              Discover your perfect travel experience. Choose your vibe, explore
+              destinations, and plan your dream journey.
             </p>
             <Link to="/vibes" className={styles.ctaButton}>
               <span>Let's Get Started</span>
@@ -34,7 +40,8 @@ function HomePage() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Plan Your Perfect Trip</h2>
           <p className={styles.sectionSubtitle}>
-            Everything you need to discover, explore, and organize your next adventure in one place.
+            Everything you need to discover, explore, and organize your next
+            adventure in one place.
           </p>
         </div>
         <div className={styles.featuresGrid}>
@@ -44,7 +51,8 @@ function HomePage() {
             </div>
             <h3 className={styles.cardTitle}>Find Your Vibe</h3>
             <p className={styles.cardDescription}>
-              Nature? Culture? Food? Romance? Choose the vibe that suits you - we'll bring you the right destinations.
+              Nature? Culture? Food? Romance? Choose the vibe that suits you -
+              we'll bring you the right destinations.
             </p>
           </div>
           <div className={styles.featureCard}>
@@ -53,7 +61,8 @@ function HomePage() {
             </div>
             <h3 className={styles.cardTitle}>Filter by Country & City</h3>
             <p className={styles.cardDescription}>
-              Pick your dream country and city. We'll recommend perfect places matching your vibe.
+              Pick your dream country and city. We'll recommend perfect places
+              matching your vibe.
             </p>
           </div>
           <div className={styles.featureCard}>
@@ -62,7 +71,8 @@ function HomePage() {
             </div>
             <h3 className={styles.cardTitle}>Browse Attractions</h3>
             <p className={styles.cardDescription}>
-              View cards with a photo, location, type, hours, and rating. Save the ones you love.
+              View cards with a photo, location, type, hours, and rating. Save
+              the ones you love.
             </p>
           </div>
           <div className={styles.featureCard}>
@@ -71,7 +81,8 @@ function HomePage() {
             </div>
             <h3 className={styles.cardTitle}>Build Your Itinerary</h3>
             <p className={styles.cardDescription}>
-              See all your favorite places in one list, and organize them into your dream trip.
+              See all your favorite places in one list, and organize them into
+              your dream trip.
             </p>
           </div>
         </div>
@@ -79,19 +90,26 @@ function HomePage() {
       <section id="about" className={styles.aboutSection}>
         <div className={styles.aboutGrid}>
           <div className={styles.aboutImageWrapper}>
-            <img 
-              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80" 
-              alt="Traveler with backpack" 
+            <img
+              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80"
+              alt="Traveler with backpack"
               className={styles.aboutImage}
             />
           </div>
           <div className={styles.aboutContent}>
             <h2 className={styles.aboutTitle}>Redefining How You Travel</h2>
             <p className={styles.aboutText}>
-              Travel Vibes isn't just another booking site. We believe that the best journeys start with a <strong>feeling</strong>. Whether you're craving the energy of a bustling city night, the peace of a forest clearing, the flavors of a local market, or the quiet comfort of a sunset promenade, we understand that <em>vibes matter</em>.
+              Travel Vibes isn't just another booking site. We believe that the
+              best journeys start with a <strong>feeling</strong>. Whether
+              you're craving the energy of a bustling city night, the peace of a
+              forest clearing, the flavors of a local market, or the quiet
+              comfort of a sunset promenade, we understand that{" "}
+              <em>vibes matter</em>.
             </p>
             <p className={styles.aboutText}>
-              Born from a passion for exploration and built with a community of travelers, we've curated experiences over towns, maps. Let us guide you to your next unforgettable memory.
+              Born from a passion for exploration and built with a community of
+              travelers, we've curated experiences over towns, maps. Let us
+              guide you to your next unforgettable memory.
             </p>
             <div className={styles.statsRow}>
               <div className={styles.statItem}>
@@ -113,16 +131,30 @@ function HomePage() {
       <section className={styles.testimonialsSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>What Travelers Say</h2>
-          <p className={styles.sectionSubtitle}>Real stories from people who found their perfect place.</p>
+          <p className={styles.sectionSubtitle}>
+            Real stories from people who found their perfect place.
+          </p>
         </div>
         <div className={styles.testimonialsGrid}>
           <div className={styles.testimonialCard}>
             <div className={styles.stars}>
-              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
             </div>
-            <p className={styles.quoteText}>"I used to spend hours researching. With Travel Vibes, I just clicked 'Nature' and found the most incredible hidden gems in Costa Rica."</p>
+            <p className={styles.quoteText}>
+              "I used to spend hours researching. With Travel Vibes, I just
+              clicked 'Nature' and found the most incredible hidden gems in
+              Costa Rica."
+            </p>
             <div className={styles.userInfo}>
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Sarah Jenkins" className={styles.userAvatar} />
+              <img
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80"
+                alt="Sarah Jenkins"
+                className={styles.userAvatar}
+              />
               <div className={styles.userName}>
                 <h5>Sarah Jenkins</h5>
                 <span>Nature Lover</span>
@@ -131,11 +163,22 @@ function HomePage() {
           </div>
           <div className={styles.testimonialCard}>
             <div className={styles.stars}>
-              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
             </div>
-            <p className={styles.quoteText}>"The 'Foodie' vibe suggestions were spot on! I ate my way through Tokyo and discovered places I never would have found on my own."</p>
+            <p className={styles.quoteText}>
+              "The 'Foodie' vibe suggestions were spot on! I ate my way through
+              Tokyo and discovered places I never would have found on my own."
+            </p>
             <div className={styles.userInfo}>
-              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Mike Ross" className={styles.userAvatar} />
+              <img
+                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
+                alt="Mike Ross"
+                className={styles.userAvatar}
+              />
               <div className={styles.userName}>
                 <h5>Mike Ross</h5>
                 <span>Culinary Explorer</span>
@@ -144,11 +187,23 @@ function HomePage() {
           </div>
           <div className={styles.testimonialCard}>
             <div className={styles.stars}>
-              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
             </div>
-            <p className={styles.quoteText}>"Finally, a travel site that understands it's about the *feeling*. The Romantic Escape vibe helped me plan the perfect anniversary trip."</p>
+            <p className={styles.quoteText}>
+              "Finally, a travel site that understands it's about the *feeling*.
+              The Romantic Escape vibe helped me plan the perfect anniversary
+              trip."
+            </p>
             <div className={styles.userInfo}>
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Emily Chen" className={styles.userAvatar} />
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
+                alt="Emily Chen"
+                className={styles.userAvatar}
+              />
               <div className={styles.userName}>
                 <h5>Emily Chen</h5>
                 <span>Romantic Traveler</span>

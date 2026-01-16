@@ -33,7 +33,7 @@
   border-radius: 50%;
   position: absolute;
   left: 2px;
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,14 +47,13 @@
 
 .icon {
   font-size: 12px;
-  color: #f6ad55; 
+  color: #f6ad55;
 }
 
 .toggleTrack.dark .icon {
-  color: #fbbf24; 
+  color: #fbbf24;
 }
 
 .toggleButton:focus-visible .toggleTrack {
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
 }
-

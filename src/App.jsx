@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "./hooks/useLocalStorage";
@@ -13,7 +18,11 @@ import FavoritesPage from "./pages/FavoritesPage.jsx";
 import MyTripsPage from "./pages/MyTripsPage.jsx";
 import ItineraryPage from "./pages/ItineraryPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
-import { selectTrips, setTrips, setCurrentTrip } from "./store/slices/tripsSlice";
+import {
+  selectTrips,
+  setTrips,
+  setCurrentTrip,
+} from "./store/slices/tripsSlice";
 
 function AppContent() {
   const location = useLocation();
@@ -34,14 +43,14 @@ function AppContent() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); 
+  }, []);
 
   useEffect(() => {
     setSavedTrips(trips);
   }, [trips, setSavedTrips]);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === "light" ? "dark" : "light");
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   useEffect(() => {
@@ -68,7 +77,7 @@ function AppContent() {
 
 function App() {
   return (
-    <div style={{ minHeight: '100vh' }}>
+    <div style={{ minHeight: "100vh" }}>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AppContent />
       </Router>

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 /**
  * A custom hook that syncs state with localStorage.
- * 
+ *
  * @param {string} key - The key under which the value is stored in localStorage.
  * @param {any} initialValue - The initial value if no value exists in localStorage.
  * @returns {[any, Function]} - Returns the current value and a setter function.
@@ -23,8 +23,9 @@ function useLocalStorage(key, initialValue) {
 
   const setValue = (value) => {
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+
       setStoredValue(valueToStore);
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -40,12 +41,11 @@ function useLocalStorage(key, initialValue) {
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, [key]);
 
   return [storedValue, setValue];
 }
 
 export default useLocalStorage;
-

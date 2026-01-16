@@ -9,8 +9,9 @@
 .headerSection {
   padding: 100px 20px 40px 20px;
   text-align: center;
-  background-image: linear-gradient(var(--overlay-color), var(--overlay-color)), 
-                    url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg');
+  background-image:
+    linear-gradient(var(--overlay-color), var(--overlay-color)),
+    url("https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -101,8 +102,14 @@
 }
 
 @keyframes popIn {
-  0% { transform: scale(0); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .cardImage {
@@ -146,7 +153,7 @@
 }
 
 .detailsSection {
-  padding: 60px 20px 80px 20px; 
+  padding: 60px 20px 80px 20px;
   display: flex;
   justify-content: center;
 }
@@ -165,10 +172,10 @@
 }
 
 .detailsImageWrapper {
-  width: 40%; 
+  width: 40%;
   position: relative;
   overflow: hidden;
-  display: flex; 
+  display: flex;
 }
 
 .detailsImage {
@@ -176,7 +183,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
-  display: block; 
+  display: block;
 }
 
 .detailsOverlay {
@@ -185,12 +192,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .detailsContent {
-  width: 60%; 
-  padding: 30px; 
+  width: 60%;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -225,7 +232,7 @@
   justify-content: center;
   background: #0ea5e9;
   color: white;
-  padding: 12px 24px; 
+  padding: 12px 24px;
   border-radius: 50px;
   font-weight: 600;
   text-decoration: none;
@@ -255,7 +262,8 @@
     flex-direction: column;
   }
 
-  .detailsImageWrapper, .detailsContent {
+  .detailsImageWrapper,
+  .detailsContent {
     width: 100%;
   }
 
@@ -293,9 +301,17 @@
 }
 
 @keyframes bounceIn {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .successTitle {
@@ -332,15 +348,15 @@
     max-width: 90%;
     padding: 25px 20px;
   }
-  
+
   .vibeEmoji {
     font-size: 50px;
   }
-  
+
   .successTitle {
     font-size: 22px;
   }
-  
+
   .successMessage {
     font-size: 15px;
   }

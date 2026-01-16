@@ -1,14 +1,23 @@
-import { FaHeart, FaRegHeart, FaMapMarkerAlt, FaPhone, FaGlobe, FaClock, FaStar, FaWalking } from "react-icons/fa";
+import {
+  FaHeart,
+  FaRegHeart,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaGlobe,
+  FaClock,
+  FaStar,
+  FaWalking,
+} from "react-icons/fa";
 
 function PlaceCard({ place, favorites, onToggleFavorite, styles }) {
-  const isFavorite = favorites.find(p => p.id === place.id);
+  const isFavorite = favorites.find((p) => p.id === place.id);
 
   return (
     <div className={styles.placeCard}>
       <div className={styles.placeImageWrapper}>
         <img src={place.image} alt={place.name} className={styles.placeImage} />
-        <button 
-          className={`${styles.likeButton} ${isFavorite ? styles.liked : ''}`}
+        <button
+          className={`${styles.likeButton} ${isFavorite ? styles.liked : ""}`}
           onClick={() => onToggleFavorite(place)}
         >
           {isFavorite ? <FaHeart /> : <FaRegHeart />}
@@ -26,7 +35,7 @@ function PlaceCard({ place, favorites, onToggleFavorite, styles }) {
         </p>
         <div className={styles.categoryRow}>
           <span className={styles.placeCategory}>
-            {place.category.split('.')[1] || place.category}
+            {place.category.split(".")[1] || place.category}
           </span>
           <span className={styles.distanceBadge}>
             <FaWalking /> {place.distance}
@@ -40,9 +49,13 @@ function PlaceCard({ place, favorites, onToggleFavorite, styles }) {
             </a>
           )}
           {place.website && (
-            <a 
-              href={place.website.startsWith('http') ? place.website : `https://${place.website}`} 
-              target="_blank" 
+            <a
+              href={
+                place.website.startsWith("http")
+                  ? place.website
+                  : `https://${place.website}`
+              }
+              target="_blank"
               rel="noopener noreferrer"
               className={styles.contactItem}
             >
@@ -60,10 +73,10 @@ function PlaceCard({ place, favorites, onToggleFavorite, styles }) {
         {place.description && (
           <p className={styles.placeDescription}>
             {place.description.substring(0, 100)}
-            {place.description.length > 100 && '...'}
+            {place.description.length > 100 && "..."}
           </p>
         )}
-        <a 
+        <a
           href={`https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lon}`}
           target="_blank"
           rel="noopener noreferrer"

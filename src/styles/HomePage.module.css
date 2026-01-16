@@ -1,16 +1,26 @@
 .homePage {
   min-height: 100vh;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(to bottom, rgba(240, 244, 248, 0.85), rgba(226, 232, 240, 0.85)),
-    url('https://images.unsplash.com/photo-1499346030926-9a72daac6ea6?auto=format&fit=crop&w=2000&q=80');
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(240, 244, 248, 0.85),
+      rgba(226, 232, 240, 0.85)
+    ),
+    url("https://images.unsplash.com/photo-1499346030926-9a72daac6ea6?auto=format&fit=crop&w=2000&q=80");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-[data-theme='dark'] .homePage {
-  background: linear-gradient(to bottom, rgba(26, 32, 44, 0.9), rgba(45, 55, 72, 0.9)),
-    url('https://images.unsplash.com/photo-1499346030926-9a72daac6ea6?auto=format&fit=crop&w=2000&q=80');
+[data-theme="dark"] .homePage {
+  background:
+    linear-gradient(to bottom, rgba(26, 32, 44, 0.9), rgba(45, 55, 72, 0.9)),
+    url("https://images.unsplash.com/photo-1499346030926-9a72daac6ea6?auto=format&fit=crop&w=2000&q=80");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -49,8 +59,12 @@
 }
 
 @keyframes slowZoom {
-  from { transform: scale(1.05); }
-  to { transform: scale(1.15); }
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.15);
+  }
 }
 
 .heroOverlay {
@@ -59,7 +73,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.5) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.35) 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
   backdrop-filter: blur(0px);
 }
 
@@ -99,7 +118,7 @@
   line-height: 1.1;
   margin-bottom: 19px;
   letter-spacing: -1px;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .highlight {
@@ -131,12 +150,12 @@
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .ctaButton:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   background: #f8f9fa;
   color: #2c3e50;
 }
@@ -155,7 +174,7 @@
   position: relative;
 }
 
-[data-theme='dark'] .featuresSection {
+[data-theme="dark"] .featuresSection {
   background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
 }
 
@@ -178,7 +197,7 @@
   -webkit-text-fill-color: transparent;
 }
 
-[data-theme='dark'] .sectionTitle {
+[data-theme="dark"] .sectionTitle {
   color: #f7fafc;
 }
 
@@ -190,7 +209,7 @@
   line-height: 1.5;
 }
 
-[data-theme='dark'] .sectionSubtitle {
+[data-theme="dark"] .sectionSubtitle {
   color: #a0aec0;
 }
 
@@ -223,7 +242,7 @@
   z-index: 1;
 }
 
-[data-theme='dark'] .featureCard {
+[data-theme="dark"] .featureCard {
   background: #2d3748;
   border-color: #4a5568;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
@@ -242,11 +261,11 @@
   -webkit-text-fill-color: transparent;
   z-index: -1;
   opacity: 0.5;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   letter-spacing: -3px;
 }
 
-[data-theme='dark'] .featureCard::before {
+[data-theme="dark"] .featureCard::before {
   background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
   opacity: 0.3;
 }
@@ -276,7 +295,7 @@
   color: #059669;
 }
 
-[data-theme='dark'] .iconVibe {
+[data-theme="dark"] .iconVibe {
   background: rgba(5, 150, 105, 0.2);
   color: #34d399;
 }
@@ -286,7 +305,7 @@
   color: #0284c7;
 }
 
-[data-theme='dark'] .iconLocation {
+[data-theme="dark"] .iconLocation {
   background: rgba(2, 132, 199, 0.2);
   color: #38bdf8;
 }
@@ -296,7 +315,7 @@
   color: #2563eb;
 }
 
-[data-theme='dark'] .iconAttraction {
+[data-theme="dark"] .iconAttraction {
   background: rgba(37, 99, 235, 0.2);
   color: #60a5fa;
 }
@@ -306,7 +325,7 @@
   color: #0891b2;
 }
 
-[data-theme='dark'] .iconItinerary {
+[data-theme="dark"] .iconItinerary {
   background: rgba(8, 145, 178, 0.2);
   color: #22d3ee;
 }
@@ -318,7 +337,7 @@
   margin-bottom: 8px;
 }
 
-[data-theme='dark'] .cardTitle {
+[data-theme="dark"] .cardTitle {
   color: #f7fafc;
 }
 
@@ -328,7 +347,7 @@
   line-height: 1.5;
 }
 
-[data-theme='dark'] .cardDescription {
+[data-theme="dark"] .cardDescription {
   color: #a0aec0;
 }
 
@@ -338,7 +357,7 @@
   scroll-margin-top: 80px;
 }
 
-[data-theme='dark'] .aboutSection {
+[data-theme="dark"] .aboutSection {
   background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
 }
 
@@ -354,7 +373,7 @@
 .aboutImageWrapper {
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   height: 350px;
 }
 
@@ -385,7 +404,7 @@
   margin-bottom: 24px;
 }
 
-[data-theme='dark'] .aboutText {
+[data-theme="dark"] .aboutText {
   color: #a0aec0;
 }
 
@@ -410,7 +429,7 @@
   letter-spacing: 0.5px;
 }
 
-[data-theme='dark'] .statItem p {
+[data-theme="dark"] .statItem p {
   color: #a0aec0;
 }
 
@@ -419,7 +438,7 @@
   background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
 }
 
-[data-theme='dark'] .testimonialsSection {
+[data-theme="dark"] .testimonialsSection {
   background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
 }
 
@@ -435,13 +454,13 @@
   background: white;
   padding: 24px;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
 }
 
-[data-theme='dark'] .testimonialCard {
+[data-theme="dark"] .testimonialCard {
   background: #2d3748;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .testimonialCard:hover {
@@ -464,7 +483,7 @@
   margin-bottom: 20px;
 }
 
-[data-theme='dark'] .quoteText {
+[data-theme="dark"] .quoteText {
   color: #cbd5e1;
 }
 
@@ -488,7 +507,7 @@
   margin-bottom: 0;
 }
 
-[data-theme='dark'] .userName h5 {
+[data-theme="dark"] .userName h5 {
   color: #f7fafc;
 }
 
@@ -497,7 +516,7 @@
   color: #64748b;
 }
 
-[data-theme='dark'] .userName span {
+[data-theme="dark"] .userName span {
   color: #a0aec0;
 }
 

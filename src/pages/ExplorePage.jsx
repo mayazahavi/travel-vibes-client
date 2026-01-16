@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FaHeart, FaPlane } from "react-icons/fa";
-import { 
-  addToFavorites, 
-  removeFromFavorites, 
-  selectFavorites, 
-  selectCurrentTripId 
+import {
+  addToFavorites,
+  removeFromFavorites,
+  selectFavorites,
+  selectCurrentTripId,
 } from "../store/slices/tripsSlice";
 import useApi from "../hooks/useApi";
 import styles from "../styles/ExplorePage.module.css";
@@ -25,32 +25,32 @@ function ExplorePage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   // Redux Selectors
   const favorites = useSelector(selectFavorites);
   const currentTripId = useSelector(selectCurrentTripId);
 
-  const initialVibe = searchParams.get('vibe');
+  const initialVibe = searchParams.get("vibe");
 
   const [selectedVibe, setSelectedVibe] = useState(
-    EXPLORE_VIBES.find(v => v.value === initialVibe) || null
+    EXPLORE_VIBES.find((v) => v.value === initialVibe) || null,
   );
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [places, setPlaces] = useState([]);
   const placesApi = useApi();
-  const cityApi = useApi(); 
+  const cityApi = useApi();
 
   const [searched, setSearched] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const isFavorite = (placeId) => {
-    return favorites.some(p => p.id === placeId);
+    return favorites.some((p) => p.id === placeId);
   };
   useEffect(() => {
     if (placesApi.loading) {
       setSearched(true);
-      setProcessing(true); 
+      setProcessing(true);
     }
 
     if (placesApi.data && selectedLocation) {
@@ -60,23 +60,30 @@ function ExplorePage() {
           const features = placesApi.data.features || [];
           const formattedPlaces = [];
           // ... processing logic ...
-          
+
           const seenLocations = new Set();
 
           for (const feature of features) {
             // ... feature processing ...
             const props = feature.properties;
             const placeName = props.name || props.street;
-            if (!placeName || placeName.trim() === '' || placeName === 'Unknown Place') continue;
+            if (
+              !placeName ||
+              placeName.trim() === "" ||
+              placeName === "Unknown Place"
+            )
+              continue;
 
             const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
             if (seenLocations.has(locationKey)) continue;
             seenLocations.add(locationKey);
 
             const distance = calculateDistance(lat, lon, props.lat, props.lon);
-            const cuisine = props.cuisine ? Object.keys(props.cuisine).join(';') : '';
-            const brand = props.brand || props.datasource?.raw?.brand || '';
-            const street = props.street || '';
+            const cuisine = props.cuisine
+              ? Object.keys(props.cuisine).join(";")
+              : "";
+            const brand = props.brand || props.datasource?.raw?.brand || "";
+            const street = props.street || "";
 
             const imageUrl = await getPlaceImage(
               placeName,
@@ -86,13 +93,14 @@ function ExplorePage() {
               props.place_id,
               cuisine,
               brand,
-              street
+              street,
             );
 
             formattedPlaces.push({
               id: props.place_id,
               name: placeName,
-              address: props.address_line2 || props.formatted || props.address_line1,
+              address:
+                props.address_line2 || props.formatted || props.address_line1,
               category: props.categories ? props.categories[0] : "place",
               image: imageUrl,
               phone: props.contact?.phone || props.datasource?.raw?.phone,
@@ -102,7 +110,7 @@ function ExplorePage() {
               description: props.datasource?.raw?.description,
               distance: distance,
               lat: props.lat,
-              lon: props.lon
+              lon: props.lon,
             });
           }
 
@@ -111,7 +119,7 @@ function ExplorePage() {
           console.error("Error processing places:", error);
           setApiError(true);
         } finally {
-          setProcessing(false); 
+          setProcessing(false);
         }
       };
 
@@ -121,7 +129,13 @@ function ExplorePage() {
       setProcessing(false);
       alert("Failed to load places. Please try again.");
     }
-  }, [placesApi.data, placesApi.loading, placesApi.error, selectedLocation, selectedVibe]);
+  }, [
+    placesApi.data,
+    placesApi.loading,
+    placesApi.error,
+    selectedLocation,
+    selectedVibe,
+  ]);
 
   const loadCityOptions = async (inputValue) => {
     if (!inputValue || inputValue.length < 3) {
@@ -132,7 +146,7 @@ function ExplorePage() {
 
     try {
       const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(inputValue)}&type=city&limit=10&apiKey=${GEOAPIFY_API_KEY}`;
-      
+
       // Use refetch from cityApi which now returns data
       const data = await cityApi.refetch(url);
 
@@ -142,7 +156,7 @@ function ExplorePage() {
 
       const uniqueCities = new Map();
 
-      data.features.forEach(feature => {
+      data.features.forEach((feature) => {
         const props = feature.properties;
         const cityName = props.city || props.name;
         const countryName = props.country;
@@ -158,15 +172,14 @@ function ExplorePage() {
               lat: props.lat,
               lon: props.lon,
               city: cityName,
-              country: countryName
+              country: countryName,
             },
-            label: label
+            label: label,
           });
         }
       });
 
       return Array.from(uniqueCities.values()).slice(0, 8);
-
     } catch (error) {
       setApiError(true);
       return [];
@@ -194,23 +207,29 @@ function ExplorePage() {
     } else {
       const { city, country } = selectedLocation?.value || {};
 
-      dispatch(addToFavorites({
-        id: place.id,
-        name: place.name,
-        imageUrl: place.image,
-        rating: place.rating || '4.5',
-        location: place.address || selectedLocation?.label?.split(',')[0],
-        city: city || selectedLocation?.label?.split(',')[0],
-        country: country || (selectedLocation?.label?.includes(',') ? selectedLocation?.label?.split(',').pop().trim() : ''),
-        vibe: selectedVibe?.label,
-        distance: place.distance,
-        description: place.description,
-        phone: place.phone,
-        website: place.website,
-        openingHours: place.openingHours,
-        lat: place.lat,
-        lon: place.lon
-      }));
+      dispatch(
+        addToFavorites({
+          id: place.id,
+          name: place.name,
+          imageUrl: place.image,
+          rating: place.rating || "4.5",
+          location: place.address || selectedLocation?.label?.split(",")[0],
+          city: city || selectedLocation?.label?.split(",")[0],
+          country:
+            country ||
+            (selectedLocation?.label?.includes(",")
+              ? selectedLocation?.label?.split(",").pop().trim()
+              : ""),
+          vibe: selectedVibe?.label,
+          distance: place.distance,
+          description: place.description,
+          phone: place.phone,
+          website: place.website,
+          openingHours: place.openingHours,
+          lat: place.lat,
+          lon: place.lon,
+        }),
+      );
     }
   };
 
@@ -218,7 +237,7 @@ function ExplorePage() {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate('/favorites');
+      navigate("/favorites");
       window.scrollTo(0, 0);
     }, 3000);
   };
@@ -229,7 +248,9 @@ function ExplorePage() {
         <span className={styles.headerEyebrow}>DISCOVER YOUR DESTINATION</span>
         <h1 className={styles.title}>Explore Destinations</h1>
         <div className={styles.headerDivider}></div>
-        <p className={styles.subtitle}>Discover hidden gems tailored to your vibe</p>
+        <p className={styles.subtitle}>
+          Discover hidden gems tailored to your vibe
+        </p>
         <SearchBar
           selectedVibe={selectedVibe}
           onVibeChange={setSelectedVibe}
@@ -243,24 +264,42 @@ function ExplorePage() {
           styles={styles}
         />
       </div>
-      <div className="container" style={{ padding: '40px 20px', paddingBottom: favorites.length > 0 ? '100px' : '40px' }}>
+      <div
+        className="container"
+        style={{
+          padding: "40px 20px",
+          paddingBottom: favorites.length > 0 ? "100px" : "40px",
+        }}
+      >
         {placesApi.loading || processing ? (
-          <LoadingState vibe={selectedVibe?.value} location={selectedLocation?.label} styles={styles} />
+          <LoadingState
+            vibe={selectedVibe?.value}
+            location={selectedLocation?.label}
+            styles={styles}
+          />
         ) : !searched ? (
           <div className={styles.emptyState}>
-            <div style={{ fontSize: '48px', marginBottom: '20px' }}>🌍</div>
-            <h3 className={styles.emptyTitle} style={{ color: 'var(--text-primary)' }}>Ready to Explore?</h3>
-            <p className={styles.emptyText}>Select a vibe and a destination to start your journey.</p>
+            <div style={{ fontSize: "48px", marginBottom: "20px" }}>🌍</div>
+            <h3
+              className={styles.emptyTitle}
+              style={{ color: "var(--text-primary)" }}
+            >
+              Ready to Explore?
+            </h3>
+            <p className={styles.emptyText}>
+              Select a vibe and a destination to start your journey.
+            </p>
           </div>
         ) : places.length === 0 ? (
           <EmptyState styles={styles} />
         ) : (
           <>
             <h2 className={styles.resultsTitle}>
-              Found {places.length} {selectedVibe?.label.toLowerCase()} places for you in {selectedLocation?.label.split(',')[0]}
+              Found {places.length} {selectedVibe?.label.toLowerCase()} places
+              for you in {selectedLocation?.label.split(",")[0]}
             </h2>
             <div className={styles.placesGrid}>
-              {places.map(place => (
+              {places.map((place) => (
                 <PlaceCard
                   key={place.id}
                   place={place}
@@ -277,10 +316,15 @@ function ExplorePage() {
         <div className={styles.bottomBar}>
           <div className={styles.barContent}>
             <div className={styles.barInfo}>
-              <span className={styles.heartIcon}><FaHeart /></span>
+              <span className={styles.heartIcon}>
+                <FaHeart />
+              </span>
               <span>{favorites.length} places selected</span>
             </div>
-            <button className={styles.createTripButton} onClick={handleCreateTrip}>
+            <button
+              className={styles.createTripButton}
+              onClick={handleCreateTrip}
+            >
               <FaPlane className={styles.planeIcon} />
               Create Trip
             </button>

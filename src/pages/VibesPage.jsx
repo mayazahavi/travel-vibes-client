@@ -31,14 +31,19 @@ function VibesPage() {
         <h1 className={styles.mainTitle}>Choose Your Travel Vibe</h1>
         <div className={styles.headerDivider}></div>
         <p className={styles.mainSubtitle}>
-          Select a vibe that matches your mood. We'll curate the perfect destinations and experiences for your next journey.
+          Select a vibe that matches your mood. We'll curate the perfect
+          destinations and experiences for your next journey.
         </p>
       </div>
       <div className="container">
         <div className={`columns is-multiline is-centered ${styles.vibesGrid}`}>
           {DETAILED_VIBES.map((vibe) => (
             <div key={vibe.id} className="column is-4-tablet is-4-desktop">
-              <VibeCard vibe={vibe} isSelected={selectedVibe.id === vibe.id} onSelect={() => handleVibeSelect(vibe)} />
+              <VibeCard
+                vibe={vibe}
+                isSelected={selectedVibe.id === vibe.id}
+                onSelect={() => handleVibeSelect(vibe)}
+              />
             </div>
           ))}
         </div>
@@ -46,7 +51,11 @@ function VibesPage() {
       <div className={styles.detailsSection} ref={detailsRef}>
         <div className={styles.detailsCard}>
           <div className={styles.detailsImageWrapper}>
-            <img src={selectedVibe.image} alt={selectedVibe.title} className={styles.detailsImage} />
+            <img
+              src={selectedVibe.image}
+              alt={selectedVibe.title}
+              className={styles.detailsImage}
+            />
             <div className={styles.detailsOverlay}></div>
           </div>
           <div className={styles.detailsContent}>
@@ -54,10 +63,12 @@ function VibesPage() {
             <h2 className={styles.detailsTitle}>
               {selectedVibe.emoji} {selectedVibe.title}
             </h2>
-            <p className={styles.detailsText}>
-              {selectedVibe.details}
-            </p>
-            <a href="#" onClick={handleStartPlanning} className={styles.detailsButton}>
+            <p className={styles.detailsText}>{selectedVibe.details}</p>
+            <a
+              href="#"
+              onClick={handleStartPlanning}
+              className={styles.detailsButton}
+            >
               Start Planning <i className="fas fa-arrow-right"></i>
             </a>
           </div>
@@ -65,7 +76,11 @@ function VibesPage() {
       </div>
       {showSuccessModal && (
         <div className={`modal is-active ${styles.successModal}`}>
-          <div className="modal-background" onClick={() => setShowSuccessModal(false)} style={{ background: 'rgba(0,0,0,0.5)' }}></div>
+          <div
+            className="modal-background"
+            onClick={() => setShowSuccessModal(false)}
+            style={{ background: "rgba(0,0,0,0.5)" }}
+          ></div>
           <div className="modal-content">
             <div className={styles.modalCard}>
               <div className={styles.successIcon}>
@@ -73,17 +88,20 @@ function VibesPage() {
               </div>
               <h2 className={styles.successTitle}>Vibe Selected!</h2>
               <p className={styles.successMessage}>
-                You've chosen <strong>{selectedVibe.title}</strong> for your next adventure!
+                You've chosen <strong>{selectedVibe.title}</strong> for your
+                next adventure!
               </p>
-              <p className={styles.successNote}>
-                {selectedVibe.details}
-              </p>
+              <p className={styles.successNote}>{selectedVibe.details}</p>
               <p className={styles.redirectMessage}>
                 Taking you to trip planning... ✈️
               </p>
             </div>
           </div>
-          <button className="modal-close is-large" aria-label="close" onClick={() => setShowSuccessModal(false)}></button>
+          <button
+            className="modal-close is-large"
+            aria-label="close"
+            onClick={() => setShowSuccessModal(false)}
+          ></button>
         </div>
       )}
     </div>
