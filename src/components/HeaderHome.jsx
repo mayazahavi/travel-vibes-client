@@ -70,12 +70,8 @@ function HeaderHome({ theme, toggleTheme }) {
           style={{ background: "transparent" }}
         >
           <div className="navbar-end" style={{ alignItems: "center" }}>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
+            <Link
+              to="/"
               className="navbar-item"
               style={{
                 color: "#000000",
@@ -86,7 +82,7 @@ function HeaderHome({ theme, toggleTheme }) {
               }}
             >
               Home
-            </a>
+            </Link>
             <a
               href="#"
               onClick={handleAboutClick}
@@ -118,21 +114,54 @@ function HeaderHome({ theme, toggleTheme }) {
 
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
-            <div className="navbar-item" style={{ padding: "0.5rem 0.75rem" }}>
+            <div className="navbar-item" style={{ padding: "0.5rem 0.75rem", display: "flex", gap: "10px" }}>
               <Link
-                to="/vibes"
+                to="/login"
                 className="button is-light"
                 style={{
-                  background: "white",
-                  borderColor: "transparent",
-                  color: "#000000",
+                  background: "transparent",
+                  borderColor: "white",
+                  color: "white",
                   fontWeight: "600",
                   borderRadius: "12px",
                   padding: "0.5rem 1.5rem",
-                  fontSize: "17px",
+                  fontSize: "16px",
+                  borderWidth: "2px",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = "rgba(255, 255, 255, 0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = "transparent";
                 }}
               >
-                Get Started
+                Log In
+              </Link>
+              <Link
+                to="/register"
+                className="button is-primary"
+                style={{
+                  background: "white",
+                  borderColor: "white",
+                  color: "#000000",
+                  fontWeight: "700",
+                  borderRadius: "12px",
+                  padding: "0.5rem 1.5rem",
+                  fontSize: "16px",
+                  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.1)",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.1)";
+                }}
+              >
+                Sign Up
               </Link>
             </div>
           </div>

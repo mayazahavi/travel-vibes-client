@@ -8,6 +8,7 @@ import {
   selectFavorites,
   selectCurrentTripId,
 } from "../store/slices/tripsSlice";
+import { selectIsAuthenticated } from "../store/slices/authSlice";
 import useApi from "../hooks/useApi";
 import styles from "../styles/ExplorePage.module.css";
 import { EXPLORE_VIBES } from "../constants/vibes";
@@ -18,6 +19,7 @@ import SearchBar from "../components/SearchBar";
 import SuccessModal from "../components/SuccessModal";
 import LoadingState from "../components/LoadingState";
 import EmptyState from "../components/EmptyState";
+import Toast from "../components/Toast";
 
 const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
 
@@ -29,6 +31,7 @@ function ExplorePage() {
   // Redux Selectors
   const favorites = useSelector(selectFavorites);
   const currentTripId = useSelector(selectCurrentTripId);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const initialVibe = searchParams.get("vibe");
 
@@ -44,6 +47,8 @@ function ExplorePage() {
   const [processing, setProcessing] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [toast, setToast] = useState(null);
+
   const isFavorite = (placeId) => {
     return favorites.some((p) => p.id === placeId);
   };
@@ -202,6 +207,14 @@ function ExplorePage() {
   };
 
   const toggleFavorite = (place) => {
+    if (!isAuthenticated) {
+      setToast({
+        message: "Please log in to save favorites",
+        type: "warning",
+      });
+      return;
+    }
+
     if (isFavorite(place.id)) {
       dispatch(removeFromFavorites(place.id));
     } else {
@@ -337,6 +350,13 @@ function ExplorePage() {
         favorites={favorites}
         styles={styles}
       />
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

@@ -18,6 +18,9 @@ import FavoritesPage from "./pages/FavoritesPage.jsx";
 import MyTripsPage from "./pages/MyTripsPage.jsx";
 import ItineraryPage from "./pages/ItineraryPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import {
   selectTrips,
   setTrips,
@@ -27,7 +30,9 @@ import {
 function AppContent() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  const CurrentHeader = isHomePage ? HeaderHome : Header;
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
+  const CurrentHeader = isHomePage || isAuthPage ? HeaderHome : Header;
 
   const dispatch = useDispatch();
   const trips = useSelector(selectTrips);
@@ -64,10 +69,40 @@ function AppContent() {
         <Route path="/" element={<HomePage />} />
         <Route path="/vibes" element={<VibesPage />} />
         <Route path="/explore" element={<ExplorePage />} />
-        <Route path="/create-trip" element={<CreateTripPage />} />
-        <Route path="/my-trips" element={<MyTripsPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="/itinerary" element={<ItineraryPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/create-trip"
+          element={
+            <ProtectedRoute>
+              <CreateTripPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-trips"
+          element={
+            <ProtectedRoute>
+              <MyTripsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute>
+              <FavoritesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/itinerary"
+          element={
+            <ProtectedRoute>
+              <ItineraryPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />

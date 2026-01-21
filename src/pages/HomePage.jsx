@@ -29,7 +29,7 @@ function HomePage() {
               Discover your perfect travel experience. Choose your vibe, explore
               destinations, and plan your dream journey.
             </p>
-            <Link to="/vibes" className={styles.ctaButton}>
+            <Link to="/login" className={styles.ctaButton}>
               <span>Let's Get Started</span>
               <i className={`fas fa-arrow-right ${styles.ctaIcon}`}></i>
             </Link>
