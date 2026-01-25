@@ -75,9 +75,10 @@ export const processPlacesData = async (features, userLocation, vibeValue) => {
     return formattedPlaces;
 };
 
-export const getPlacesUrl = (vibe, location, apiKey) => {
+export const getPlacesUrl = (vibe, location) => {
     if (!vibe || !location) return null;
     const { lat, lon } = location.value;
     const categories = vibe.categories;
-    return `https://api.geoapify.com/v2/places?categories=${encodeURIComponent(categories)}&filter=circle:${lon},${lat},5000&bias=proximity:${lon},${lat}&limit=20&apiKey=${apiKey}`;
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+    return `${API_URL}/places/search?categories=${encodeURIComponent(categories)}&lat=${lat}&lon=${lon}&limit=20`;
 };

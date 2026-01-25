@@ -1,47 +1,87 @@
 /**
  * Service to handle authentication API calls.
- * Currently mocks the server response.
- * Replace the logic inside these functions with real fetch/axios calls when connecting to the server.
+ * Connected to the real backend API.
  */
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+/**
+ * Login user
+ * @param {string} email - User email
+ * @param {string} password - User password
+ * @returns {Promise<Object>} - { user, token }
+ */
 export const login = async (email, password) => {
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-    // Simulate basic validation (Server side logic simulation)
-    if (password === "error") {
-        throw new Error("Invalid credentials");
+        const data = await response.json();
+
+        if (!response.ok) {
+            // Server returned an error
+            throw new Error(data.message || 'Login failed');
+        }
+
+        // Return user and token from server response
+        return {
+            user: data.data.user,
+            token: data.data.token,
+        };
+    } catch (error) {
+        // Network error or server error
+        throw new Error(error.message || 'Failed to connect to server');
     }
-
-    // Mock response
-    const mockUser = {
-        id: "1",
-        name: "Test User",
-        email: email,
-    };
-    const mockToken = "mock-jwt-token";
-
-    return { user: mockUser, token: mockToken };
 };
 
+/**
+ * Register new user
+ * @param {Object} userData - { name, email, password, confirmPassword }
+ * @returns {Promise<Object>} - { user, token }
+ */
 export const register = async (userData) => {
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+        const response = await fetch(`${API_URL}/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
 
-    // Mock response
-    const mockUser = {
-        id: Date.now().toString(),
-        name: userData.name,
-        email: userData.email,
-    };
-    const mockToken = "mock-jwt-token";
+        const data = await response.json();
 
-    return { user: mockUser, token: mockToken };
+        if (!response.ok) {
+            // Server returned validation errors or other errors
+            if (data.errors) {
+                // Convert errors object to a single message
+                const errorMessages = Object.values(data.errors).join('. ');
+                throw new Error(errorMessages);
+            }
+            throw new Error(data.message || 'Registration failed');
+        }
+
+        // Return user and token from server response
+        return {
+            user: data.data.user,
+            token: data.data.token,
+        };
+    } catch (error) {
+        throw new Error(error.message || 'Failed to connect to server');
+    }
 };
 
+/**
+ * Logout user
+ * For JWT, this is usually just client-side (clearing token/localStorage)
+ */
 export const logout = () => {
-    // If the server needed a logout call (e.g. invalidate token), it would go here.
-    // For JWT, usually just client side, but sometimes we notify server.
-    // For now, nothing to await.
+    // JWT logout is handled client-side
+    // If you need to invalidate token on server, add API call here
     return Promise.resolve();
 };

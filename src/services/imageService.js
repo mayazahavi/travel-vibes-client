@@ -1,5 +1,5 @@
-const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
-
+// Unsplash API is now proxied through the server
+// API key is securely stored on server
 const usedImages = new Set();
 let placeCounter = 0;
 
@@ -30,15 +30,16 @@ export const fetchWikipediaImage = async (placeName, city) => {
 
 export const fetchUnsplashImage = async (query, page = 1) => {
   try {
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
     const response = await fetch(
-      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&page=${page}&per_page=1&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`,
+      `${API_URL}/places/image?query=${encodeURIComponent(query)}&page=${page}`,
     );
 
     if (!response.ok) return null;
 
     const data = await response.json();
-    if (data.results && data.results.length > 0) {
-      return data.results[0].urls.regular;
+    if (data.success && data.data.imageUrl) {
+      return data.data.imageUrl;
     }
     return null;
   } catch (error) {
