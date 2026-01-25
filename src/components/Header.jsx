@@ -1,9 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/slices/authSlice";
 import ThemeToggle from "./ThemeToggle";
 
 function Header({ theme, toggleTheme }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
   const getCurrentPageName = () => {
@@ -42,6 +46,12 @@ function Header({ theme, toggleTheme }) {
 
   const closeDropdown = () => {
     setIsDropdownActive(false);
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -177,8 +187,8 @@ function Header({ theme, toggleTheme }) {
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
             <div className="navbar-item" style={{ padding: "0.5rem 0.75rem" }}>
-              <Link
-                to="/"
+              <button
+                onClick={handleLogout}
                 className="button"
                 style={{
                   borderColor: "#38bdf8",
@@ -189,6 +199,7 @@ function Header({ theme, toggleTheme }) {
                   transition: "all 0.2s ease",
                   background: "transparent",
                   fontSize: "15px",
+                  cursor: "pointer",
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.background = "#0ea5e9";
@@ -203,7 +214,7 @@ function Header({ theme, toggleTheme }) {
                 }}
               >
                 Logout
-              </Link>
+              </button>
             </div>
           </div>
         </div>
