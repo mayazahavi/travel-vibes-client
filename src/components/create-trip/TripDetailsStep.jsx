@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import useApi from "../../hooks/useApi";
 
-const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
+// Geocode API is now proxied through the server for security
 
 function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
     const cityApi = useApi();
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
     const [destinationQuery, setDestinationQuery] = useState(formData.destination || "");
     const [showSuggestions, setShowSuggestions] = useState(false);
     const suggestionsRef = useRef(null);
 
-    // Sync internal state if parent state changes (optional, but good practice)
+    // Sync internal state if parent state changes
     useEffect(() => {
         setDestinationQuery(formData.destination || "");
     }, [formData.destination]);
@@ -30,16 +31,6 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
     const handleDestinationChange = (e) => {
         const value = e.target.value;
         setDestinationQuery(value);
-        // Determine if we need to clear parent error
-        // (We can't clear parent error directly unless we call onChange with something, 
-        // but here we are just typing. We will let the user select or type.)
-        // Actually, we should probably update parent formData on type too? 
-        // Or only on select? The original code updated formData on select.
-        // But original code: setFormData((prev) => ({ ...prev, destination: fullName })); on select.
-        // It also had handleInputChange? No, handleDestinationChange was specific.
-
-        // Let's keep local query state.
-
         if (value.length >= 3) {
             setShowSuggestions(true);
         } else {
@@ -51,12 +42,14 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
         if (!showSuggestions || destinationQuery.length < 3) return;
 
         const timer = setTimeout(() => {
-            const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(destinationQuery)}&type=city&limit=5&apiKey=${GEOAPIFY_API_KEY}`;
+            const url = `${API_URL}/places/geocode?text=${encodeURIComponent(destinationQuery)}&type=city&limit=5`;
             cityApi.refetch(url);
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [destinationQuery, showSuggestions, cityApi]); // eslint-disable-line react-hooks/exhaustive-deps
+        // cityApi is excluded to avoid dependency loop since useApi returns a new object
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [destinationQuery, showSuggestions]);
 
     const handleDestinationSelect = (feature) => {
         const city = feature.properties.city || feature.properties.name;
@@ -71,15 +64,16 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
             ...prev,
             destination: fullName
         }));
-
-        // Clear functionality is slightly tricky without passing setErrors, 
-        // but usually onChange handles error clearing. 
-        // We can simulate an onChange event or just call setFormData which triggers re-render.
-        // The parent validation runs on 'nextStep', so clearing error explicitly here requires setErrors prop.
-        // Let's assume parent handles error logic on validation mostly, 
-        // OR we pass a specific callback `onDestinationSelect` that also clears error.
-        // I'll stick to setFormData pattern from props used in other components.
     };
+
+    // Safely extract features legacy or proxy structure
+    const getSuggestionsFromData = (data) => {
+        if (!data) return [];
+        // Extract features from nested server response: data.data.features or data.features
+        return data.data?.features || data.features || [];
+    };
+
+    const suggestionsList = getSuggestionsFromData(cityApi.data);
 
     return (
         <>
@@ -131,9 +125,7 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
                         </p>
                     )}
                 {showSuggestions &&
-                    cityApi.data &&
-                    cityApi.data.features &&
-                    cityApi.data.features.length > 0 && (
+                    suggestionsList.length > 0 && (
                         <div
                             className="box"
                             style={{
@@ -150,7 +142,7 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
                         >
                             {(() => {
                                 const uniqueCities = new Set();
-                                return cityApi.data.features
+                                return suggestionsList
                                     .filter((feature) => {
                                         const label = `${feature.properties.city || feature.properties.name || ""}, ${feature.properties.country || ""}`;
                                         if (uniqueCities.has(label)) return false;

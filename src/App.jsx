@@ -38,20 +38,33 @@ function AppContent() {
   const trips = useSelector(selectTrips);
   const [theme, setTheme] = useLocalStorage("theme", "light");
   const [savedTrips, setSavedTrips] = useLocalStorage("travel_vibes_trips", []);
+  const { selectIsAuthenticated } = require('./store/slices/authSlice');
+  const { fetchUserTrips } = require('./store/slices/tripsSlice');
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
+  // Fetch trips from server when user logs in
   useEffect(() => {
-    if (savedTrips && savedTrips.length > 0) {
-      dispatch(setTrips(savedTrips));
-      const lastTrip = savedTrips[savedTrips.length - 1];
-      if (lastTrip) {
-        dispatch(setCurrentTrip(lastTrip.id));
-      }
+    if (isAuthenticated) {
+      dispatch(fetchUserTrips()).catch((err) => {
+        console.error("Failed to fetch trips:", err);
+        // Fallback to localStorage on error
+        if (savedTrips && savedTrips.length > 0) {
+          dispatch(setTrips(savedTrips));
+          const lastTrip = savedTrips[savedTrips.length - 1];
+          if (lastTrip) {
+            dispatch(setCurrentTrip(lastTrip._id || lastTrip.id));
+          }
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAuthenticated]);
 
+  // Sync trips to localStorage as backup/cache
   useEffect(() => {
-    setSavedTrips(trips);
+    if (trips.length > 0) {
+      setSavedTrips(trips);
+    }
   }, [trips, setSavedTrips]);
 
   const toggleTheme = () => {

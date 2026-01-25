@@ -93,25 +93,33 @@ function CreateTripPage() {
     if (currentStep > 1) setCurrentStep((prev) => prev - 1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("Trip Created Successfully:", formData);
-    dispatch(
-      createTrip({
-        name: formData.tripName,
-        destination: formData.destination,
-        startDate: formData.startDate.toISOString(),
-        endDate: formData.endDate.toISOString(),
-        vibe: formData.vibe,
-        travelers: formData.travelers,
-      }),
-    );
 
-    setShowSuccessModal(true);
-    setTimeout(() => {
-      setShowSuccessModal(false);
-      navigate(`/explore?vibe=${formData.vibe || selectedVibe}`);
-      setTimeout(() => window.scrollTo(0, 0), 100);
-    }, 3000);
+    try {
+      // Use async thunk to create trip on server
+      await dispatch(
+        require("../store/slices/tripsSlice").createTripAsync({
+          name: formData.tripName,
+          destination: formData.destination,
+          startDate: formData.startDate.toISOString(),
+          endDate: formData.endDate.toISOString(),
+          vibe: formData.vibe,
+          travelers: parseInt(formData.travelers),
+        }),
+      ).unwrap();
+
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        navigate(`/explore?vibe=${formData.vibe || selectedVibe}`);
+        setTimeout(() => window.scrollTo(0, 0), 100);
+      }, 3000);
+    } catch (error) {
+      console.error("Failed to create trip:", error);
+      // Show error to user
+      alert("Failed to create trip. Please try again.");
+    }
   };
 
   return (
