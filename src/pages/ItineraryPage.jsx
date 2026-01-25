@@ -25,22 +25,30 @@ function ItineraryPage() {
 
   const [selectedDay, setSelectedDay] = useState(1);
 
-  const updatePlaceTime = (placeId, time) => {
-    dispatch(
-      updateFavoritePlace({
-        id: placeId,
-        updates: { assignedTime: time },
-      }),
-    );
+  const updatePlaceTime = async (placeId, time) => {
+    try {
+      await dispatch(
+        require("../store/slices/tripsSlice").updateFavoriteAsync({
+          placeId,
+          updates: { assignedTime: time },
+        })
+      ).unwrap();
+    } catch (error) {
+      console.error("Failed to update time:", error);
+    }
   };
 
-  const assignPlaceToDay = (placeId, dayIndex) => {
-    dispatch(
-      updateFavoritePlace({
-        id: placeId,
-        updates: { assignedDay: dayIndex },
-      }),
-    );
+  const assignPlaceToDay = async (placeId, dayIndex) => {
+    try {
+      await dispatch(
+        require("../store/slices/tripsSlice").updateFavoriteAsync({
+          placeId,
+          updates: { assignedDay: dayIndex },
+        })
+      ).unwrap();
+    } catch (error) {
+      console.error("Failed to assign day:", error);
+    }
   };
 
   const getDaysCount = () => {

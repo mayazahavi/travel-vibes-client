@@ -58,15 +58,26 @@ function MyTripsPage() {
     setEditModal({ isOpen: true, trip });
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteModal.tripId) {
-      dispatch(deleteTrip(deleteModal.tripId));
-      setDeleteModal({ isOpen: false, tripId: null });
+      try {
+        await dispatch(require("../store/slices/tripsSlice").deleteTripAsync(deleteModal.tripId)).unwrap();
+        setDeleteModal({ isOpen: false, tripId: null });
+      } catch (error) {
+        console.error("Failed to delete trip:", error);
+        alert("Failed to delete trip. Please try again.");
+        setDeleteModal({ isOpen: false, tripId: null });
+      }
     }
   };
 
-  const confirmEdit = (id, updates) => {
-    dispatch(updateTrip({ id, updates }));
+  const confirmEdit = async (id, updates) => {
+    try {
+      await dispatch(require("../store/slices/tripsSlice").updateTripAsync({ id, updates })).unwrap();
+    } catch (error) {
+      console.error("Failed to update trip:", error);
+      alert("Failed to update trip. Please try again.");
+    }
   };
 
   return (
@@ -146,12 +157,12 @@ function MyTripsPage() {
           <div className="columns is-multiline">
             {trips.map((trip) => (
               <div
-                key={trip.id}
+                key={trip._id}
                 className="column is-12-mobile is-6-tablet is-4-desktop"
               >
                 <div
                   className="card h-100"
-                  onClick={() => handleTripSelect(trip.id)}
+                  onClick={() => handleTripSelect(trip._id)}
                   style={{
                     borderRadius: "16px",
                     overflow: "hidden",

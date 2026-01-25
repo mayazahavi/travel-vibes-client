@@ -20,8 +20,6 @@ import LoadingState from "../components/LoadingState";
 import EmptyState from "../components/EmptyState";
 import Toast from "../components/Toast";
 
-const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_API_KEY;
-
 function ExplorePage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -60,8 +58,11 @@ function ExplorePage() {
     if (placesApi.data && selectedLocation) {
       const loadPlaces = async () => {
         try {
+          // Extract features from nested server response: data.data.features
+          const features = placesApi.data.data?.features || placesApi.data.features || [];
+
           const formattedPlaces = await processPlacesData(
-            placesApi.data.features,
+            features,
             selectedLocation.value,
             selectedVibe.value
           );
@@ -96,18 +97,22 @@ function ExplorePage() {
     setApiError(false);
 
     try {
-      const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(inputValue)}&type=city&limit=10&apiKey=${GEOAPIFY_API_KEY}`;
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+      const url = `${API_URL}/places/geocode?text=${encodeURIComponent(inputValue)}&type=city&limit=10`;
 
       // Use refetch from cityApi which now returns data
-      const data = await cityApi.refetch(url);
+      const response = await cityApi.refetch(url);
 
-      if (!data || !data.features || data.features.length === 0) {
+      // Handle nested data from server proxy: response.data.features
+      const features = response?.data?.features || response?.features;
+
+      if (!features || features.length === 0) {
         return [];
       }
 
       const uniqueCities = new Map();
 
-      data.features.forEach((feature) => {
+      features.forEach((feature) => {
         const props = feature.properties;
         const cityName = props.city || props.name;
         const countryName = props.country;
@@ -144,11 +149,11 @@ function ExplorePage() {
     setApiError(false);
     clearUsedImages();
 
-    const url = getPlacesUrl(selectedVibe, selectedLocation, GEOAPIFY_API_KEY);
+    const url = getPlacesUrl(selectedVibe, selectedLocation);
     placesApi.refetch(url);
   };
 
-  const toggleFavorite = (place) => {
+  const toggleFavorite = async (place) => {
     if (!isAuthenticated) {
       setToast({
         message: "Please log in to save favorites",
@@ -157,34 +162,48 @@ function ExplorePage() {
       return;
     }
 
-    if (isFavorite(place.id)) {
-      dispatch(removeFromFavorites(place.id));
-    } else {
-      const { city, country } = selectedLocation?.value || {};
+    try {
+      if (isFavorite(place.id)) {
+        // Remove from favorites
+        await dispatch(
+          require("../store/slices/tripsSlice").removeFavoriteAsync(place.id)
+        ).unwrap();
+      } else {
+        // Add to favorites
+        const { city, country } = selectedLocation?.value || {};
 
-      dispatch(
-        addToFavorites({
-          id: place.id,
-          name: place.name,
-          imageUrl: place.image,
-          rating: place.rating || "4.5",
-          location: place.address || selectedLocation?.label?.split(",")[0],
-          city: city || selectedLocation?.label?.split(",")[0],
-          country:
-            country ||
-            (selectedLocation?.label?.includes(",")
-              ? selectedLocation?.label?.split(",").pop().trim()
-              : ""),
-          vibe: selectedVibe?.label,
-          distance: place.distance,
-          description: place.description,
-          phone: place.phone,
-          website: place.website,
-          openingHours: place.openingHours,
-          lat: place.lat,
-          lon: place.lon,
-        }),
-      );
+        await dispatch(
+          require("../store/slices/tripsSlice").addFavoriteAsync({
+            place: {
+              id: place.id,
+              name: place.name,
+              imageUrl: place.image,
+              rating: place.rating || "4.5",
+              location: place.address || selectedLocation?.label?.split(",")[0],
+              city: city || selectedLocation?.label?.split(",")[0],
+              country:
+                country ||
+                (selectedLocation?.label?.includes(",")
+                  ? selectedLocation?.label?.split(",").pop().trim()
+                  : ""),
+              vibe: selectedVibe?.label,
+              distance: place.distance,
+              description: place.description,
+              phone: place.phone,
+              website: place.website,
+              openingHours: place.openingHours,
+              lat: place.lat,
+              lon: place.lon,
+            },
+          })
+        ).unwrap();
+      }
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error);
+      setToast({
+        message: "Failed to update favorites. Please try again.",
+        type: "error",
+      });
     }
   };
 
