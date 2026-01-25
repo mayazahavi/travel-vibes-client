@@ -1,24 +1,38 @@
-# 🌍 Travel Vibes
+# 🌍 Travel Vibes - Full Stack Application
 
-Travel Vibes is a modern, responsive web application that helps users plan personalized trips based on their travel preferences ("vibe"). Users can create itineraries, search for destinations, and manage their trips in a beautiful dashboard.
+Travel Vibes is a modern, full-stack web application that helps users plan personalized trips based on their travel preferences ("vibe"). Users can create itineraries, search for destinations, manage trips, and save favorite places in a beautiful, responsive interface.
 
 ## ✨ Features
 
-- **Personalized Trip Planning:** Create trips based on vibes (Relaxing, Adventure, Cultural, etc.).
-- **Smart Destination Search:** Powered by **Geoapify API** to find places and activities.
-- **Trip Management (CRUD):** Create, Read, Update, and Delete trips.
-- **User Authentication:** Secure Login and Registration (Mock implemented, ready for server).
-- **Interactive Itinerary:** Drag-and-drop or assign activities to specific days.
-- **Favorites System:** Save places to your specific trip.
+- **Personalized Trip Planning:** Create trips based on vibes (Relaxing, Adventure, Cultural, etc.)
+- **Smart Destination Search:** Powered by **Geoapify API** to find places and activities
+- **Full Trip Management (CRUD):** Create, Read, Update, and Delete trips
+- **User Authentication:** Secure Login and Registration with JWT
+- **Interactive Itinerary:** Drag-and-drop or assign activities to specific days
+- **Favorites System:** Save places to your trips and organize them
+- **Server-side Persistence:** All data saved to MongoDB database
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js
-- **State Management:** Redux Toolkit (Slices for Auth & Trips)
-- **Routing:** React Router v6 (Protected Routes implemented)
-- **Styling:** CSS Modules + Bulma CSS Framework
-- **Icons:** React Icons (FontAwesome)
-- **API Integration:** Geoapify (Maps/Places), Unsplash (Images)
+### **Frontend**
+- React.js
+- Redux Toolkit (State Management with async thunks)
+- React Router v6 (Protected Routes)
+- CSS Modules + Bulma CSS Framework
+- React Icons (FontAwesome)
+
+### **Backend**
+- Node.js + Express.js
+- MongoDB (MongoDB Atlas)
+- JWT Authentication
+- bcryptjs (Password hashing)
+- Server-side validation
+
+### **APIs**
+- Geoapify (Maps & Places)
+- Unsplash (Images)
+
+---
 
 ## 🚀 Getting Started
 
@@ -26,54 +40,231 @@ Travel Vibes is a modern, responsive web application that helps users plan perso
 
 - Node.js (v14 or higher)
 - npm or yarn
+- MongoDB Atlas account (free tier works)
 
-### Installation
+---
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/travel-vibes-client.git
-   cd travel-vibes-client
-   ```
+## 📦 Installation & Setup
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### **1. Clone the Repository**
 
-3. **Set up Environment Variables:**
-   - Create a file named `.env` in the root directory.
-   - Copy the contents from `.env.example`.
-   - Add your API keys (Geoapify is required for the Explore feature).
+```bash
+git clone https://github.com/yourusername/travel-vibes.git
+cd travel-vibes
+```
 
-   ```env
-   REACT_APP_GEOAPIFY_API_KEY=your_key_here
-   ```
+You'll have two folders:
+- `travel-vibes-client` - React frontend
+- `travel-vibes-server` - Node.js backend
 
-4. **Run the application:**
-   ```bash
-   npm start
-   ```
-   Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
+
+### **2. Backend Setup (Server)**
+
+```bash
+cd travel-vibes-server
+
+# Install dependencies
+npm install
+
+# Create .env file
+# Copy .env.example to .env and fill in your values:
+```
+
+**`.env` example:**
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_atlas_connection_string
+JWT_SECRET=your_super_secret_jwt_key
+NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+```
+
+**Start the server:**
+```bash
+npm run dev
+```
+
+Server will run on `http://localhost:5000`
+
+---
+
+### **3. Frontend Setup (Client)**
+
+```bash
+cd travel-vibes-client
+
+# Install dependencies
+npm install
+
+# Create .env file
+# Copy .env.example to .env and add your API keys:
+```
+
+**`.env` example:**
+```env
+REACT_APP_GEOAPIFY_API_KEY=your_geoapify_key
+REACT_APP_UNSPLASH_ACCESS_KEY=your_unsplash_key
+REACT_APP_API_URL=http://localhost:5000/api
+```
+
+**Get API Keys:**
+- Geoapify: https://www.geoapify.com/ (free tier)
+- Unsplash: https://unsplash.com/developers (optional)
+
+**Start the client:**
+```bash
+npm start
+```
+
+Client will run on `http://localhost:3000`
+
+---
 
 ## 🏗️ Architecture & Code Quality
 
 This project follows React best practices:
-- **Custom Hooks:** `useForm` (Validation), `useApi` (Data Fetching), `useLocalStorage` (Persistence).
-- **Service Layer:** `authService.js` and `placesService.js` isolate API logic from UI components.
-- **Shared Validation:** Validation logic (`src/utils/validation.js`) is separated to allow future sharing with a Node.js backend.
-- **Component Design:** Small, focused components (e.g., `PlaceCard`, `EditTripModal`).
 
-## 🔐 Authentication & Server
+### **Custom Hooks**
+- `useForm` - Form state & validation
+- `useApi` - Data fetching with loading/error/data
+- `useLocalStorage` - Persistent state management
 
-Currently, the application runs in **Client-Only Mode** using a robust Service Layer abstraction.
-- **Auth:** Simulates a real server with JWT behavior. State is persisted in `localStorage`.
-- **Database:** Trips are currently saved to `localStorage` to persist across refreshes.
-- **Ready for Backend:** To connect a real Node.js/MongoDB backend, simply update the functions in `src/services/authService.js` to use `fetch()` instead of the mock implementation.
+### **Service Layer**
+- `authService.js` - Authentication API calls
+- `tripsService.js` - Trip CRUD operations
+- `placesService.js` - Place data processing
 
-## 🛑 Validation
+### **Shared Validation**
+- `src/utils/validation.js` - Validation logic shared between client and server
 
-- **Frontend:** Real-time validation for forms (Email format, password length, required fields).
-- **Error Handling:** Graceful handling of API errors and empty states.
+### **Component Design**
+- Small, focused components (e.g., `PlaceCard`, `EditTripModal`)
+- Clear separation: Pages + Reusable Components
+- Clean props (no excessive prop drilling)
+
+### **State Management**
+- Redux Toolkit with async thunks
+- Server API as source of truth
+- localStorage as backup/cache
 
 ---
-Built with ❤️ by Maya for the React Final Project.
+
+## 🔐 Authentication & Data Flow
+
+- **Registration/Login:** JWT token stored in localStorage
+- **Trip Creation:** POST to server → saved in MongoDB
+- **Favorites:** Associated with specific trips in database
+- **Refresh:** Token persists, trips fetched from server
+
+---
+
+## 🛑 Validation & Error Handling
+
+### **Frontend Validation**
+- Real-time validation (email format, password length, required fields)
+- Clear error messages
+
+### **Backend Validation (BONUS)**
+- Server-side validation using shared rules
+- Authorization checks (only trip owners can edit/delete)
+- Comprehensive error responses
+
+### **Error States**
+- Loading states during API calls
+- Error messages with retry options
+- Empty states for lists
+
+---
+
+## 📚 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/me` - Get current user (protected)
+
+### Trips
+- `GET /api/trips` - Get all user trips (protected)
+- `POST /api/trips` - Create trip (protected)
+- `GET /api/trips/:id` - Get trip by ID (owner only)
+- `PUT /api/trips/:id` - Update trip (owner only)
+- `DELETE /api/trips/:id` - Delete trip (owner only)
+
+### Favorites
+- `POST /api/trips/:id/favorites` - Add favorite (owner only)
+- `DELETE /api/trips/:id/favorites/:favoriteId` - Remove favorite (owner only)
+- `PATCH /api/trips/:id/favorites/:favoriteId` - Update favorite/itinerary (owner only)
+
+---
+
+## 🚢 Deployment
+
+### **Backend (Render)**
+1. Push code to GitHub
+2. Create Web Service on Render
+3. Set environment variables
+4. Deploy!
+
+### **Frontend (Render / Vercel / Netlify)**
+1. Build: `npm run build`
+2. Deploy build folder
+3. Update `REACT_APP_API_URL` to production server URL
+
+---
+
+## 🧪 Testing
+
+### Manual Testing Checklist:
+- [ ] Register new user
+- [ ] Login with credentials
+- [ ] Create a new trip
+- [ ] Search for places (Explore page)
+- [ ] Add places to favorites
+- [ ] Edit trip details
+- [ ] Delete trip
+- [ ] Schedule itinerary
+- [ ] Refresh page (persist auth & data)
+- [ ] Test with server offline (error handling)
+
+---
+
+## 📋 Project Structure
+
+```
+travel-vibes-client/
+├── src/
+│   ├── components/         # Reusable UI components
+│   ├── pages/              # Page components
+│   ├── hooks/              # Custom hooks
+│   ├── services/           # API service layer
+│   ├── store/              # Redux slices
+│   ├── utils/              # Validation, helpers
+│   └── styles/             # CSS modules
+└── public/
+
+travel-vibes-server/
+├── src/
+│   ├── config/             # DB connection
+│   ├── models/             # Mongoose schemas
+│   ├── controllers/        # Business logic
+│   ├── routes/             # API routes
+│   ├── middleware/         # Auth, validation, errors
+│   └── utils/              # Shared validation
+└── package.json
+```
+
+---
+
+## ✅ Bonus Features Implemented
+
+✨ **Server-side validation** with shared rules  
+✨ **Authorization** - only trip owners can edit/delete  
+✨ **MVC architecture** - clean separation of concerns  
+✨ **Error handling** - comprehensive error states  
+✨ **Custom hooks** - useForm, useApi, useLocalStorage  
+✨ **Protected routes** - authentication required  
+
+---
+
+**Built with ❤️ by Maya for the React Final Project**
