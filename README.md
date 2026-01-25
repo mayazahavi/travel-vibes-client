@@ -1,40 +1,79 @@
-# Travel Vibes
+# 🌍 Travel Vibes
 
-## What the site is about
+Travel Vibes is a modern, responsive web application that helps users plan personalized trips based on their travel preferences ("vibe"). Users can create itineraries, search for destinations, and manage their trips in a beautiful dashboard.
 
-Travel Vibes is a website that helps users plan trips based on their travel preferences. Users can select their travel vibe, search for destinations, and create personalized trips.
+## ✨ Features
 
-## The 3 required pages
+- **Personalized Trip Planning:** Create trips based on vibes (Relaxing, Adventure, Cultural, etc.).
+- **Smart Destination Search:** Powered by **Geoapify API** to find places and activities.
+- **Trip Management (CRUD):** Create, Read, Update, and Delete trips.
+- **User Authentication:** Secure Login and Registration (Mock implemented, ready for server).
+- **Interactive Itinerary:** Drag-and-drop or assign activities to specific days.
+- **Favorites System:** Save places to your specific trip.
 
-1. **Content Page** - VibesPage (src/pages/VibesPage.jsx)
-2. **Form Page** - CreateTripPage (src/pages/CreateTripPage.jsx)
-3. **API Page** - ExplorePage (src/pages/ExplorePage.jsx)
+## 🛠️ Tech Stack
 
-**Note:** I also created a HomePage (src/pages/HomePage.jsx) as a landing page to improve user experience and navigation, even though it wasn't required by the assignment guidelines.
+- **Frontend:** React.js
+- **State Management:** Redux Toolkit (Slices for Auth & Trips)
+- **Routing:** React Router v6 (Protected Routes implemented)
+- **Styling:** CSS Modules + Bulma CSS Framework
+- **Icons:** React Icons (FontAwesome)
+- **API Integration:** Geoapify (Maps/Places), Unsplash (Images)
 
-## Global State (Context)
+## 🚀 Getting Started
 
-I created `FavoritesContext` to manage the application's global state using React Context API.
+### Prerequisites
 
-*   **What it stores:**
-    *   `trips`: An array containing all the trips the user has created. Each trip object holds the trip details (name, dates, vibe) and its own list of favorite places.
-    *   `currentTripId`: Tracks the ID of the trip currently being viewed or edited.
-*   **How I use it:**
-    *   **CreateTripPage:** Uses the context to create a new trip object and add it to the state.
-    *   **ExplorePage:** Uses `addToFavorites` to save places specifically to the currently active trip.
-    *   **MyTripsPage:** Consumes the `trips` array to display a dashboard of all planned journeys.
-    *   **FavoritesPage:** Retrieves the current trip details to display the itinerary and saved places.
-    *   **ItineraryPage:** Uses `assignPlaceToDay` to organize saved places into a daily schedule.
+- Node.js (v14 or higher)
+- npm or yarn
 
-## Routing
+### Installation
 
-I implemented `React Router` to handle navigation across the application:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/travel-vibes-client.git
+   cd travel-vibes-client
+   ```
 
-*   `/` → **Home Page** (Landing page)
-*   `/vibes` → **Vibes Page** (Content page - select travel style)
-*   `/create-trip` → **Create Trip Page** (Form page - enter trip details)
-*   `/explore` → **Explore Page** (API page - search destinations and save favorites)
-*   `/my-trips` → **My Trips Page** (Dashboard - view all created trips)
-*   `/favorites` → **Favorites Page** (Trip details - view specific trip's saved places)
-*   `/itinerary` → **Itinerary Page** (Daily planner - schedule activities per day)
-*   `*` → **404 Not Found** (Handles unknown routes)
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Set up Environment Variables:**
+   - Create a file named `.env` in the root directory.
+   - Copy the contents from `.env.example`.
+   - Add your API keys (Geoapify is required for the Explore feature).
+
+   ```env
+   REACT_APP_GEOAPIFY_API_KEY=your_key_here
+   ```
+
+4. **Run the application:**
+   ```bash
+   npm start
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## 🏗️ Architecture & Code Quality
+
+This project follows React best practices:
+- **Custom Hooks:** `useForm` (Validation), `useApi` (Data Fetching), `useLocalStorage` (Persistence).
+- **Service Layer:** `authService.js` and `placesService.js` isolate API logic from UI components.
+- **Shared Validation:** Validation logic (`src/utils/validation.js`) is separated to allow future sharing with a Node.js backend.
+- **Component Design:** Small, focused components (e.g., `PlaceCard`, `EditTripModal`).
+
+## 🔐 Authentication & Server
+
+Currently, the application runs in **Client-Only Mode** using a robust Service Layer abstraction.
+- **Auth:** Simulates a real server with JWT behavior. State is persisted in `localStorage`.
+- **Database:** Trips are currently saved to `localStorage` to persist across refreshes.
+- **Ready for Backend:** To connect a real Node.js/MongoDB backend, simply update the functions in `src/services/authService.js` to use `fetch()` instead of the mock implementation.
+
+## 🛑 Validation
+
+- **Frontend:** Real-time validation for forms (Email format, password length, required fields).
+- **Error Handling:** Graceful handling of API errors and empty states.
+
+---
+Built with ❤️ by Maya for the React Final Project.
