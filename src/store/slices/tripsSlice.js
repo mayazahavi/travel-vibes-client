@@ -25,6 +25,13 @@ export const tripsSlice = createSlice({
         state.currentTripId = null;
       }
     },
+    updateTrip: (state, action) => {
+      const { id, updates } = action.payload;
+      const index = state.trips.findIndex((t) => t.id === id);
+      if (index !== -1) {
+        state.trips[index] = { ...state.trips[index], ...updates };
+      }
+    },
     setCurrentTrip: (state, action) => {
       state.currentTripId = action.payload;
     },
@@ -87,6 +94,7 @@ export const tripsSlice = createSlice({
 export const {
   createTrip,
   deleteTrip,
+  updateTrip,
   setCurrentTrip,
   addToFavorites,
   removeFromFavorites,

@@ -1,9 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Helper to safely read from localStorage
+const loadAuthFromStorage = () => {
+  try {
+    const user = localStorage.getItem("auth_user");
+    const token = localStorage.getItem("auth_token");
+    if (user && token) {
+      return {
+        user: JSON.parse(user),
+        token: token,
+        isAuthenticated: true,
+      };
+    }
+  } catch (error) {
+    console.error("Failed to load auth from storage:", error);
+  }
+  return null;
+};
+
+const savedAuth = loadAuthFromStorage();
+
 const initialState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
+  user: savedAuth ? savedAuth.user : null,
+  token: savedAuth ? savedAuth.token : null,
+  isAuthenticated: savedAuth ? savedAuth.isAuthenticated : false,
   loading: false,
   error: null,
 };
@@ -22,6 +42,14 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.error = null;
+      
+      // Save to localStorage
+      try {
+        localStorage.setItem("auth_user", JSON.stringify(action.payload.user));
+        localStorage.setItem("auth_token", action.payload.token);
+      } catch (error) {
+        console.error("Failed to save auth to storage:", error);
+      }
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -32,6 +60,14 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
+      
+      // Clear from localStorage
+      try {
+        localStorage.removeItem("auth_user");
+        localStorage.removeItem("auth_token");
+      } catch (error) {
+        console.error("Failed to clear auth from storage:", error);
+      }
     },
     registerStart: (state) => {
       state.loading = true;
@@ -43,6 +79,14 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.error = null;
+      
+      // Save to localStorage
+      try {
+        localStorage.setItem("auth_user", JSON.stringify(action.payload.user));
+        localStorage.setItem("auth_token", action.payload.token);
+      } catch (error) {
+        console.error("Failed to save auth to storage:", error);
+      }
     },
     registerFailure: (state, action) => {
       state.loading = false;
