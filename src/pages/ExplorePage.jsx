@@ -6,14 +6,13 @@ import {
   addToFavorites,
   removeFromFavorites,
   selectFavorites,
-  selectCurrentTripId,
 } from "../store/slices/tripsSlice";
 import { selectIsAuthenticated } from "../store/slices/authSlice";
 import useApi from "../hooks/useApi";
 import styles from "../styles/ExplorePage.module.css";
 import { EXPLORE_VIBES } from "../constants/vibes";
-import { calculateDistance } from "../utils/distance";
-import { getPlaceImage, clearUsedImages } from "../services/imageService";
+import { clearUsedImages } from "../services/imageService";
+import { processPlacesData, getPlacesUrl } from "../services/placesService";
 import PlaceCard from "../components/PlaceCard";
 import SearchBar from "../components/SearchBar";
 import SuccessModal from "../components/SuccessModal";
@@ -30,7 +29,6 @@ function ExplorePage() {
 
   // Redux Selectors
   const favorites = useSelector(selectFavorites);
-  const currentTripId = useSelector(selectCurrentTripId);
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const initialVibe = searchParams.get("vibe");
@@ -52,6 +50,7 @@ function ExplorePage() {
   const isFavorite = (placeId) => {
     return favorites.some((p) => p.id === placeId);
   };
+
   useEffect(() => {
     if (placesApi.loading) {
       setSearched(true);
@@ -59,66 +58,13 @@ function ExplorePage() {
     }
 
     if (placesApi.data && selectedLocation) {
-      const processPlaces = async () => {
+      const loadPlaces = async () => {
         try {
-          const { lat, lon, city } = selectedLocation.value;
-          const features = placesApi.data.features || [];
-          const formattedPlaces = [];
-          // ... processing logic ...
-
-          const seenLocations = new Set();
-
-          for (const feature of features) {
-            // ... feature processing ...
-            const props = feature.properties;
-            const placeName = props.name || props.street;
-            if (
-              !placeName ||
-              placeName.trim() === "" ||
-              placeName === "Unknown Place"
-            )
-              continue;
-
-            const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
-            if (seenLocations.has(locationKey)) continue;
-            seenLocations.add(locationKey);
-
-            const distance = calculateDistance(lat, lon, props.lat, props.lon);
-            const cuisine = props.cuisine
-              ? Object.keys(props.cuisine).join(";")
-              : "";
-            const brand = props.brand || props.datasource?.raw?.brand || "";
-            const street = props.street || "";
-
-            const imageUrl = await getPlaceImage(
-              placeName,
-              props.categories ? props.categories[0] : "place",
-              city,
-              selectedVibe.value,
-              props.place_id,
-              cuisine,
-              brand,
-              street,
-            );
-
-            formattedPlaces.push({
-              id: props.place_id,
-              name: placeName,
-              address:
-                props.address_line2 || props.formatted || props.address_line1,
-              category: props.categories ? props.categories[0] : "place",
-              image: imageUrl,
-              phone: props.contact?.phone || props.datasource?.raw?.phone,
-              website: props.contact?.website || props.datasource?.raw?.website,
-              openingHours: props.opening_hours,
-              rating: props.datasource?.raw?.rating,
-              description: props.datasource?.raw?.description,
-              distance: distance,
-              lat: props.lat,
-              lon: props.lon,
-            });
-          }
-
+          const formattedPlaces = await processPlacesData(
+            placesApi.data.features,
+            selectedLocation.value,
+            selectedVibe.value
+          );
           setPlaces(formattedPlaces);
         } catch (error) {
           console.error("Error processing places:", error);
@@ -128,7 +74,7 @@ function ExplorePage() {
         }
       };
 
-      processPlaces();
+      loadPlaces();
     } else if (placesApi.error) {
       setApiError(true);
       setProcessing(false);
@@ -198,11 +144,7 @@ function ExplorePage() {
     setApiError(false);
     clearUsedImages();
 
-    const { lat, lon } = selectedLocation.value;
-    const categories = selectedVibe.categories;
-
-    const url = `https://api.geoapify.com/v2/places?categories=${encodeURIComponent(categories)}&filter=circle:${lon},${lat},5000&bias=proximity:${lon},${lat}&limit=20&apiKey=${GEOAPIFY_API_KEY}`;
-
+    const url = getPlacesUrl(selectedVibe, selectedLocation, GEOAPIFY_API_KEY);
     placesApi.refetch(url);
   };
 

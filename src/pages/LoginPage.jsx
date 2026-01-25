@@ -10,6 +10,9 @@ import {
   selectAuthError,
   selectIsAuthenticated,
 } from "../store/slices/authSlice";
+import useForm from "../hooks/useForm";
+import * as authService from "../services/authService";
+import { validateLogin } from "../utils/validation";
 import styles from "../styles/Auth.module.css";
 
 function LoginPage() {
@@ -19,12 +22,14 @@ function LoginPage() {
   const error = useSelector(selectAuthError);
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const [formErrors, setFormErrors] = useState({});
+  // ... hooks ...
+
+  const { values, errors, handleChange, handleSubmit } = useForm(
+    { email: "", password: "" },
+    validateLogin
+  );
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -35,52 +40,39 @@ function LoginPage() {
     };
   }, [isAuthenticated, navigate, dispatch]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (formErrors[name]) {
-      setFormErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.email) {
-      errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Please enter a valid email address";
-    }
-    if (!formData.password) {
-      errors.password = "Password is required";
-    }
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
+  const onSubmit = async (formValues) => {
     dispatch(loginStart());
 
-    // Simulate API call for now (will be replaced with real API later)
     try {
-      // Mock login delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock successful login
-      const mockUser = {
-        id: "1",
-        name: "Test User",
-        email: formData.email,
-      };
-      const mockToken = "mock-jwt-token";
-
-      dispatch(loginSuccess({ user: mockUser, token: mockToken }));
+      const data = await authService.login(formValues.email, formValues.password);
+      setShowSuccess(true);
+      // Show success message for 1.5 seconds before updating Redux (which triggers redirect)
+      setTimeout(() => {
+        dispatch(loginSuccess(data));
+      }, 1500);
     } catch (err) {
-      dispatch(loginFailure("Invalid email or password"));
+      dispatch(loginFailure(err.message || "Invalid email or password"));
     }
   };
+
+  if (showSuccess) {
+    return (
+      <div className={styles.authPageWrapper}>
+        <div className={styles.overlay}></div>
+        <div className={styles.authCard} style={{ textAlign: "center", padding: "4rem 2rem" }}>
+          <div style={{
+            fontSize: "4rem",
+            color: "#10b981",
+            marginBottom: "1rem"
+          }}>
+            <i className="fas fa-check-circle"></i>
+          </div>
+          <h2 className="title is-3" style={{ color: "#333" }}>Success!</h2>
+          <p className="subtitle is-5" style={{ color: "#666" }}>Logging you in...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.authPageWrapper}>
@@ -99,24 +91,24 @@ function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formGroup}>
             <label className={styles.label}>Email Address</label>
             <div className="control has-icons-left">
               <input
-                className={`input ${formErrors.email ? "is-danger" : ""}`}
+                className={`input ${errors.email ? "is-danger" : ""}`}
                 type="email"
                 name="email"
                 placeholder="hello@example.com"
-                value={formData.email}
+                value={values.email}
                 onChange={handleChange}
               />
               <span className="icon is-small is-left">
                 <i className="fas fa-envelope"></i>
               </span>
             </div>
-            {formErrors.email && (
-              <p className="help is-danger">{formErrors.email}</p>
+            {errors.email && (
+              <p className="help is-danger">{errors.email}</p>
             )}
           </div>
 
@@ -124,27 +116,26 @@ function LoginPage() {
             <label className={styles.label}>Password</label>
             <div className="control has-icons-left">
               <input
-                className={`input ${formErrors.password ? "is-danger" : ""}`}
+                className={`input ${errors.password ? "is-danger" : ""}`}
                 type="password"
                 name="password"
                 placeholder="••••••••"
-                value={formData.password}
+                value={values.password}
                 onChange={handleChange}
               />
               <span className="icon is-small is-left">
                 <i className="fas fa-lock"></i>
               </span>
             </div>
-            {formErrors.password && (
-              <p className="help is-danger">{formErrors.password}</p>
+            {errors.password && (
+              <p className="help is-danger">{errors.password}</p>
             )}
           </div>
 
           <button
             type="submit"
-            className={`button is-primary ${styles.submitButton} ${
-              loading ? "is-loading" : ""
-            }`}
+            className={`button is-primary ${styles.submitButton} ${loading ? "is-loading" : ""
+              }`}
             disabled={loading}
           >
             Sign In

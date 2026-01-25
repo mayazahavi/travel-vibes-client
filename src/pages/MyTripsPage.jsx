@@ -9,15 +9,18 @@ import {
   FaMapMarkerAlt,
   FaArrowRight,
   FaUserFriends,
+  FaPen,
 } from "react-icons/fa";
 import {
   selectTrips,
   setCurrentTrip,
   deleteTrip,
+  updateTrip,
 } from "../store/slices/tripsSlice";
 import styles from "../styles/FavoritesPage.module.css";
 import { VIBE_IMAGES } from "../constants/vibes";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import EditTripModal from "../components/EditTripModal";
 
 function MyTripsPage() {
   const navigate = useNavigate();
@@ -27,6 +30,11 @@ function MyTripsPage() {
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     tripId: null,
+  });
+
+  const [editModal, setEditModal] = useState({
+    isOpen: false,
+    trip: null,
   });
 
   const handleTripSelect = (tripId) => {
@@ -45,11 +53,20 @@ function MyTripsPage() {
     setDeleteModal({ isOpen: true, tripId });
   };
 
+  const handleEditClick = (e, trip) => {
+    e.stopPropagation();
+    setEditModal({ isOpen: true, trip });
+  };
+
   const confirmDelete = () => {
     if (deleteModal.tripId) {
       dispatch(deleteTrip(deleteModal.tripId));
       setDeleteModal({ isOpen: false, tripId: null });
     }
+  };
+
+  const confirmEdit = (id, updates) => {
+    dispatch(updateTrip({ id, updates }));
   };
 
   return (
@@ -186,41 +203,79 @@ function MyTripsPage() {
                         {trip.favorites?.length || 0} Places
                       </span>
                     </div>
-                    <button
-                      onClick={(e) => handleDeleteClick(e, trip.id)}
-                      className="button is-white is-rounded"
-                      title="Delete Trip"
-                      style={{
-                        position: "absolute",
-                        top: "15px",
-                        right: "15px",
-                        height: "32px",
-                        width: "32px",
-                        padding: 0,
-                        background: "rgba(255, 255, 255, 0.9)",
-                        border: "1px solid rgba(239, 68, 68, 0.2)",
-                        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-                        color: "#ef4444",
-                        transition: "all 0.2s ease",
-                        zIndex: 5,
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "#fee2e2";
-                        e.currentTarget.style.borderColor = "#ef4444";
-                        e.currentTarget.style.transform = "scale(1.05)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background =
-                          "rgba(255, 255, 255, 0.9)";
-                        e.currentTarget.style.borderColor =
-                          "rgba(239, 68, 68, 0.2)";
-                        e.currentTarget.style.transform = "scale(1)";
-                      }}
-                    >
-                      <span className="icon is-small">
-                        <FaTrash size={12} />
-                      </span>
-                    </button>
+
+                    {/* Action Buttons Container */}
+                    <div style={{
+                      position: "absolute",
+                      top: "15px",
+                      right: "15px",
+                      display: "flex",
+                      gap: "8px",
+                      zIndex: 5
+                    }}>
+                      <button
+                        onClick={(e) => handleEditClick(e, trip)}
+                        className="button is-white is-rounded"
+                        title="Edit Trip"
+                        style={{
+                          height: "32px",
+                          width: "32px",
+                          padding: 0,
+                          background: "rgba(255, 255, 255, 0.9)",
+                          border: "1px solid rgba(14, 165, 233, 0.2)",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                          color: "#0ea5e9",
+                          transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#e0f2fe";
+                          e.currentTarget.style.borderColor = "#0ea5e9";
+                          e.currentTarget.style.transform = "scale(1.05)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(255, 255, 255, 0.9)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(14, 165, 233, 0.2)";
+                          e.currentTarget.style.transform = "scale(1)";
+                        }}
+                      >
+                        <span className="icon is-small">
+                          <FaPen size={12} />
+                        </span>
+                      </button>
+                      <button
+                        onClick={(e) => handleDeleteClick(e, trip.id)}
+                        className="button is-white is-rounded"
+                        title="Delete Trip"
+                        style={{
+                          height: "32px",
+                          width: "32px",
+                          padding: 0,
+                          background: "rgba(255, 255, 255, 0.9)",
+                          border: "1px solid rgba(239, 68, 68, 0.2)",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                          color: "#ef4444",
+                          transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#fee2e2";
+                          e.currentTarget.style.borderColor = "#ef4444";
+                          e.currentTarget.style.transform = "scale(1.05)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(255, 255, 255, 0.9)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(239, 68, 68, 0.2)";
+                          e.currentTarget.style.transform = "scale(1)";
+                        }}
+                      >
+                        <span className="icon is-small">
+                          <FaTrash size={12} />
+                        </span>
+                      </button>
+                    </div>
                   </div>
 
                   <div
@@ -393,6 +448,13 @@ function MyTripsPage() {
           onConfirm={confirmDelete}
           title="Delete Trip?"
           message="Are you sure you want to remove this trip? All saved places for this trip will be lost."
+        />
+
+        <EditTripModal
+          isOpen={editModal.isOpen}
+          onClose={() => setEditModal({ isOpen: false, trip: null })}
+          onSave={confirmEdit}
+          trip={editModal.trip}
         />
       </div>
     </div>
