@@ -153,6 +153,42 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+.notFoundWrapper {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.notFoundTitle {
+  font-size: 6rem;
+  font-weight: 900;
+  color: #0ea5e9;
+  margin-bottom: 20px;
+}
+
+.notFoundSubtitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.notFoundText {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 30px;
+  max-width: 500px;
+}
+
+.notFoundLink {
+  display: inline-flex;
+}
+
 .ctaButton:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);

@@ -203,6 +203,33 @@
   min-height: 200px;
 }
 
+.relativeGroup {
+  position: relative;
+}
+
+.suggestionsBox {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 0;
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestionItem {
+  padding: 10px 15px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.suggestionItem:hover {
+  background-color: #f8fafc;
+}
+
 .inputGroup {
   margin-bottom: 15px;
 }
@@ -246,7 +273,15 @@
 }
 
 .nextButton {
+  margin-left: 0;
+}
+
+.nextButtonAuto {
   margin-left: auto;
+}
+
+.modalBackdrop {
+  background: rgba(0, 0, 0, 0.6);
 }
 
 :global(.react-datepicker-wrapper) {

@@ -73,6 +73,10 @@
   position: relative;
 }
 
+.vibeCardInteractive {
+  cursor: pointer;
+}
+
 .vibeCard:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-md);
@@ -81,6 +85,10 @@
 .vibeCardSelected {
   border: 2px solid #0369a1;
   box-shadow: 0 0 0 4px rgba(3, 105, 161, 0.2);
+}
+
+.modalBackdrop {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .checkMark {

@@ -77,6 +77,25 @@
   margin-bottom: 1.25rem; /* Slightly reduced spacing */
 }
 
+.authCardCentered {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.successIcon {
+  font-size: 4rem;
+  color: #10b981;
+  margin-bottom: 1rem;
+}
+
+.successTitle {
+  color: #333;
+}
+
+.successSubtitle {
+  color: #666;
+}
+
 .label {
   color: var(--text-primary);
   font-weight: 600;
