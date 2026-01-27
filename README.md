@@ -29,8 +29,8 @@ Travel Vibes is a modern, full-stack web application that helps users plan perso
 - Server-side validation
 
 ### **APIs**
-- Geoapify (Maps & Places)
-- Unsplash (Images)
+- Geoapify (Maps & Places) via server proxy
+- Unsplash (Images) via server proxy
 
 ---
 
@@ -98,19 +98,16 @@ cd travel-vibes-client
 npm install
 
 # Create .env file
-# Copy .env.example to .env and add your API keys:
+# Copy .env.example to .env and set your API URL:
 ```
 
 **`.env` example:**
 ```env
-REACT_APP_GEOAPIFY_API_KEY=your_geoapify_key
-REACT_APP_UNSPLASH_ACCESS_KEY=your_unsplash_key
 REACT_APP_API_URL=http://localhost:5000/api
 ```
 
-**Get API Keys:**
-- Geoapify: https://www.geoapify.com/ (free tier)
-- Unsplash: https://unsplash.com/developers (optional)
+**API Keys:**
+- Geoapify and Unsplash keys are configured on the **server** (not in the client).
 
 **Start the client:**
 ```bash
