@@ -4,7 +4,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header.jsx";
@@ -22,10 +22,12 @@ import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import {
+  fetchUserTrips,
   selectTrips,
-  setTrips,
   setCurrentTrip,
+  setTrips,
 } from "./store/slices/tripsSlice";
+import { selectIsAuthenticated } from "./store/slices/authSlice";
 
 function AppContent() {
   const location = useLocation();
@@ -38,27 +40,30 @@ function AppContent() {
   const trips = useSelector(selectTrips);
   const [theme, setTheme] = useLocalStorage("theme", "light");
   const [savedTrips, setSavedTrips] = useLocalStorage("travel_vibes_trips", []);
-  const { selectIsAuthenticated } = require('./store/slices/authSlice');
-  const { fetchUserTrips } = require('./store/slices/tripsSlice');
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const savedTripsRef = useRef(savedTrips);
+
+  useEffect(() => {
+    savedTripsRef.current = savedTrips;
+  }, [savedTrips]);
 
   // Fetch trips from server when user logs in
   useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(fetchUserTrips()).catch((err) => {
-        console.error("Failed to fetch trips:", err);
-        // Fallback to localStorage on error
-        if (savedTrips && savedTrips.length > 0) {
-          dispatch(setTrips(savedTrips));
-          const lastTrip = savedTrips[savedTrips.length - 1];
-          if (lastTrip) {
-            dispatch(setCurrentTrip(lastTrip._id || lastTrip.id));
-          }
+    if (!isAuthenticated) return;
+
+    dispatch(fetchUserTrips()).catch((err) => {
+      console.error("Failed to fetch trips:", err);
+      // Fallback to localStorage on error
+      const cachedTrips = savedTripsRef.current;
+      if (cachedTrips && cachedTrips.length > 0) {
+        dispatch(setTrips(cachedTrips));
+        const lastTrip = cachedTrips[cachedTrips.length - 1];
+        if (lastTrip) {
+          dispatch(setCurrentTrip(lastTrip._id || lastTrip.id));
         }
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+      }
+    });
+  }, [dispatch, isAuthenticated]);
 
   // Sync trips to localStorage as backup/cache
   useEffect(() => {
@@ -125,7 +130,7 @@ function AppContent() {
 
 function App() {
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className="appRoot">
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AppContent />
       </Router>
