@@ -15,7 +15,6 @@ const useForm = (initialValues = {}, validate) => {
         const { name, value } = e.target;
         setValues((prev) => ({ ...prev, [name]: value }));
 
-        // Clear error for this field when user types
         setErrors((prev) => {
             if (prev[name]) {
                 const newErrors = { ...prev };
@@ -39,7 +38,6 @@ const useForm = (initialValues = {}, validate) => {
         };
     }, [values, validate]);
 
-    // Allow manual setting of errors (e.g. from server)
     const setFieldError = useCallback((name, error) => {
         setErrors((prev) => ({ ...prev, [name]: error }));
     }, []);

@@ -2,12 +2,6 @@ import { calculateDistance } from "../utils/distance";
 import { API_URL } from "../config/api";
 import { getPlaceImage } from "./imageService";
 
-/**
- * Service to handle place-related operations.
- * Currently processes raw Geoapify data on the client.
- * In the future, this logic can be moved to the server.
- */
-
 export const processPlacesData = async (features, userLocation, vibeValue) => {
     if (!features || !userLocation) return [];
 
@@ -18,8 +12,6 @@ export const processPlacesData = async (features, userLocation, vibeValue) => {
     for (const feature of features) {
         const props = feature.properties;
         const placeName = props.name || props.street;
-
-        // Basic cleaning
         if (
             !placeName ||
             placeName.trim() === "" ||
@@ -28,12 +20,10 @@ export const processPlacesData = async (features, userLocation, vibeValue) => {
             continue;
         }
 
-        // Deduplication by coordinates
         const locationKey = `${props.lat.toFixed(3)}_${props.lon.toFixed(3)}`;
         if (seenLocations.has(locationKey)) continue;
         seenLocations.add(locationKey);
 
-        // Calculate details
         const distance = calculateDistance(lat, lon, props.lat, props.lon);
 
         const cuisine = props.cuisine
@@ -44,7 +34,6 @@ export const processPlacesData = async (features, userLocation, vibeValue) => {
         const street = props.street || "";
         const category = props.categories ? props.categories[0] : "place";
 
-        // Fetch image
         const imageUrl = await getPlaceImage(
             placeName,
             category,

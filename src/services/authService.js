@@ -22,13 +22,11 @@ export const login = async (email, password) => {
             body: JSON.stringify({ email, password }),
         });
 
-        // Return user and token from server response
         return {
             user: data.data.user,
             token: data.data.token,
         };
     } catch (error) {
-        // Network error or server error
         throw new Error(error.message || 'Failed to connect to server');
     }
 };
@@ -48,7 +46,6 @@ export const register = async (userData) => {
             body: JSON.stringify(userData),
         });
 
-        // Return user and token from server response
         return {
             user: data.data.user,
             token: data.data.token,
@@ -58,12 +55,6 @@ export const register = async (userData) => {
     }
 };
 
-/**
- * Logout user
- * For JWT, this is usually just client-side (clearing token/localStorage)
- */
 export const logout = () => {
-    // JWT logout is handled client-side
-    // If you need to invalidate token on server, add API call here
     return Promise.resolve();
 };

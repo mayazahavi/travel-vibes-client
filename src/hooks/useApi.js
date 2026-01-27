@@ -29,7 +29,7 @@ const useApi = (initialUrl = null, options = {}) => {
       } catch (err) {
         setError(err.message || "Something went wrong");
         setData(null);
-        throw err; // Re-throw to allow caller to handle
+        throw err;
       } finally {
         setLoading(false);
       }

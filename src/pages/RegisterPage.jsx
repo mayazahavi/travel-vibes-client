@@ -11,7 +11,7 @@ import {
 } from "../store/slices/authSlice";
 import useForm from "../hooks/useForm";
 import * as authService from "../services/authService";
-import { validateRegistration } from "../utils/validation"; // Shared validation
+import { validateRegistration } from "../utils/validation"; 
 import styles from "../styles/Auth.module.css";
 
 function RegisterPage() {

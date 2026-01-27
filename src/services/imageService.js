@@ -1,8 +1,6 @@
 import { API_URL } from "../config/api";
 import { fetchJson } from "./http";
 
-// Unsplash API is now proxied through the server
-// API key is securely stored on server
 const usedImages = new Set();
 let placeCounter = 0;
 

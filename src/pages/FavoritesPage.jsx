@@ -1,4 +1,3 @@
-/* Reusing styles from module */
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FaHeart, FaMapMarkerAlt } from "react-icons/fa";

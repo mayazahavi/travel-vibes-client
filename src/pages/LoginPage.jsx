@@ -46,7 +46,6 @@ function LoginPage() {
     try {
       const data = await authService.login(formValues.email, formValues.password);
       setShowSuccess(true);
-      // Show success message for 1.5 seconds before updating Redux (which triggers redirect)
       setTimeout(() => {
         dispatch(loginSuccess(data));
       }, 1500);

@@ -1,8 +1,3 @@
-/**
- * Validation rules that can be shared between Client and Server (in a real app).
- * Currently used by the Client for frontend validation.
- */
-
 export const validateRegistration = (values) => {
     const errors = {};
 

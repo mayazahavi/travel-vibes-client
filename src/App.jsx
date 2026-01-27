@@ -64,8 +64,6 @@ function AppContent() {
       }
     });
   }, [dispatch, isAuthenticated]);
-
-  // Sync trips to localStorage as backup/cache
   useEffect(() => {
     if (trips.length > 0) {
       setSavedTrips(trips);

@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-// Helper to safely read from localStorage
 const loadAuthFromStorage = () => {
   try {
     const user = localStorage.getItem("auth_user");
@@ -42,8 +40,6 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.error = null;
-      
-      // Save to localStorage
       try {
         localStorage.setItem("auth_user", JSON.stringify(action.payload.user));
         localStorage.setItem("auth_token", action.payload.token);
@@ -60,8 +56,6 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      
-      // Clear from localStorage
       try {
         localStorage.removeItem("auth_user");
         localStorage.removeItem("auth_token");

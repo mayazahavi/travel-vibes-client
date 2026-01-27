@@ -18,11 +18,11 @@
 
 .warning {
   border-left-color: #f59e0b;
-  background: #fffbeb; /* Light yellow background for warning */
+  background: #fffbeb; 
 }
 
 .warning .content {
-  color: #92400e; /* Darker yellow text */
+  color: #92400e; 
   font-weight: 600;
   font-size: 1.05rem;
 }
