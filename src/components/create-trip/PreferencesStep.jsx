@@ -1,7 +1,8 @@
 import React from "react";
 import { CREATE_TRIP_VIBES } from "../../constants/vibes";
+import styles from "../../styles/CreateTripPage.module.css";
 
-function PreferencesStep({ formData, onChange, errors, styles }) {
+function PreferencesStep({ formData, onChange, errors }) {
     return (
         <div className={styles.inputGroup}>
             <label className={styles.label}>

@@ -1,8 +1,9 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import styles from "../../styles/CreateTripPage.module.css";
 
-function TravelInfoStep({ formData, onChange, onDateChange, errors, styles }) {
+function TravelInfoStep({ formData, onChange, onDateChange, errors }) {
     return (
         <>
             <div className={styles.inputGroup}>

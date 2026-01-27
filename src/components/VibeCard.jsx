@@ -3,9 +3,8 @@ import styles from "../styles/VibesPage.module.css";
 function VibeCard({ vibe, isSelected, onSelect }) {
   return (
     <div
-      className={`card ${styles.vibeCard} ${isSelected ? styles.vibeCardSelected : ""}`}
+      className={`card ${styles.vibeCard} ${styles.vibeCardInteractive} ${isSelected ? styles.vibeCardSelected : ""}`}
       onClick={onSelect}
-      style={{ cursor: "pointer", position: "relative" }}
     >
       {isSelected && (
         <div className={styles.checkMark}>

@@ -1,0 +1,121 @@
+.successModal {
+  z-index: 2000;
+  overflow: hidden;
+}
+
+.successModal :global(.modal-background) {
+  overflow: hidden;
+}
+
+.successModal :global(.modal-content) {
+  overflow: visible;
+  max-height: none;
+}
+
+.modalBackdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modalCard {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 35px 30px;
+  text-align: center;
+  max-width: 420px;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.successIcon {
+  font-size: 56px;
+  color: #10b981;
+  margin-bottom: 15px;
+  animation: successPulse 0.5s ease-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.successTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.successMessage {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.savedPlacesList {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  text-align: left;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.savedPlaceItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.savedPlaceItem:last-child {
+  border-bottom: none;
+}
+
+.savedPlaceIcon {
+  color: #0ea5e9;
+}
+
+.morePlaces {
+  text-align: center;
+  padding: 8px;
+  font-size: 13px;
+  color: #0ea5e9;
+  font-weight: 600;
+}
+
+.successNote {
+  font-size: 13px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+@media (max-width: 599px) {
+  .modalCard {
+    padding: 40px 30px;
+    margin: 0 20px;
+  }
+}

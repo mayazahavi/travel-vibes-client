@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { API_URL } from "../../config/api";
 import useApi from "../../hooks/useApi";
+import {
+    extractGeocodeFeatures,
+    getCityOptionsFromFeatures,
+} from "../../services/placesService";
+import styles from "../../styles/CreateTripPage.module.css";
 
 // Geocode API is now proxied through the server for security
 
-function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
+function TripDetailsStep({ formData, onChange, errors, setFormData }) {
     const cityApi = useApi();
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-    const [destinationQuery, setDestinationQuery] = useState(formData.destination || "");
+    const { refetch: refetchCities } = cityApi;
     const [showSuggestions, setShowSuggestions] = useState(false);
     const suggestionsRef = useRef(null);
-
-    // Sync internal state if parent state changes
-    useEffect(() => {
-        setDestinationQuery(formData.destination || "");
-    }, [formData.destination]);
+    const destinationValue = formData.destination || "";
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -30,50 +31,35 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
 
     const handleDestinationChange = (e) => {
         const value = e.target.value;
-        setDestinationQuery(value);
-        if (value.length >= 3) {
-            setShowSuggestions(true);
-        } else {
-            setShowSuggestions(false);
-        }
+        onChange(e);
+        setShowSuggestions(value.length >= 3);
     };
 
+    const fetchCitySuggestions = useCallback(() => {
+        const url = `${API_URL}/places/geocode?text=${encodeURIComponent(destinationValue)}&type=city&limit=5`;
+        refetchCities(url);
+    }, [destinationValue, refetchCities]);
+
     useEffect(() => {
-        if (!showSuggestions || destinationQuery.length < 3) return;
+        if (!showSuggestions || destinationValue.length < 3) return;
 
-        const timer = setTimeout(() => {
-            const url = `${API_URL}/places/geocode?text=${encodeURIComponent(destinationQuery)}&type=city&limit=5`;
-            cityApi.refetch(url);
-        }, 500);
-
+        const timer = setTimeout(fetchCitySuggestions, 500);
         return () => clearTimeout(timer);
-        // cityApi is excluded to avoid dependency loop since useApi returns a new object
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [destinationQuery, showSuggestions]);
+    }, [destinationValue, fetchCitySuggestions, showSuggestions]);
 
-    const handleDestinationSelect = (feature) => {
-        const city = feature.properties.city || feature.properties.name;
-        const country = feature.properties.country;
-        const fullName = `${city}, ${country}`;
-
-        setDestinationQuery(fullName);
+    const handleDestinationSelect = (option) => {
         setShowSuggestions(false);
 
-        // Update parent
         setFormData((prev) => ({
             ...prev,
-            destination: fullName
+            destination: option.label,
         }));
     };
 
-    // Safely extract features legacy or proxy structure
-    const getSuggestionsFromData = (data) => {
-        if (!data) return [];
-        // Extract features from nested server response: data.data.features or data.features
-        return data.data?.features || data.features || [];
-    };
-
-    const suggestionsList = getSuggestionsFromData(cityApi.data);
+    const suggestionsList = getCityOptionsFromFeatures(
+        extractGeocodeFeatures(cityApi.data),
+        6,
+    );
 
     return (
         <>
@@ -92,8 +78,7 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
                 )}
             </div>
             <div
-                className={styles.inputGroup}
-                style={{ position: "relative" }}
+                className={`${styles.inputGroup} ${styles.relativeGroup}`}
                 ref={suggestionsRef}
             >
                 <label className={styles.label}>Destination</label>
@@ -103,81 +88,41 @@ function TripDetailsStep({ formData, onChange, errors, styles, setFormData }) {
                     <input
                         type="text"
                         name="destination"
-                        value={destinationQuery}
+                    value={destinationValue}
                         onChange={handleDestinationChange}
                         onFocus={() =>
-                            destinationQuery.length >= 3 &&
+                            destinationValue.length >= 3 &&
                             setShowSuggestions(true)
                         }
                         className={`input ${errors.destination ? "is-danger" : ""}`}
                         placeholder={
-                            destinationQuery.length < 3
+                            destinationValue.length < 3
                                 ? "Type at least 3 characters..."
                                 : "Where are you going?"
                         }
                         autoComplete="off"
                     />
                 </div>
-                {destinationQuery.length > 0 &&
-                    destinationQuery.length < 3 && (
+                {destinationValue.length > 0 &&
+                    destinationValue.length < 3 && (
                         <p className="help is-info">
                             Please type at least 3 characters to search
                         </p>
                     )}
                 {showSuggestions &&
                     suggestionsList.length > 0 && (
-                        <div
-                            className="box"
-                            style={{
-                                position: "absolute",
-                                top: "100%",
-                                left: 0,
-                                right: 0,
-                                zIndex: 20,
-                                padding: "0",
-                                marginTop: "4px",
-                                maxHeight: "200px",
-                                overflowY: "auto",
-                            }}
-                        >
-                            {(() => {
-                                const uniqueCities = new Set();
-                                return suggestionsList
-                                    .filter((feature) => {
-                                        const label = `${feature.properties.city || feature.properties.name || ""}, ${feature.properties.country || ""}`;
-                                        if (uniqueCities.has(label)) return false;
-                                        uniqueCities.add(label);
-                                        return true;
-                                    })
-                                    .map((feature, index) => {
-                                        const label = `${feature.properties.city || feature.properties.name || ""}, ${feature.properties.country || ""}`;
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={styles.suggestionItem}
-                                                onClick={() =>
-                                                    handleDestinationSelect(feature)
-                                                }
-                                                style={{
-                                                    padding: "10px 15px",
-                                                    borderBottom: "1px solid #f1f5f9",
-                                                    cursor: "pointer",
-                                                    transition: "background-color 0.2s",
-                                                }}
-                                                onMouseEnter={(e) =>
-                                                (e.target.style.backgroundColor =
-                                                    "#f8fafc")
-                                                }
-                                                onMouseLeave={(e) =>
-                                                (e.target.style.backgroundColor =
-                                                    "transparent")
-                                                }
-                                            >
-                                                {label}
-                                            </div>
-                                        );
-                                    });
-                            })()}
+                        <div className={`box ${styles.suggestionsBox}`}>
+                            {suggestionsList.map((option) => (
+                                <div
+                                    key={option.label}
+                                    className={styles.suggestionItem}
+                                    onClick={() =>
+                                        handleDestinationSelect(option)
+                                    }
+                                >
+                                    {option.label}
+                                </div>
+                            ))}
                         </div>
                     )}
                 {errors.destination && (

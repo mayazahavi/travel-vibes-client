@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/slices/authSlice";
 import ThemeToggle from "./ThemeToggle";
+import styles from "./Header.module.css";
 
 function Header({ theme, toggleTheme }) {
   const location = useLocation();
@@ -56,46 +57,26 @@ function Header({ theme, toggleTheme }) {
 
   return (
     <nav
-      className="navbar is-fixed-top"
+      className={`navbar is-fixed-top ${styles.headerNav}`}
       role="navigation"
       aria-label="main navigation"
-      style={{
-        background: "var(--header-bg)",
-        backdropFilter: "blur(10px)",
-        boxShadow: "var(--shadow-sm)",
-        borderBottom: "1px solid var(--border-color)",
-        transition: "background-color 0.3s ease, border-color 0.3s ease",
-      }}
     >
-      <div
-        className="container"
-        style={{ maxWidth: "100%", padding: "0 40px" }}
-      >
+      <div className={`container ${styles.headerContainer}`}>
         <div className="navbar-brand">
           <Link
             to="/"
-            className="navbar-item"
-            style={{ padding: "0.5rem 0.75rem" }}
+            className={`navbar-item ${styles.brandLink}`}
           >
-            <span
-              style={{
-                fontFamily: "'Poppins', 'Segoe UI', sans-serif",
-                fontSize: "1.5rem",
-                fontWeight: "700",
-                color: "var(--text-primary)",
-                letterSpacing: "-0.5px",
-              }}
-            >
+            <span className={styles.brandText}>
               🌍 TravelVibes
             </span>
           </Link>
           <a
             role="button"
-            className="navbar-burger"
+            className={`navbar-burger ${styles.burger}`}
             aria-label="menu"
             aria-expanded="false"
             data-target="navbarMain"
-            style={{ color: "var(--text-primary)" }}
           >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -103,80 +84,31 @@ function Header({ theme, toggleTheme }) {
           </a>
         </div>
         <div id="navbarMain" className="navbar-menu">
-          <div className="navbar-end" style={{ alignItems: "center" }}>
+          <div className={`navbar-end ${styles.navEnd}`}>
             <Link
               to="/"
-              className="navbar-item"
-              style={{
-                color: "var(--text-primary)",
-                fontWeight: "500",
-                fontSize: "17px",
-                padding: "0.5rem 0.75rem",
-              }}
+              className={`navbar-item ${styles.navItem}`}
             >
               Home
             </Link>
             <div
-              className={`navbar-item has-dropdown ${isDropdownActive ? "is-active" : ""}`}
-              style={{ padding: "0.5rem 0.75rem", position: "relative" }}
+              className={`navbar-item has-dropdown ${styles.dropdownWrapper} ${isDropdownActive ? "is-active" : ""}`}
             >
               <a
-                className="navbar-link"
+                className={`navbar-link ${styles.dropdownToggle}`}
                 onClick={toggleDropdown}
-                style={{
-                  color: "var(--text-primary)",
-                  fontWeight: "700",
-                  fontSize: "17px",
-                  background: "transparent",
-                  cursor: "pointer",
-                  padding: "0.5rem",
-                  paddingRight: "2.5rem",
-                  border: "none",
-                }}
               >
                 {currentPage}
               </a>
               <div
-                className="navbar-dropdown"
-                style={{
-                  background: "var(--bg-card)",
-                  backdropFilter: "blur(12px)",
-                  border: "1px solid var(--border-color)",
-                  boxShadow: "var(--shadow-md)",
-                  borderRadius: "16px",
-                  marginTop: "12px",
-                  padding: "8px",
-                  minWidth: "180px",
-                  animation: isDropdownActive ? "fadeInDown 0.3s ease" : "none",
-                }}
+                className={`navbar-dropdown ${styles.dropdownMenu} ${isDropdownActive ? styles.dropdownMenuActive : ""}`}
               >
                 {otherPages.map((page) => (
                   <Link
                     key={page.path}
                     to={page.path}
-                    className="navbar-item"
+                    className={`navbar-item ${styles.dropdownLink}`}
                     onClick={closeDropdown}
-                    style={{
-                      color: "var(--text-primary)",
-                      fontWeight: "600",
-                      fontSize: "15px",
-                      transition: "all 0.2s ease",
-                      padding: "10px 16px",
-                      borderRadius: "10px",
-                      margin: "2px 0",
-                      display: "block",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background =
-                        "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)";
-                      e.target.style.color = "#ffffff";
-                      e.target.style.transform = "translateX(4px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = "transparent";
-                      e.target.style.color = "var(--text-primary)";
-                      e.target.style.transform = "translateX(0)";
-                    }}
                   >
                     {page.name}
                   </Link>
@@ -186,32 +118,10 @@ function Header({ theme, toggleTheme }) {
 
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
-            <div className="navbar-item" style={{ padding: "0.5rem 0.75rem" }}>
+            <div className={`navbar-item ${styles.logoutItem}`}>
               <button
                 onClick={handleLogout}
-                className="button"
-                style={{
-                  borderColor: "#38bdf8",
-                  color: "#0ea5e9",
-                  fontWeight: "600",
-                  borderRadius: "10px",
-                  padding: "0.4rem 1rem",
-                  transition: "all 0.2s ease",
-                  background: "transparent",
-                  fontSize: "15px",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "#0ea5e9";
-                  e.target.style.color = "white";
-                  e.target.style.borderColor = "#0ea5e9";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "transparent";
-                  e.target.style.color = "#0ea5e9";
-                  e.target.style.borderColor = "#38bdf8";
-                  e.target.style.fontSize = "15px";
-                }}
+                className={`button ${styles.logoutButton}`}
               >
                 Logout
               </button>

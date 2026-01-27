@@ -1,0 +1,94 @@
+.homeNav {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+.homeContainer {
+  max-width: 100%;
+  padding: 0 20px;
+}
+
+.homeNav :global(.navbar-brand) {
+  margin-right: auto;
+}
+
+.homeNav :global(.navbar-menu) {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.brandText {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.5px;
+}
+
+.burger {
+  color: #000000;
+}
+
+.menuTransparent {
+  background: transparent;
+}
+
+.navEnd {
+  align-items: center;
+}
+
+.navItem {
+  color: #000000;
+  font-weight: 500;
+  font-size: 17px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.navItemStrong {
+  font-weight: 700;
+}
+
+.actionGroup {
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  gap: 10px;
+}
+
+.loginButton {
+  background: transparent;
+  border-color: white;
+  color: white;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 0.5rem 1.5rem;
+  font-size: 16px;
+  border-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.loginButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.signupButton {
+  background: white;
+  border-color: white;
+  color: #000000;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 0.5rem 1.5rem;
+  font-size: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.signupButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}

@@ -1,12 +1,13 @@
-function SuccessModal({ isOpen, onClose, favorites, styles }) {
+import styles from "./SuccessModal.module.css";
+
+function SuccessModal({ isOpen, onClose, favorites }) {
   if (!isOpen) return null;
 
   return (
     <div className={`modal is-active ${styles.successModal}`}>
       <div
-        className="modal-background"
+        className={`modal-background ${styles.modalBackdrop}`}
         onClick={onClose}
-        style={{ background: "rgba(0,0,0,0.5)" }}
       ></div>
       <div className="modal-content">
         <div className={styles.modalCard}>
@@ -26,8 +27,7 @@ function SuccessModal({ isOpen, onClose, favorites, styles }) {
             {favorites.slice(0, 3).map((place) => (
               <div key={place.id} className={styles.savedPlaceItem}>
                 <i
-                  className="fas fa-map-marker-alt"
-                  style={{ color: "#0ea5e9" }}
+                  className={`fas fa-map-marker-alt ${styles.savedPlaceIcon}`}
                 ></i>
                 <span>{place.name}</span>
               </div>

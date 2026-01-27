@@ -1,0 +1,193 @@
+.scheduleContainer {
+  padding: 40px;
+}
+
+.scheduleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.scheduleTitle {
+  color: #000000;
+  font-weight: 800;
+}
+
+.scheduleSubtitle {
+  color: #334155;
+  font-weight: 500;
+}
+
+.emptyState {
+  border: 2px dashed #e2e8f0;
+  border-radius: 20px;
+  padding: 60px;
+  text-align: center;
+  background: #f8fafc;
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  background: #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  color: #94a3b8;
+}
+
+.emptyTitle {
+  margin-bottom: 0;
+}
+
+.emptySubtitle {
+  margin-top: 0;
+}
+
+.timeline {
+  padding-left: 20px;
+}
+
+.timelineItem {
+  display: flex;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.timelineLine {
+  position: absolute;
+  left: -29px;
+  top: 0;
+  bottom: -30px;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.timelineLineEnd {
+  bottom: auto;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -35px;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0ea5e9;
+  border: 3px solid white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.timeSlot {
+  width: 85px;
+  flex-shrink: 0;
+  padding-top: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  position: relative;
+}
+
+.timeInputWrapper {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: border-color 0.2s;
+}
+
+.timeInput {
+  border: none;
+  outline: none;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.85rem;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+}
+
+.timePlaceholder {
+  font-size: 0.7rem;
+  color: #cbd5e1;
+  display: block;
+  margin-top: 4px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.activityCard {
+  flex: 1;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  display: flex;
+}
+
+.activityImageWrapper {
+  width: 120px;
+  position: relative;
+}
+
+.activityImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.activityContent {
+  flex: 1;
+  padding: 20px;
+}
+
+.activityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.activityName {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #000000;
+  margin-bottom: 5px;
+}
+
+.activityLocation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.locationIcon {
+  color: #0ea5e9;
+}
+
+.activityOpen {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #10b981;
+  font-size: 0.75rem;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.unassignButton {
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+}

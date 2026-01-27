@@ -1,0 +1,118 @@
+.headerNav {
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.headerContainer {
+  max-width: 100%;
+  padding: 0 20px;
+}
+
+.headerNav :global(.navbar-brand) {
+  margin-right: auto;
+}
+
+.headerNav :global(.navbar-menu) {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.brandLink {
+  padding: 0.5rem 0.75rem;
+}
+
+.brandText {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.burger {
+  color: var(--text-primary);
+}
+
+.navEnd {
+  align-items: center;
+}
+
+.navItem {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 17px;
+  padding: 0.5rem 0.75rem;
+}
+
+.dropdownWrapper {
+  padding: 0.5rem 0.75rem;
+  position: relative;
+}
+
+.dropdownToggle {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 17px;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.5rem;
+  padding-right: 2.5rem;
+  border: none;
+}
+
+.dropdownMenu {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  border-radius: 16px;
+  margin-top: 12px;
+  padding: 8px;
+  min-width: 180px;
+}
+
+.dropdownMenuActive {
+  animation: fadeInDown 0.3s ease;
+}
+
+.dropdownLink {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin: 2px 0;
+  display: block;
+}
+
+.dropdownLink:hover {
+  background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.logoutItem {
+  padding: 0.5rem 0.75rem;
+}
+
+.logoutButton {
+  border-color: #38bdf8;
+  color: #0ea5e9;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.4rem 1rem;
+  transition: all 0.2s ease;
+  background: transparent;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background: #0ea5e9;
+  color: white;
+  border-color: #0ea5e9;
+}

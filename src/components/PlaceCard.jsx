@@ -8,9 +8,9 @@ import {
   FaStar,
   FaWalking,
 } from "react-icons/fa";
+import styles from "./PlaceCard.module.css";
 
-function PlaceCard({ place, favorites, onToggleFavorite, styles }) {
-  const isFavorite = favorites.find((p) => p.id === place.id);
+function PlaceCard({ place, isFavorite, onToggleFavorite }) {
 
   return (
     <div className={styles.placeCard}>

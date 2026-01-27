@@ -2,34 +2,24 @@ import AsyncSelect from "react-select/async";
 import Select from "react-select";
 import { FaSearch, FaMapMarkerAlt, FaUmbrellaBeach } from "react-icons/fa";
 
-function SearchBar({
-  selectedVibe,
-  onVibeChange,
-  selectedLocation,
-  onLocationChange,
-  onSearch,
-  loadCityOptions,
-  vibeOptions,
-  loading,
-  apiError,
-  styles,
-}) {
+function SearchBar({ search, handlers, ui }) {
+  const { selectedVibe, selectedLocation, loading, apiError } = search;
+  const { onVibeChange, onLocationChange, onSearch, loadCityOptions } = handlers;
+  const { vibeOptions, styles } = ui;
+
   return (
     <div className={styles.searchContainer}>
       {apiError && (
-        <div
-          style={{ color: "#ef4444", fontSize: "14px", marginBottom: "10px" }}
-        >
+        <div className={styles.apiError}>
           ⚠️ API connection issue. Please try again.
         </div>
       )}
       <div className={styles.searchBox}>
         <div className={styles.filterGroup}>
           <label
-            className={styles.label}
-            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            className={`${styles.label} ${styles.labelWithIcon}`}
           >
-            <FaUmbrellaBeach style={{ color: "#0ea5e9" }} />
+            <FaUmbrellaBeach className={styles.iconAccent} />
             Your Vibe
           </label>
           <Select
@@ -44,10 +34,9 @@ function SearchBar({
         <div className={styles.divider}></div>
         <div className={styles.filterGroup}>
           <label
-            className={styles.label}
-            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            className={`${styles.label} ${styles.labelWithIcon}`}
           >
-            <FaMapMarkerAlt style={{ color: "#0ea5e9" }} />
+            <FaMapMarkerAlt className={styles.iconAccent} />
             Where to?
           </label>
           <AsyncSelect

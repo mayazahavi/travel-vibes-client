@@ -57,19 +57,18 @@ function Footer() {
                       });
                     }
                   }}
-                  className={styles.link}
-                  style={{ cursor: "pointer" }}
+                  className={`${styles.link} ${styles.clickable}`}
                 >
                   About Us
                 </a>
               </li>
               <li className={styles.linkItem}>
-                <span className={styles.link} style={{ cursor: "pointer" }}>
+                <span className={`${styles.link} ${styles.clickable}`}>
                   Careers
                 </span>
               </li>
               <li className={styles.linkItem}>
-                <span className={styles.link} style={{ cursor: "pointer" }}>
+                <span className={`${styles.link} ${styles.clickable}`}>
                   Contact
                 </span>
               </li>
@@ -110,13 +109,13 @@ function Footer() {
             &copy; {currentYear} Travel Vibes. All rights reserved.
           </p>
           <div className={styles.legalLinks}>
-            <span className={styles.legalLink} style={{ cursor: "pointer" }}>
+            <span className={`${styles.legalLink} ${styles.clickable}`}>
               Privacy Policy
             </span>
-            <span className={styles.legalLink} style={{ cursor: "pointer" }}>
+            <span className={`${styles.legalLink} ${styles.clickable}`}>
               Terms of Service
             </span>
-            <span className={styles.legalLink} style={{ cursor: "pointer" }}>
+            <span className={`${styles.legalLink} ${styles.clickable}`}>
               Cookie Policy
             </span>
           </div>

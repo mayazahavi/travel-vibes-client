@@ -1,4 +1,6 @@
-function ProgressBar({ steps, currentStep, styles }) {
+import styles from "../styles/CreateTripPage.module.css";
+
+function ProgressBar({ steps, currentStep }) {
   return (
     <div className={styles.progressBar}>
       {steps.map((step, index) => (
