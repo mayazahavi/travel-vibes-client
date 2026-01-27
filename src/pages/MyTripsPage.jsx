@@ -64,6 +64,10 @@ function MyTripsPage() {
       try {
         await dispatch(deleteTripAsync(deleteModal.tripId)).unwrap();
         setDeleteModal({ isOpen: false, tripId: null });
+        setToast({
+          message: "Trip deleted successfully.",
+          type: "success",
+        });
       } catch (error) {
         console.error("Failed to delete trip:", error);
         setToast({
@@ -77,7 +81,12 @@ function MyTripsPage() {
 
   const confirmEdit = async (id, updates) => {
     try {
-      return await dispatch(updateTripAsync({ id, updates })).unwrap();
+      const result = await dispatch(updateTripAsync({ id, updates })).unwrap();
+      setToast({
+        message: "Trip updated successfully.",
+        type: "success",
+      });
+      return result;
     } catch (error) {
       console.error("Failed to update trip:", error);
       setToast({

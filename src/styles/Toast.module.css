@@ -27,6 +27,17 @@
   font-size: 1.05rem;
 }
 
+.success {
+  border-left-color: #38bdf8;
+  background: #e0f2fe;
+}
+
+.success .content {
+  color: #0369a1;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
 .content {
   flex: 1;
   font-weight: 500;
