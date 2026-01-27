@@ -73,20 +73,12 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    registerSuccess: (state, action) => {
+    registerSuccess: (state) => {
       state.loading = false;
-      state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.token = null;
       state.error = null;
-      
-      // Save to localStorage
-      try {
-        localStorage.setItem("auth_user", JSON.stringify(action.payload.user));
-        localStorage.setItem("auth_token", action.payload.token);
-      } catch (error) {
-        console.error("Failed to save auth to storage:", error);
-      }
     },
     registerFailure: (state, action) => {
       state.loading = false;

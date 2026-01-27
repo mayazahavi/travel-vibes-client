@@ -8,7 +8,6 @@ import {
   clearError,
   selectAuthLoading,
   selectAuthError,
-  selectIsAuthenticated,
 } from "../store/slices/authSlice";
 import useForm from "../hooks/useForm";
 import * as authService from "../services/authService";
@@ -20,7 +19,6 @@ function RegisterPage() {
   const dispatch = useDispatch();
   const loading = useSelector(selectAuthLoading);
   const error = useSelector(selectAuthError);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const { values, errors, handleChange, handleSubmit } = useForm(
@@ -29,26 +27,24 @@ function RegisterPage() {
   );
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/create-trip"); // Redirect to create trip after registration
-    }
     return () => {
       dispatch(clearError());
     };
-  }, [isAuthenticated, navigate, dispatch]);
+  }, [dispatch]);
 
   const onSubmit = async (formValues) => {
     dispatch(registerStart());
 
     try {
-      const data = await authService.register({
+      await authService.register({
         name: formValues.name,
         email: formValues.email,
-        password: formValues.password
+        password: formValues.password,
       });
       setShowSuccess(true);
       setTimeout(() => {
-        dispatch(registerSuccess(data));
+        dispatch(registerSuccess());
+        navigate("/login");
       }, 1500);
     } catch (err) {
       dispatch(registerFailure(err.message || "Registration failed. Please try again."));
