@@ -1,3 +1,6 @@
+import { API_URL } from "../config/api";
+import { fetchJson } from "./http";
+
 // Unsplash API is now proxied through the server
 // API key is securely stored on server
 const usedImages = new Set();
@@ -11,10 +14,11 @@ export const clearUsedImages = () => {
 export const fetchWikipediaImage = async (placeName, city) => {
   try {
     const searchQuery = `${placeName} ${city}`;
-    const response = await fetch(
+    const data = await fetchJson(
       `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${encodeURIComponent(searchQuery)}&prop=pageimages&pithumbsize=800`,
+      {},
+      8000,
     );
-    const data = await response.json();
     const pages = data.query?.pages;
     if (pages) {
       const page = Object.values(pages)[0];
@@ -30,14 +34,9 @@ export const fetchWikipediaImage = async (placeName, city) => {
 
 export const fetchUnsplashImage = async (query, page = 1) => {
   try {
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-    const response = await fetch(
+    const data = await fetchJson(
       `${API_URL}/places/image?query=${encodeURIComponent(query)}&page=${page}`,
     );
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
     if (data.success && data.data.imageUrl) {
       return data.data.imageUrl;
     }

@@ -1,9 +1,10 @@
+import { API_URL } from "../config/api";
+import { fetchJson } from "./http";
+
 /**
  * Service to handle authentication API calls.
  * Connected to the real backend API.
  */
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 /**
  * Login user
@@ -13,20 +14,13 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
  */
 export const login = async (email, password) => {
     try {
-        const response = await fetch(`${API_URL}/auth/login`, {
+        const data = await fetchJson(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }),
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            // Server returned an error
-            throw new Error(data.message || 'Login failed');
-        }
 
         // Return user and token from server response
         return {
@@ -46,25 +40,13 @@ export const login = async (email, password) => {
  */
 export const register = async (userData) => {
     try {
-        const response = await fetch(`${API_URL}/auth/register`, {
+        const data = await fetchJson(`${API_URL}/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(userData),
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            // Server returned validation errors or other errors
-            if (data.errors) {
-                // Convert errors object to a single message
-                const errorMessages = Object.values(data.errors).join('. ');
-                throw new Error(errorMessages);
-            }
-            throw new Error(data.message || 'Registration failed');
-        }
 
         // Return user and token from server response
         return {

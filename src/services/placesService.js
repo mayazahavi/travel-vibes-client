@@ -1,4 +1,5 @@
 import { calculateDistance } from "../utils/distance";
+import { API_URL } from "../config/api";
 import { getPlaceImage } from "./imageService";
 
 /**
@@ -79,6 +80,41 @@ export const getPlacesUrl = (vibe, location) => {
     if (!vibe || !location) return null;
     const { lat, lon } = location.value;
     const categories = vibe.categories;
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
     return `${API_URL}/places/search?categories=${encodeURIComponent(categories)}&lat=${lat}&lon=${lon}&limit=20`;
+};
+
+export const extractGeocodeFeatures = (data) => {
+    if (!data) return [];
+    return data.data?.features || data.features || [];
+};
+
+export const getCityOptionsFromFeatures = (features, limit = 8) => {
+    if (!Array.isArray(features)) return [];
+
+    const uniqueCities = new Map();
+
+    features.forEach((feature) => {
+        const props = feature.properties || {};
+        const cityName = props.city || props.name;
+        const countryName = props.country;
+
+        if (!cityName || !countryName) return;
+
+        const label = `${cityName}, ${countryName}`;
+        const key = label.toLowerCase();
+
+        if (!uniqueCities.has(key)) {
+            uniqueCities.set(key, {
+                value: {
+                    lat: props.lat,
+                    lon: props.lon,
+                    city: cityName,
+                    country: countryName,
+                },
+                label,
+            });
+        }
+    });
+
+    return Array.from(uniqueCities.values()).slice(0, limit);
 };

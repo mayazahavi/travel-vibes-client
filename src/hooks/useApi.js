@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { fetchJson } from "../services/http";
 
 /**
  * Custom hook for API calls.
@@ -22,15 +23,7 @@ const useApi = (initialUrl = null, options = {}) => {
       setError(null);
 
       try {
-        const response = await fetch(finalUrl, options);
-
-        if (!response.ok) {
-          throw new Error(
-            `API Error: ${response.status} ${response.statusText}`,
-          );
-        }
-
-        const jsonData = await response.json();
+        const jsonData = await fetchJson(finalUrl, options);
         setData(jsonData);
         return jsonData;
       } catch (err) {
