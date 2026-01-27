@@ -256,7 +256,7 @@ function MyTripsPage() {
                         </span>
                       </button>
                       <button
-                        onClick={(e) => handleDeleteClick(e, trip.id)}
+                        onClick={(e) => handleDeleteClick(e,trip._id)}
                         className="button is-white is-rounded"
                         title="Delete Trip"
                         style={{
@@ -399,7 +399,7 @@ function MyTripsPage() {
                       }}
                     >
                       <button
-                        onClick={() => handleTripSelect(trip.id)}
+                        onClick={() => handleTripSelect(trip._id)}
                         className="button is-white is-rounded has-text-weight-bold"
                         style={{
                           flex: 1,
@@ -425,7 +425,7 @@ function MyTripsPage() {
                         <span style={{ fontSize: "0.9rem" }}>Places</span>
                       </button>
                       <button
-                        onClick={(e) => handleTripSchedule(e, trip.id)}
+                        onClick={(e) => handleTripSchedule(e,trip._id)}
                         className="button is-info is-rounded has-text-weight-bold shadow-sm"
                         style={{
                           flex: 1,

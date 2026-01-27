@@ -26,12 +26,18 @@ function EditTripModal({ isOpen, onClose, onSave, trip }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave(trip.id, {
-            name: formData.name,
-            startDate: formData.startDate?.toISOString(),
-            endDate: formData.endDate?.toISOString(),
-            travelers: formData.travelers,
-        });
+       onSave(trip._id, {
+  name: formData.name,
+  startDate: formData.startDate?.toISOString(),
+  endDate: formData.endDate?.toISOString(),
+  travelers: formData.travelers,
+
+  // required fields for server validation
+  destination: trip.destination,
+  vibe: trip.vibe,
+  description: trip.description ?? "",
+});
+
         onClose();
     };
 

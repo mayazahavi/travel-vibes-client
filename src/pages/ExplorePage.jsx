@@ -186,7 +186,7 @@ function ExplorePage() {
                 (selectedLocation?.label?.includes(",")
                   ? selectedLocation?.label?.split(",").pop().trim()
                   : ""),
-              vibe: selectedVibe?.label,
+              vibe: selectedVibe?.value || "adventure",
               distance: place.distance,
               description: place.description,
               phone: place.phone,
