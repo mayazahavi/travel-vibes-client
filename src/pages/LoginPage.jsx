@@ -59,16 +59,12 @@ function LoginPage() {
     return (
       <div className={styles.authPageWrapper}>
         <div className={styles.overlay}></div>
-        <div className={styles.authCard} style={{ textAlign: "center", padding: "4rem 2rem" }}>
-          <div style={{
-            fontSize: "4rem",
-            color: "#10b981",
-            marginBottom: "1rem"
-          }}>
+        <div className={`${styles.authCard} ${styles.authCardCentered}`}>
+          <div className={styles.successIcon}>
             <i className="fas fa-check-circle"></i>
           </div>
-          <h2 className="title is-3" style={{ color: "#333" }}>Success!</h2>
-          <p className="subtitle is-5" style={{ color: "#666" }}>Logging you in...</p>
+          <h2 className={`title is-3 ${styles.successTitle}`}>Success!</h2>
+          <p className={`subtitle is-5 ${styles.successSubtitle}`}>Logging you in...</p>
         </div>
       </div>
     );

@@ -44,3 +44,46 @@ export const validateLogin = (values) => {
 
     return errors;
 };
+
+export const validateTrip = (values) => {
+    const errors = {};
+
+    // Trip name
+    if (!values.name || !values.name.trim()) {
+        errors.name = "Trip name is required";
+    } else if (values.name.trim().length < 3) {
+        errors.name = "Trip name must be at least 3 characters";
+    }
+
+    // Destination
+    if (!values.destination || !values.destination.trim()) {
+        errors.destination = "Destination is required";
+    }
+
+    // Start date
+    if (!values.startDate) {
+        errors.startDate = "Start date is required";
+    }
+
+    // End date
+    if (!values.endDate) {
+        errors.endDate = "End date is required";
+    } else if (
+        values.startDate &&
+        new Date(values.endDate) < new Date(values.startDate)
+    ) {
+        errors.endDate = "End date must be after start date";
+    }
+
+    // Vibe
+    if (!values.vibe) {
+        errors.vibe = "Travel vibe is required";
+    }
+
+    // Travelers
+    if (!values.travelers || values.travelers < 1) {
+        errors.travelers = "At least 1 traveler is required";
+    }
+
+    return errors;
+};

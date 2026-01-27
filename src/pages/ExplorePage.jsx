@@ -3,16 +3,22 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FaHeart, FaPlane } from "react-icons/fa";
 import {
-  addToFavorites,
-  removeFromFavorites,
+  addFavoriteAsync,
+  removeFavoriteAsync,
   selectFavorites,
 } from "../store/slices/tripsSlice";
 import { selectIsAuthenticated } from "../store/slices/authSlice";
 import useApi from "../hooks/useApi";
 import styles from "../styles/ExplorePage.module.css";
 import { EXPLORE_VIBES } from "../constants/vibes";
+import { API_URL } from "../config/api";
 import { clearUsedImages } from "../services/imageService";
-import { processPlacesData, getPlacesUrl } from "../services/placesService";
+import {
+  processPlacesData,
+  getPlacesUrl,
+  extractGeocodeFeatures,
+  getCityOptionsFromFeatures,
+} from "../services/placesService";
 import PlaceCard from "../components/PlaceCard";
 import SearchBar from "../components/SearchBar";
 import SuccessModal from "../components/SuccessModal";
@@ -59,7 +65,7 @@ function ExplorePage() {
       const loadPlaces = async () => {
         try {
           // Extract features from nested server response: data.data.features
-          const features = placesApi.data.data?.features || placesApi.data.features || [];
+          const features = extractGeocodeFeatures(placesApi.data);
 
           const formattedPlaces = await processPlacesData(
             features,
@@ -79,7 +85,10 @@ function ExplorePage() {
     } else if (placesApi.error) {
       setApiError(true);
       setProcessing(false);
-      alert("Failed to load places. Please try again.");
+      setToast({
+        message: "Failed to load places. Please try again.",
+        type: "error",
+      });
     }
   }, [
     placesApi.data,
@@ -97,45 +106,12 @@ function ExplorePage() {
     setApiError(false);
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
       const url = `${API_URL}/places/geocode?text=${encodeURIComponent(inputValue)}&type=city&limit=10`;
 
       // Use refetch from cityApi which now returns data
       const response = await cityApi.refetch(url);
-
-      // Handle nested data from server proxy: response.data.features
-      const features = response?.data?.features || response?.features;
-
-      if (!features || features.length === 0) {
-        return [];
-      }
-
-      const uniqueCities = new Map();
-
-      features.forEach((feature) => {
-        const props = feature.properties;
-        const cityName = props.city || props.name;
-        const countryName = props.country;
-
-        if (!cityName || !countryName) return;
-
-        const label = `${cityName}, ${countryName}`;
-        const key = label.toLowerCase();
-
-        if (!uniqueCities.has(key)) {
-          uniqueCities.set(key, {
-            value: {
-              lat: props.lat,
-              lon: props.lon,
-              city: cityName,
-              country: countryName,
-            },
-            label: label,
-          });
-        }
-      });
-
-      return Array.from(uniqueCities.values()).slice(0, 8);
+      const features = extractGeocodeFeatures(response);
+      return getCityOptionsFromFeatures(features, 8);
     } catch (error) {
       setApiError(true);
       return [];
@@ -165,15 +141,13 @@ function ExplorePage() {
     try {
       if (isFavorite(place.id)) {
         // Remove from favorites
-        await dispatch(
-          require("../store/slices/tripsSlice").removeFavoriteAsync(place.id)
-        ).unwrap();
+        await dispatch(removeFavoriteAsync(place.id)).unwrap();
       } else {
         // Add to favorites
         const { city, country } = selectedLocation?.value || {};
 
         await dispatch(
-          require("../store/slices/tripsSlice").addFavoriteAsync({
+          addFavoriteAsync({
             place: {
               id: place.id,
               name: place.name,
@@ -226,24 +200,23 @@ function ExplorePage() {
           Discover hidden gems tailored to your vibe
         </p>
         <SearchBar
-          selectedVibe={selectedVibe}
-          onVibeChange={setSelectedVibe}
-          selectedLocation={selectedLocation}
-          onLocationChange={setSelectedLocation}
-          onSearch={handleSearch}
-          loadCityOptions={loadCityOptions}
-          vibeOptions={EXPLORE_VIBES}
-          loading={placesApi.loading}
-          apiError={apiError}
-          styles={styles}
+          search={{
+            selectedVibe,
+            selectedLocation,
+            loading: placesApi.loading,
+            apiError,
+          }}
+          handlers={{
+            onVibeChange: setSelectedVibe,
+            onLocationChange: setSelectedLocation,
+            onSearch: handleSearch,
+            loadCityOptions,
+          }}
+          ui={{ vibeOptions: EXPLORE_VIBES, styles }}
         />
       </div>
       <div
-        className="container"
-        style={{
-          padding: "40px 20px",
-          paddingBottom: favorites.length > 0 ? "100px" : "40px",
-        }}
+        className={`container ${styles.resultsContainer} ${favorites.length > 0 ? styles.resultsContainerWithBar : ""}`}
       >
         {placesApi.loading || processing ? (
           <LoadingState
@@ -253,11 +226,8 @@ function ExplorePage() {
           />
         ) : !searched ? (
           <div className={styles.emptyState}>
-            <div style={{ fontSize: "48px", marginBottom: "20px" }}>🌍</div>
-            <h3
-              className={styles.emptyTitle}
-              style={{ color: "var(--text-primary)" }}
-            >
+            <div className={styles.emptyEmoji}>🌍</div>
+            <h3 className={`${styles.emptyTitle} ${styles.emptyTitlePrimary}`}>
               Ready to Explore?
             </h3>
             <p className={styles.emptyText}>
@@ -277,9 +247,8 @@ function ExplorePage() {
                 <PlaceCard
                   key={place.id}
                   place={place}
-                  favorites={favorites}
+                  isFavorite={isFavorite(place.id)}
                   onToggleFavorite={toggleFavorite}
-                  styles={styles}
                 />
               ))}
             </div>
@@ -309,7 +278,6 @@ function ExplorePage() {
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
         favorites={favorites}
-        styles={styles}
       />
       {toast && (
         <Toast

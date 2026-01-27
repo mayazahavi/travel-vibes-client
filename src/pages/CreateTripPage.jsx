@@ -5,10 +5,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/CreateTripPage.module.css";
 import { VIBE_IMAGES, CREATE_TRIP_VIBES } from "../constants/vibes";
 import ProgressBar from "../components/ProgressBar";
-import { createTrip } from "../store/slices/tripsSlice";
+import { createTripAsync } from "../store/slices/tripsSlice";
 import TripDetailsStep from "../components/create-trip/TripDetailsStep";
 import TravelInfoStep from "../components/create-trip/TravelInfoStep";
 import PreferencesStep from "../components/create-trip/PreferencesStep";
+import TripSuccessModal from "../components/create-trip/TripSuccessModal";
+import Toast from "../components/Toast";
+import useForm from "../hooks/useForm";
+import { validateTrip } from "../utils/validation";
 
 function CreateTripPage() {
   const [searchParams] = useSearchParams();
@@ -17,7 +21,13 @@ function CreateTripPage() {
   const selectedVibe = searchParams.get("vibe");
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const {
+    values: formData,
+    errors,
+    handleChange,
+    setValues: setFormData,
+    setErrors,
+  } = useForm({
     tripName: "",
     destination: "",
     startDate: null,
@@ -25,16 +35,15 @@ function CreateTripPage() {
     travelers: "",
     vibe: selectedVibe || "",
   });
-
-  const [errors, setErrors] = useState({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [toast, setToast] = useState(null);
 
   // Clear destination error when it updates (handled via setFormData in child)
   useEffect(() => {
     if (formData.destination && errors.destination) {
       setErrors((prev) => ({ ...prev, destination: "" }));
     }
-  }, [formData.destination, errors.destination]);
+  }, [formData.destination, errors.destination, setErrors]);
 
   const steps = [
     { id: 1, title: "Trip Details", icon: "fas fa-suitcase" },
@@ -50,36 +59,45 @@ function CreateTripPage() {
     return "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=80";
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
   const handleDateChange = (date, field) => {
     setFormData((prev) => ({ ...prev, [field]: date }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
   const validateStep = () => {
-    const newErrors = {};
-    if (currentStep === 1) {
-      if (!formData.tripName || formData.tripName.length < 3) {
-        newErrors.tripName = "Trip name must be at least 3 characters";
+    const tripErrors = validateTrip({
+      name: formData.tripName,
+      destination: formData.destination,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      vibe: formData.vibe,
+      travelers: Number(formData.travelers),
+    });
+
+    const mappedErrors = {
+      tripName: tripErrors.name,
+      destination: tripErrors.destination,
+      startDate: tripErrors.startDate,
+      endDate: tripErrors.endDate,
+      vibe: tripErrors.vibe,
+      travelers: tripErrors.travelers,
+    };
+
+    const stepFieldMap = {
+      1: ["tripName", "destination"],
+      2: ["startDate", "endDate", "travelers"],
+      3: ["vibe"],
+    };
+
+    const stepErrors = {};
+    stepFieldMap[currentStep].forEach((field) => {
+      if (mappedErrors[field]) {
+        stepErrors[field] = mappedErrors[field];
       }
-      if (!formData.destination || formData.destination.length < 3) {
-        newErrors.destination = "Please select a destination";
-      }
-    } else if (currentStep === 2) {
-      if (!formData.startDate) newErrors.startDate = "Start date is required";
-      if (!formData.endDate) newErrors.endDate = "End date is required";
-      if (!formData.travelers || formData.travelers < 1)
-        newErrors.travelers = "At least 1 traveler required";
-    } else if (currentStep === 3) {
-      if (!formData.vibe) newErrors.vibe = "Please select a vibe";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    });
+
+    setErrors(stepErrors);
+    return Object.keys(stepErrors).length === 0;
   };
 
   const nextStep = () => {
@@ -99,13 +117,13 @@ function CreateTripPage() {
     try {
       // Use async thunk to create trip on server
       await dispatch(
-        require("../store/slices/tripsSlice").createTripAsync({
+        createTripAsync({
           name: formData.tripName,
           destination: formData.destination,
           startDate: formData.startDate.toISOString(),
           endDate: formData.endDate.toISOString(),
           vibe: formData.vibe,
-          travelers: parseInt(formData.travelers),
+          travelers: parseInt(formData.travelers, 10),
         }),
       ).unwrap();
 
@@ -117,8 +135,10 @@ function CreateTripPage() {
       }, 3000);
     } catch (error) {
       console.error("Failed to create trip:", error);
-      // Show error to user
-      alert("Failed to create trip. Please try again.");
+      setToast({
+        message: "Failed to create trip. Please try again.",
+        type: "error",
+      });
     }
   };
 
@@ -158,7 +178,6 @@ function CreateTripPage() {
             <ProgressBar
               steps={steps}
               currentStep={currentStep}
-              styles={styles}
             />
             <div className={styles.stepInfo}>
               <h2 className={styles.stepTitle}>
@@ -172,27 +191,24 @@ function CreateTripPage() {
               {currentStep === 1 && (
                 <TripDetailsStep
                   formData={formData}
-                  onChange={handleInputChange}
+                  onChange={handleChange}
                   errors={errors}
-                  styles={styles}
                   setFormData={setFormData}
                 />
               )}
               {currentStep === 2 && (
                 <TravelInfoStep
                   formData={formData}
-                  onChange={handleInputChange}
+                  onChange={handleChange}
                   onDateChange={handleDateChange}
                   errors={errors}
-                  styles={styles}
                 />
               )}
               {currentStep === 3 && (
                 <PreferencesStep
                   formData={formData}
-                  onChange={handleInputChange}
+                  onChange={handleChange}
                   errors={errors}
-                  styles={styles}
                 />
               )}
             </div>
@@ -212,8 +228,7 @@ function CreateTripPage() {
               <button
                 type="button"
                 onClick={nextStep}
-                className={`button is-primary ${styles.nextButton}`}
-                style={{ marginLeft: currentStep === 1 ? "auto" : "0" }}
+                className={`button is-primary ${styles.nextButton} ${currentStep === 1 ? styles.nextButtonAuto : ""}`}
               >
                 <span>
                   {currentStep === steps.length ? "Create Trip" : "Next Step"}
@@ -226,62 +241,23 @@ function CreateTripPage() {
           </div>
         </div>
       </div>
-      {showSuccessModal && (
-        <div className={`modal is-active ${styles.successModal}`}>
-          <div
-            className="modal-background"
-            onClick={() => setShowSuccessModal(false)}
-            style={{ background: "rgba(0,0,0,0.6)" }}
-          ></div>
-          <div className="modal-content">
-            <div className={styles.modalCard}>
-              <div className={styles.successIcon}>
-                <i className="fas fa-check-circle"></i>
-              </div>
-              <h2 className={styles.successTitle}>
-                Trip Created Successfully!
-              </h2>
-              <p className={styles.successMessage}>
-                Your trip <strong>"{formData.tripName}"</strong> has been
-                created.
-              </p>
-              <div className={styles.tripSummary}>
-                <div className={styles.summaryItem}>
-                  <i className="fas fa-calendar-alt"></i>
-                  <span>
-                    {formData.startDate?.toLocaleDateString()} -{" "}
-                    {formData.endDate?.toLocaleDateString()}
-                  </span>
-                </div>
-                <div className={styles.summaryItem}>
-                  <i className="fas fa-users"></i>
-                  <span>
-                    {formData.travelers}{" "}
-                    {formData.travelers === "1" ? "Traveler" : "Travelers"}
-                  </span>
-                </div>
-                <div className={styles.summaryItem}>
-                  <i className="fas fa-heart"></i>
-                  <span>
-                    {
-                      CREATE_TRIP_VIBES.find((v) => v.value === formData.vibe)
-                        ?.label
-                    }{" "}
-                    Vibe
-                  </span>
-                </div>
-              </div>
-              <p className={styles.successNote}>
-                Get ready for an amazing adventure! 🎉
-              </p>
-            </div>
-          </div>
-          <button
-            className="modal-close is-large"
-            aria-label="close"
-            onClick={() => setShowSuccessModal(false)}
-          ></button>
-        </div>
+      <TripSuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        tripName={formData.tripName}
+        startDate={formData.startDate}
+        endDate={formData.endDate}
+        travelers={formData.travelers}
+        vibeLabel={
+          CREATE_TRIP_VIBES.find((v) => v.value === formData.vibe)?.label
+        }
+      />
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
     </div>
   );

@@ -1,15 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaTimes, FaSave, FaCalendarAlt, FaPen, FaUserFriends } from "react-icons/fa";
+import { FaSave, FaCalendarAlt, FaPen, FaUserFriends } from "react-icons/fa";
+import useForm from "../hooks/useForm";
+import styles from "./EditTripModal.module.css";
+import { validateTrip } from "../utils/validation";
 
 function EditTripModal({ isOpen, onClose, onSave, trip }) {
-    const [formData, setFormData] = useState({
+    const {
+        values: formData,
+        errors,
+        handleChange,
+        setValues: setFormData,
+        setErrors,
+    } = useForm({
         name: "",
         startDate: null,
         endDate: null,
         travelers: 1,
     });
+    const [serverError, setServerError] = useState(null);
 
     useEffect(() => {
         if (trip) {
@@ -20,25 +30,45 @@ function EditTripModal({ isOpen, onClose, onSave, trip }) {
                 travelers: trip.travelers || 1,
             });
         }
-    }, [trip]);
+    }, [trip, setFormData]);
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-       onSave(trip._id, {
-  name: formData.name,
-  startDate: formData.startDate?.toISOString(),
-  endDate: formData.endDate?.toISOString(),
-  travelers: formData.travelers,
+        setServerError(null);
 
-  // required fields for server validation
-  destination: trip.destination,
-  vibe: trip.vibe,
-  description: trip.description ?? "",
-});
+        const validationErrors = validateTrip({
+            name: formData.name,
+            destination: trip?.destination,
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+            vibe: trip?.vibe,
+            travelers: Number(formData.travelers),
+        });
 
-        onClose();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        try {
+            await onSave(trip._id, {
+                name: formData.name,
+                startDate: formData.startDate?.toISOString(),
+                endDate: formData.endDate?.toISOString(),
+                travelers: formData.travelers,
+
+                // required fields for server validation
+                destination: trip.destination,
+                vibe: trip.vibe,
+                description: trip.description ?? "",
+            });
+
+            onClose();
+        } catch (error) {
+            setServerError(error.message || "Failed to update trip");
+        }
     };
 
     const handleStartDateChange = (date) => {
@@ -48,147 +78,110 @@ function EditTripModal({ isOpen, onClose, onSave, trip }) {
         } else {
             setFormData({ ...formData, startDate: date });
         }
+        if (errors.startDate || errors.endDate) {
+            setErrors((prev) => ({ ...prev, startDate: "", endDate: "" }));
+        }
+    };
+
+    const handleEndDateChange = (date) => {
+        setFormData({ ...formData, endDate: date });
+        if (errors.endDate) {
+            setErrors((prev) => ({ ...prev, endDate: "" }));
+        }
+    };
+
+    const handleFieldChange = (e) => {
+        setServerError(null);
+        handleChange(e);
     };
 
     return (
-        <div className="modal is-active" style={{ zIndex: 1000 }}>
+        <div className={`modal is-active ${styles.modal}`}>
             {/* Backdrop */}
             <div
-                className="modal-background"
+                className={`modal-background ${styles.backdrop}`}
                 onClick={onClose}
-                style={{
-                    backgroundColor: "rgba(15, 23, 42, 0.6)",
-                    backdropFilter: "blur(8px)"
-                }}
             ></div>
 
             {/* Modal Content */}
-            <div className="modal-content" style={{ maxWidth: "500px", borderRadius: "24px", overflow: "visible" }}>
-                <div className="box" style={{
-                    padding: "0",
-                    borderRadius: "24px",
-                    border: "1px solid rgba(255, 255, 255, 0.5)",
-                    background: "rgba(255, 255, 255, 0.95)",
-                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
-                }}>
+            <div className={`modal-content ${styles.modalContent}`}>
+                <div className={`box ${styles.modalBox}`}>
 
                     {/* Header */}
-                    <div style={{
-                        padding: "24px 32px",
-                        borderBottom: "1px solid rgba(0,0,0,0.06)",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        background: "linear-gradient(to right, #ffffff, #f8fafc)",
-                        borderTopLeftRadius: "24px",
-                        borderTopRightRadius: "24px"
-                    }}>
-                        <h3 className="title is-4 mb-0" style={{
-                            color: "#0f172a",
-                            fontWeight: "700",
-                            letterSpacing: "-0.5px"
-                        }}>
+                    <div className={styles.header}>
+                        <h3 className={`title is-4 mb-0 ${styles.headerTitle}`}>
                             <span className="icon-text">
-                                <span className="icon has-text-info mr-2">
+                                <span className={`icon has-text-info mr-2 ${styles.headerIcon}`}>
                                     <FaPen size={18} />
                                 </span>
                                 <span>Edit Trip Details</span>
                             </span>
                         </h3>
                         <button
-                            className="delete is-medium"
+                            className={`delete is-medium ${styles.closeButton}`}
                             onClick={onClose}
-                            style={{ transition: "background-color 0.2s" }}
                         ></button>
                     </div>
 
                     {/* Form Body */}
-                    <div style={{ padding: "32px" }}>
+                    <div className={styles.body}>
                         <form onSubmit={handleSubmit}>
+                            {serverError && (
+                                <div className="notification is-danger is-light mb-4">
+                                    {serverError}
+                                </div>
+                            )}
 
                             {/* Trip Name Field */}
                             <div className="field mb-5">
-                                <label className="label" style={{
-                                    color: "#64748b",
-                                    fontSize: "0.85rem",
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.5px",
-                                    fontWeight: "600",
-                                    marginBottom: "8px"
-                                }}>
+                                <label className={`label ${styles.label}`}>
                                     Trip Name
                                 </label>
                                 <div className="control has-icons-left">
                                     <input
-                                        className="input is-medium"
+                                        className={`input is-medium ${styles.input}`}
                                         type="text"
+                                        name="name"
                                         value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        onChange={handleFieldChange}
                                         required
-                                        style={{
-                                            borderRadius: "12px",
-                                            border: "2px solid #e2e8f0",
-                                            boxShadow: "none",
-                                            fontSize: "1rem",
-                                            color: "#334155",
-                                            transition: "all 0.2s"
-                                        }}
-                                        onFocus={(e) => e.target.style.borderColor = "#0ea5e9"}
-                                        onBlur={(e) => e.target.style.borderColor = "#e2e8f0"}
                                     />
-                                    <span className="icon is-left is-medium" style={{ color: "#94a3b8" }}>
+                                    <span className={`icon is-left is-medium ${styles.inputIcon}`}>
                                         <FaPen size={14} />
                                     </span>
                                 </div>
+                                {errors.name && (
+                                    <p className="help is-danger">{errors.name}</p>
+                                )}
                             </div>
 
                             {/* Travelers Field */}
                             <div className="field mb-5">
-                                <label className="label" style={{
-                                    color: "#64748b",
-                                    fontSize: "0.85rem",
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.5px",
-                                    fontWeight: "600",
-                                    marginBottom: "8px"
-                                }}>
+                                <label className={`label ${styles.label}`}>
                                     Travelers
                                 </label>
                                 <div className="control has-icons-left">
                                     <input
-                                        className="input is-medium"
+                                        className={`input is-medium ${styles.input}`}
                                         type="number"
+                                        name="travelers"
                                         min="1"
                                         value={formData.travelers}
-                                        onChange={(e) => setFormData({ ...formData, travelers: e.target.value })}
+                                        onChange={handleFieldChange}
                                         required
-                                        style={{
-                                            borderRadius: "12px",
-                                            border: "2px solid #e2e8f0",
-                                            boxShadow: "none",
-                                            fontSize: "1rem",
-                                            color: "#334155",
-                                            transition: "all 0.2s"
-                                        }}
-                                        onFocus={(e) => e.target.style.borderColor = "#0ea5e9"}
-                                        onBlur={(e) => e.target.style.borderColor = "#e2e8f0"}
                                     />
-                                    <span className="icon is-left is-medium" style={{ color: "#94a3b8" }}>
+                                    <span className={`icon is-left is-medium ${styles.inputIcon}`}>
                                         <FaUserFriends size={14} />
                                     </span>
                                 </div>
+                                {errors.travelers && (
+                                    <p className="help is-danger">{errors.travelers}</p>
+                                )}
                             </div>
 
                             {/* Dates Field - Row */}
                             <div className="field mb-6">
-                                <label className="label" style={{
-                                    color: "#64748b",
-                                    fontSize: "0.85rem",
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.5px",
-                                    fontWeight: "600",
-                                    marginBottom: "8px"
-                                }}>
+                                <label className={`label ${styles.label}`}>
                                     Travel Dates
                                 </label>
                                 <div className="columns is-mobile is-variable is-2">
@@ -202,61 +195,37 @@ function EditTripModal({ isOpen, onClose, onSave, trip }) {
                                                 placeholderText="Start Date"
                                                 minDate={new Date()}
                                                 customInput={
-                                                    <input style={{
-                                                        borderRadius: "12px",
-                                                        border: "2px solid #e2e8f0",
-                                                        width: "100%",
-                                                        padding: "10px 10px 10px 40px",
-                                                        cursor: "pointer",
-                                                        color: "#334155",
-                                                        fontWeight: "500"
-                                                    }} />
+                                                    <input className={styles.dateInput} />
                                                 }
                                             />
-                                            <span className="icon is-left" style={{
-                                                position: "absolute",
-                                                top: "50%",
-                                                left: "12px",
-                                                transform: "translateY(-50%)",
-                                                zIndex: 10,
-                                                color: "#0ea5e9"
-                                            }}>
+                                            <span className={`icon is-left ${styles.dateIcon}`}>
                                                 <FaCalendarAlt />
                                             </span>
                                         </div>
+                                        {errors.startDate && (
+                                            <p className="help is-danger">{errors.startDate}</p>
+                                        )}
                                     </div>
                                     <div className="column is-6">
                                         <div className="control has-icons-left">
                                             <DatePicker
                                                 selected={formData.endDate}
-                                                onChange={(date) => setFormData({ ...formData, endDate: date })}
+                                                onChange={handleEndDateChange}
                                                 className="input"
                                                 dateFormat="dd/MM/yyyy"
                                                 placeholderText="End Date"
                                                 minDate={formData.startDate || new Date()}
                                                 customInput={
-                                                    <input style={{
-                                                        borderRadius: "12px",
-                                                        border: "2px solid #e2e8f0",
-                                                        width: "100%",
-                                                        padding: "10px 10px 10px 40px",
-                                                        cursor: "pointer",
-                                                        color: "#334155",
-                                                        fontWeight: "500"
-                                                    }} />
+                                                    <input className={styles.dateInput} />
                                                 }
                                             />
-                                            <span className="icon is-left" style={{
-                                                position: "absolute",
-                                                top: "50%",
-                                                left: "12px",
-                                                transform: "translateY(-50%)",
-                                                zIndex: 10,
-                                                color: "#0ea5e9"
-                                            }}>
+                                            <span className={`icon is-left ${styles.dateIcon}`}>
                                                 <FaCalendarAlt />
                                             </span>
                                         </div>
+                                        {errors.endDate && (
+                                            <p className="help is-danger">{errors.endDate}</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -266,16 +235,8 @@ function EditTripModal({ isOpen, onClose, onSave, trip }) {
                                 <div className="control">
                                     <button
                                         type="button"
-                                        className="button is-light has-text-grey"
+                                        className={`button is-light has-text-grey ${styles.cancelButton}`}
                                         onClick={onClose}
-                                        style={{
-                                            borderRadius: "12px",
-                                            fontWeight: "600",
-                                            padding: "0 20px",
-                                            height: "44px",
-                                            background: "#f1f5f9",
-                                            border: "none"
-                                        }}
                                     >
                                         Cancel
                                     </button>
@@ -283,16 +244,7 @@ function EditTripModal({ isOpen, onClose, onSave, trip }) {
                                 <div className="control">
                                     <button
                                         type="submit"
-                                        className="button is-info"
-                                        style={{
-                                            borderRadius: "12px",
-                                            fontWeight: "600",
-                                            padding: "0 24px",
-                                            height: "44px",
-                                            background: "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)",
-                                            border: "none",
-                                            boxShadow: "0 4px 12px rgba(14, 165, 233, 0.3)"
-                                        }}
+                                        className={`button is-info ${styles.submitButton}`}
                                     >
                                         <span className="icon is-small mr-2">
                                             <FaSave />
