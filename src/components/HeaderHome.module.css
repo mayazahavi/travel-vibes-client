@@ -32,6 +32,8 @@
 
 .burger {
   color: #000000;
+  background: transparent;
+  border: none;
 }
 
 .menuTransparent {
@@ -48,6 +50,9 @@
   font-size: 17px;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  font-family: inherit;
 }
 
 .navItemStrong {

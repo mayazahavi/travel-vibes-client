@@ -71,8 +71,8 @@ function Header({ theme, toggleTheme }) {
               🌍 TravelVibes
             </span>
           </Link>
-          <a
-            role="button"
+          <button
+            type="button"
             className={`navbar-burger ${styles.burger}`}
             aria-label="menu"
             aria-expanded="false"
@@ -81,7 +81,7 @@ function Header({ theme, toggleTheme }) {
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
-          </a>
+          </button>
         </div>
         <div id="navbarMain" className="navbar-menu">
           <div className={`navbar-end ${styles.navEnd}`}>
@@ -94,12 +94,13 @@ function Header({ theme, toggleTheme }) {
             <div
               className={`navbar-item has-dropdown ${styles.dropdownWrapper} ${isDropdownActive ? "is-active" : ""}`}
             >
-              <a
+              <button
+                type="button"
                 className={`navbar-link ${styles.dropdownToggle}`}
                 onClick={toggleDropdown}
               >
                 {currentPage}
-              </a>
+              </button>
               <div
                 className={`navbar-dropdown ${styles.dropdownMenu} ${isDropdownActive ? styles.dropdownMenuActive : ""}`}
               >

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import VibeCard from "../components/VibeCard.jsx";
 import styles from "../styles/VibesPage.module.css";
 import { DETAILED_VIBES } from "../constants/vibes";
@@ -65,13 +65,13 @@ function VibesPage() {
               {selectedVibe.emoji} {selectedVibe.title}
             </h2>
             <p className={styles.detailsText}>{selectedVibe.details}</p>
-            <a
-              href="#"
+            <button
+              type="button"
               onClick={handleStartPlanning}
               className={styles.detailsButton}
             >
               Start Planning <i className="fas fa-arrow-right"></i>
-            </a>
+            </button>
           </div>
         </div>
       </div>

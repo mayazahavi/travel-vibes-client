@@ -1,4 +1,4 @@
-import { FaMapMarkerAlt, FaPlus, FaCalendarAlt } from "react-icons/fa";
+import { FaPlus, FaCalendarAlt } from "react-icons/fa";
 import styles from "../../styles/FavoritesPage.module.css";
 
 function FavoritesHeader({

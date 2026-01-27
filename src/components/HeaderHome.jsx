@@ -34,8 +34,8 @@ function HeaderHome({ theme, toggleTheme }) {
               🌍 TravelVibes
             </span>
           </Link>
-          <a
-            role="button"
+          <button
+            type="button"
             className={`navbar-burger ${styles.burger}`}
             aria-label="menu"
             aria-expanded="false"
@@ -44,7 +44,7 @@ function HeaderHome({ theme, toggleTheme }) {
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
-          </a>
+          </button>
         </div>
         <div
           id="navbarMain"
@@ -57,20 +57,20 @@ function HeaderHome({ theme, toggleTheme }) {
             >
               Home
             </Link>
-            <a
-              href="#"
+            <button
+              type="button"
               onClick={handleAboutClick}
               className={`navbar-item ${styles.navItem}`}
             >
               About
-            </a>
-            <a
-              href="#"
+            </button>
+            <button
+              type="button"
               onClick={handleContactClick}
               className={`navbar-item ${styles.navItem}`}
             >
               Contact
-            </a>
+            </button>
 
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
